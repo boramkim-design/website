@@ -38,3 +38,28 @@ document.addEventListener("keydown", (e) => {
 document.querySelector(".contact-form")?.addEventListener("submit", (e) => {
   e.preventDefault();
 });
+
+// Reveal motion — docs/landing-structure-update.md §6.
+// No Motion/React in this stack, so `whileInView` is implemented as a plain
+// IntersectionObserver instead.
+const revealEls = document.querySelectorAll(".work-head h2, .case");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (reduceMotion) {
+  revealEls.forEach((el) => el.classList.add("is-visible"));
+} else {
+  revealEls.forEach((el, i) => {
+    el.classList.add("reveal");
+    el.style.transitionDelay = `${i * 90}ms`;
+  });
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      revealObserver.unobserve(entry.target);
+    });
+  }, { threshold: 0.16 });
+
+  revealEls.forEach((el) => revealObserver.observe(el));
+}

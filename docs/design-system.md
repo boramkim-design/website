@@ -115,11 +115,14 @@ Three hues total: orange (brand), teal (secondary), and a warm neutral ramp. Tha
 ```css
 :root {
   --measure: 52rem; /* 832px — prose, cards, media, video, all of it */
+  --measure-wide: 72rem; /* card grids only */
   --page-gutter: clamp(1.25rem, 5vw, 3rem);
   --rail-width: 8rem;
   --rail-gap: 2.5rem;
 }
 ```
+
+`--measure-wide` (72rem) is permitted for card grids only — the landing page case study grid and the projects index. Prose, figures, video, and all case study page content always use `--measure`. There is no third width.
 
 9. Page-level exceptions
 9.1 Landing page + About page only
