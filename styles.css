@@ -1,4 +1,5 @@
 :root {
+  /* Landing/about exception palette — design-system.md §9.2 */
   --bg: #fdf8f0;
   --ink: #16181d;
   --gray: #6b7280;
@@ -7,6 +8,36 @@
   --black: #111214;
   --white: #ffffff;
   --nav-h: 48px;
+
+  /* Typography — design-system.md §3 (applies site-wide, no exception) */
+  --font-display: "Sofia Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Geist", -apple-system, "Segoe UI", sans-serif;
+
+  --text-display: clamp(2.75rem, 1.5rem + 5.2vw, 5rem);
+  --text-h1: clamp(2.25rem, 1.5rem + 3.0vw, 3.5rem);
+  --text-h2: clamp(1.75rem, 1.35rem + 1.7vw, 2.375rem);
+  --text-h3: clamp(1.375rem, 1.18rem + 0.8vw, 1.6875rem);
+  --text-h4: 1.0625rem;
+  --text-lead: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
+  --text-body: 1.0625rem;
+  --text-body-sm: 0.9375rem;
+  --text-caption: 0.875rem;
+  --text-eyebrow: 0.8125rem;
+  --text-metric: clamp(2.5rem, 1.8rem + 3.0vw, 3.75rem);
+
+  --leading-display: 1.0;
+  --leading-tight: 1.10;
+  --leading-snug: 1.35;
+  --leading-body: 1.72;
+
+  --tracking-display: -0.022em;
+  --tracking-tight: -0.014em;
+  --tracking-normal: 0em;
+  --tracking-accent: 0.09em;
+
+  /* Layout — design-system.md §4 (applies site-wide, no exception) */
+  --measure: 52rem;
+  --page-gutter: clamp(1.25rem, 5vw, 3rem);
 }
 
 * { box-sizing: border-box; }
@@ -16,21 +47,28 @@ html, body {
   padding: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: "Pretendard", "Apple SD Gothic Neo", "Segoe UI", -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  font-family: var(--font-body), "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
 }
 
 a { text-decoration: none; color: inherit; }
 button { font: inherit; border: none; background: none; cursor: pointer; }
 
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-wrap: balance;
+  margin: 0;
+}
+
 /* ---------- Navbar ---------- */
 
 .navbar {
   background: var(--bg);
-  padding: 18px 24px;
+  padding: 18px var(--page-gutter);
 }
 
 .nav-inner {
-  max-width: 1200px;
+  max-width: var(--measure);
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -153,9 +191,9 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 .mobile-menu {
   display: none;
   flex-direction: column;
-  max-width: 1200px;
+  max-width: var(--measure);
   margin: 12px auto 0;
-  padding: 0 24px;
+  padding: 0 var(--page-gutter);
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.25s ease;
@@ -187,29 +225,27 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 24px;
+  padding: 60px var(--page-gutter);
 }
 
 .hero-content {
   position: relative;
   z-index: 5;
-  max-width: 680px;
+  max-width: var(--measure);
   margin: 0 auto;
   text-align: center;
 }
 
 .hero h1 {
-  font-size: clamp(32px, 5vw, 52px);
-  line-height: 1.25;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  margin: 0;
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
 }
 
 .hero-copy {
   position: relative;
   z-index: 5;
-  max-width: 680px;
+  max-width: var(--measure);
   margin: 32px auto 64px;
   text-align: center;
 }
@@ -237,8 +273,8 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 .subtitle {
   color: var(--gray-dark);
   font-weight: 600;
-  font-size: 21px;
-  line-height: 1.6;
+  font-size: var(--text-lead);
+  line-height: var(--leading-snug);
   margin: 0 0 32px;
 }
 
@@ -428,16 +464,11 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 
   background: var(--w-bg);
   color: var(--w-body);
-  font-family: "Geist", -apple-system, "Segoe UI", sans-serif;
   scroll-margin-top: 24px;
 }
 
 .work h2, .work h3 {
-  font-family: "Sofia Sans", "Helvetica Neue", Arial, sans-serif;
   color: var(--w-ink);
-  font-weight: 600;
-  text-wrap: balance;
-  margin: 0;
 }
 
 .work-white {
@@ -446,19 +477,19 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 }
 
 .work-head {
-  max-width: 1080px;
+  max-width: var(--measure);
   margin: 0 auto;
-  padding: 0 40px 40px;
+  padding: 0 var(--page-gutter) 40px;
 }
 
 .work-kicker {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-family: "Sofia Sans", Arial, sans-serif;
-  font-size: 13px;
+  font-family: var(--font-display);
+  font-size: var(--text-eyebrow);
   font-weight: 600;
-  letter-spacing: 0.09em;
+  letter-spacing: var(--tracking-accent);
   text-transform: uppercase;
   color: var(--w-muted);
   margin-bottom: 18px;
@@ -471,16 +502,16 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 }
 
 .work-head h2 {
-  font-size: 38px;
-  line-height: 1.1;
-  letter-spacing: -0.022em;
+  font-size: var(--text-h2);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
   max-width: 620px;
 }
 
 .work-grid {
-  max-width: 1080px;
+  max-width: var(--measure);
   margin: 0 auto;
-  padding: 0 40px 88px;
+  padding: 0 var(--page-gutter) 88px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px 32px;
@@ -519,7 +550,7 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 .work-thumb svg { width: 30px; height: 30px; }
 
 .work-thumb span {
-  font-family: "Sofia Sans", Arial, sans-serif;
+  font-family: var(--font-display);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -533,23 +564,23 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 }
 
 .work-role {
-  font-family: "Sofia Sans", Arial, sans-serif;
-  font-size: 12px;
+  font-family: var(--font-display);
+  font-size: var(--text-eyebrow);
   font-weight: 600;
-  letter-spacing: 0.09em;
+  letter-spacing: var(--tracking-accent);
   text-transform: uppercase;
   color: var(--w-muted);
 }
 
 .work-item-body h3 {
-  font-size: 23px;
-  line-height: 1.35;
-  letter-spacing: -0.014em;
+  font-size: var(--text-h3);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
 }
 
 .work-item-body p {
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
   color: var(--w-body);
   margin: 0;
 }
@@ -559,7 +590,7 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 .contact {
   border-top: 1px solid var(--w-border);
   background: var(--w-sub-bg);
-  padding: 80px 56px 88px;
+  padding: 80px var(--page-gutter) 88px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -573,17 +604,17 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
   align-items: center;
   gap: 16px;
   text-align: center;
-  max-width: 560px;
+  max-width: var(--measure);
 }
 
 .contact-status {
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  font-family: "Sofia Sans", Arial, sans-serif;
-  font-size: 13px;
+  font-family: var(--font-display);
+  font-size: var(--text-eyebrow);
   font-weight: 600;
-  letter-spacing: 0.07em;
+  letter-spacing: var(--tracking-accent);
   text-transform: uppercase;
   color: var(--w-muted);
 }
@@ -596,19 +627,20 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 }
 
 .contact-head h2 {
-  font-size: 34px;
-  line-height: 1.15;
-  letter-spacing: -0.022em;
+  font-size: var(--text-h2);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
 }
 
 .contact-head p {
-  font-size: 18px;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
   margin: 0;
 }
 
 .contact-form {
   width: 100%;
-  max-width: 560px;
+  max-width: var(--measure);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
@@ -621,10 +653,10 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 }
 
 .field span {
-  font-family: "Sofia Sans", Arial, sans-serif;
-  font-size: 12px;
+  font-family: var(--font-display);
+  font-size: var(--text-eyebrow);
   font-weight: 600;
-  letter-spacing: 0.09em;
+  letter-spacing: var(--tracking-accent);
   text-transform: uppercase;
   color: var(--w-muted);
 }
@@ -635,7 +667,7 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
   border: 1px solid var(--w-border);
   border-radius: 10px;
   background: var(--w-panel);
-  font-size: 16px;
+  font-size: var(--text-body);
   font-family: inherit;
   color: var(--w-ink);
   outline: none;
@@ -657,8 +689,8 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 }
 
 .contact-submit {
-  font-family: "Sofia Sans", Arial, sans-serif;
-  font-size: 15px;
+  font-family: var(--font-display);
+  font-size: var(--text-body-sm);
   font-weight: 600;
   padding: 13px 30px;
   border-radius: 999px;
@@ -688,7 +720,7 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 
   .mobile-menu { display: flex; }
 
-  .hero { min-height: auto; padding: 24px 20px 40px; align-items: stretch; }
+  .hero { min-height: auto; padding: 24px var(--page-gutter) 40px; align-items: stretch; }
 
   /* Reorder so both icon groups sit together as one row directly under the headline. */
   .hero-content { order: 1; }
@@ -702,11 +734,6 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
   }
 
   .mobile-break { display: block; }
-
-  .subtitle {
-    font-size: 16px;
-    line-height: 1.45;
-  }
 
   .hero-copy {
     margin: 0 0 8px;
@@ -763,11 +790,10 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
 
   .work-white { padding-top: 40px; }
 
-  .work-head { padding: 0 20px 24px; }
-  .work-head h2 { font-size: 28px; }
+  .work-head { padding: 0 var(--page-gutter) 24px; }
 
   .work-grid {
-    padding: 0 20px 56px;
+    padding: 0 var(--page-gutter) 56px;
     grid-template-columns: 1fr;
     gap: 32px;
   }
@@ -775,17 +801,11 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
   .work-item { padding: 12px; margin: -12px; }
 
   .contact {
-    padding: 48px 24px 56px;
+    padding: 48px var(--page-gutter) 56px;
     gap: 28px;
   }
-  .contact-head h2 { font-size: 26px; }
-  .contact-head p { font-size: 16px; }
 
   .contact-form {
     grid-template-columns: 1fr;
   }
-}
-
-@media (max-width: 480px) {
-  .hero h1 { font-size: 28px; }
 }
