@@ -119,8 +119,10 @@ h1, h2, h3, h4 {
 }
 
 .nav-inner {
-  max-width: var(--measure);
-  margin: 0 auto;
+  /* spans the full navbar (inset only by its page-gutter padding) so the
+     logo and icon sit toward the viewport edges instead of --measure's
+     narrower reading width */
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
@@ -794,13 +796,24 @@ h1, h2, h3, h4 {
 
   .mobile-menu { display: flex; }
 
-  .hero { min-height: auto; padding: 24px var(--page-gutter) 40px; align-items: stretch; }
+  /* top padding clears .navbar, which is position:absolute and overlaps the
+     hero here too (~84px: 18px*2 padding + 48px burger) — 24px left the
+     headline starting underneath it */
+  .hero { min-height: auto; padding: 96px var(--page-gutter) 40px; align-items: stretch; }
 
   /* Reorder so both icon groups sit together as one row directly under the headline. */
   .hero-content { order: 1; }
   .hero-icons-top { order: 2; }
   .hero-icons-bottom { order: 3; }
   .hero-copy { order: 4; }
+
+  /* was absolutely positioned from .hero's bottom edge, which overlapped the
+     buttons once .hero collapses to its content height on mobile */
+  .scroll-cue {
+    position: static;
+    order: 5;
+    margin-top: 24px;
+  }
 
   .hero-content,
   .hero-copy {
@@ -878,11 +891,6 @@ h1, h2, h3, h4 {
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
-}
-
-@media (max-width: 620px) {
-  /* docs/landing-structure-update.md §3 */
-  .scroll-cue { bottom: 1rem; }
 }
 
 /* ---------- Reveal motion (docs/landing-structure-update.md §6) ---------- */
