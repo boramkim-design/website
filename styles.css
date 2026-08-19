@@ -146,8 +146,13 @@ h1, h2, h3, h4 {
   width: var(--nav-h);
   height: var(--nav-h);
   border-radius: 50%;
-  object-fit: cover;
-  object-position: center 15%;
+  background: var(--black);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
   flex-shrink: 0;
 }
 
