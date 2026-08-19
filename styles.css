@@ -806,6 +806,22 @@ h1, h2, h3, h4 {
   color: var(--color-ink-secondary);
 }
 
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-links a {
+  display: flex;
+  color: var(--color-ink-muted);
+  transition: color 0.15s ease;
+}
+
+.footer-links a:hover {
+  color: var(--color-ink);
+}
+
 .footer-copyright {
   margin: 0;
   font-size: var(--text-caption);
