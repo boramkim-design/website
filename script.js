@@ -1,6 +1,8 @@
 const burger = document.getElementById("navBurger");
 const mobileMenu = document.getElementById("mobileMenu");
 
+document.getElementById("footerYear").textContent = new Date().getFullYear();
+
 burger.addEventListener("click", () => {
   const isOpen = mobileMenu.classList.toggle("open");
   burger.classList.toggle("open", isOpen);
