@@ -811,6 +811,11 @@ h1, h2, h3, h4 {
      buttons once .hero collapses to its content height on mobile */
   .scroll-cue {
     position: static;
+    /* left:50% no longer applies once static, but translate is a transform
+       and still runs — without resetting it, it shifts the already-centered
+       item another 50% of its own width to the left */
+    left: auto;
+    translate: none;
     order: 5;
     margin-top: 24px;
   }
