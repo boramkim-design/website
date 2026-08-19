@@ -157,6 +157,11 @@ h1, h2, h3, h4 {
 }
 
 .nav-pill {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -284,6 +289,11 @@ h1, h2, h3, h4 {
 .hero-content {
   position: relative;
   z-index: 5;
+  /* text column stays exactly --measure wide, as before — the page-gutter
+     padding here is only a narrow-viewport safety margin, not a width cut */
+  max-width: calc(var(--measure) + 2 * var(--page-gutter));
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
   text-align: center;
 }
 
@@ -296,6 +306,9 @@ h1, h2, h3, h4 {
 .hero-copy {
   position: relative;
   z-index: 5;
+  max-width: calc(var(--measure) + 2 * var(--page-gutter));
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
   text-align: center;
   margin-block: 32px 64px;
 }
@@ -395,7 +408,12 @@ h1, h2, h3, h4 {
 
 .hero-icons {
   position: absolute;
-  inset: 0;
+  /* matches .hero's own padding, so top:%/bottom:% on bubbles clears the
+     header/scroll-cue instead of measuring against the full hero box */
+  top: 6.5rem;
+  right: 0;
+  bottom: 5.75rem;
+  left: 0;
 }
 
 .icon-bubble {
