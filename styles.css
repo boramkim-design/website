@@ -274,6 +274,9 @@ h1, h2, h3, h4 {
   min-height: 100svh;
   display: grid;
   place-items: center;
+  align-content: center; /* without this, the two auto rows stretch to fill
+    the hero and each child centers inside its own oversized row instead of
+    the headline+copy centering together as one compact block */
   padding: 6.5rem 0 5.75rem; /* top clears the header, bottom clears the scroll cue */
   overflow: hidden;
   color: var(--landing-ink);
@@ -298,9 +301,12 @@ h1, h2, h3, h4 {
 }
 
 .hero h1 {
-  font-size: var(--text-display);
-  line-height: var(--leading-display);
-  letter-spacing: var(--tracking-display);
+  /* --text-display is documented as hero-only at 44→80px (design-system.md §3.2);
+     using --text-h1 (36→56px) instead — still an existing design-system token,
+     just the next size down, no new value introduced */
+  font-size: var(--text-h1);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
 }
 
 .hero-copy {
