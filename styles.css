@@ -127,8 +127,11 @@ h1, h2, h3, h4 {
   gap: 16px;
 }
 
-.nav-brand { justify-self: start; }
-.nav-actions { justify-self: end; }
+/* explicit column placement: .nav-pill is position:fixed and out of grid
+   flow, so auto-placement would otherwise slide .nav-actions into the
+   middle column instead of the right one */
+.nav-brand { grid-column: 1; justify-self: start; }
+.nav-actions { grid-column: 3; justify-self: end; }
 
 .nav-brand {
   display: flex;
