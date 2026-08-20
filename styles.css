@@ -704,6 +704,71 @@ h1, h2, h3, h4 {
   color: var(--color-ink-secondary);
 }
 
+/* ---------- Case list (work.html) — text left, screen right, stacked rows ---------- */
+
+.case-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.case-row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--color-line);
+  text-decoration: none;
+  color: inherit;
+}
+
+.case-list .case-row:first-child { padding-top: 0; }
+.case-list .case-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+.case-row h3 {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-h3);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+}
+
+.case-row p {
+  margin: 0 0 1rem;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-ink-secondary);
+}
+
+.case-row-link {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-body-sm);
+  color: var(--color-brand-ink);
+}
+
+.case-row:hover .case-row-link { text-decoration: underline; }
+
+.case-row-screen {
+  aspect-ratio: 16 / 10;
+  border-radius: 1rem;
+  background: var(--color-brand-soft);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 180ms cubic-bezier(.22,.61,.36,1),
+              transform  180ms cubic-bezier(.22,.61,.36,1);
+}
+
+.case-row:hover .case-row-screen {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-3px);
+}
+
 /* ---------- Contact ---------- */
 
 .contact {
@@ -985,6 +1050,12 @@ h1, h2, h3, h4 {
 @media (max-width: 46rem) {
   /* docs/landing-structure-update.md §5 — card grid's own breakpoint */
   .grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  /* text stacks above the screen instead of sitting beside it */
+  .case-row {
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
