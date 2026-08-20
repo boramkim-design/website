@@ -618,6 +618,7 @@ h1, h2, h3, h4 {
   margin-bottom: clamp(2.5rem, 5vw, 3.75rem);
 }
 
+.work-head h1,
 .work-head h2 {
   margin: 0;
   font-family: var(--font-display);
@@ -627,6 +628,17 @@ h1, h2, h3, h4 {
   letter-spacing: var(--tracking-tight);
   color: var(--color-ink);
 }
+
+.work-head-link {
+  display: inline-block;
+  margin-top: 0.875rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-body-sm);
+  color: var(--color-brand-ink);
+}
+
+.work-head-link:hover { text-decoration: underline; }
 
 .grid {
   display: grid;
