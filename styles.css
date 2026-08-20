@@ -481,9 +481,10 @@ h1, h2, h3, h4 {
 }
 
 .bubble-icon-img {
-  /* matches .bubble-circle's font-size, so this reads the same size as the
-     other emoji glyphs */
-  height: clamp(2.125rem, 3.4vw, 3.125rem);
+  /* Color emoji glyphs (piano, etc.) render with much more visual ink than
+     their nominal font-size box, so this is sized up from .bubble-circle's
+     font-size to read as the same size on screen. */
+  height: clamp(2.875rem, 4.6vw, 4.25rem);
   width: auto;
   display: block;
 }
@@ -926,7 +927,7 @@ h1, h2, h3, h4 {
     animation: none;
   }
   .bubble-circle { width: 60px; height: 60px; font-size: 40px; }
-  .bubble-icon-img { height: 40px; }
+  .bubble-icon-img { height: 54px; }
   .bubble-tooltip {
     position: absolute;
     left: 0 !important;
