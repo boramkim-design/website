@@ -466,6 +466,14 @@ h1, h2, h3, h4 {
   filter: drop-shadow(0 8px 12px rgba(17, 18, 20, 0.18));
 }
 
+.bubble-icon-img {
+  /* matches .bubble-circle's font-size, so this reads the same size as the
+     other emoji glyphs */
+  height: clamp(2.125rem, 3.4vw, 3.125rem);
+  width: auto;
+  display: block;
+}
+
 .chalkboard-icon {
   width: 0.85em;
   height: 0.85em;
@@ -910,6 +918,7 @@ h1, h2, h3, h4 {
     animation: none;
   }
   .bubble-circle { width: 60px; height: 60px; font-size: 40px; }
+  .bubble-icon-img { height: 40px; }
   .bubble-tooltip {
     position: absolute;
     left: 0 !important;
