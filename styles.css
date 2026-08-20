@@ -98,10 +98,11 @@ html, body {
   font-family: var(--font-body), "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
 }
 
-/* About page only — same cream, mixed lighter so the white cards (photo
-   stack borders, intro/education cards) stand out a bit more. */
+/* About page only — the top (.about-hero-wrap) carries its own cream-to-
+   white gradient, so the body base just needs to be the white it fades
+   into for the sections below. */
 body.about-page {
-  background: color-mix(in srgb, var(--bg) 45%, white);
+  background: var(--color-paper);
 }
 
 /* Matches where "Case Studies" lands when Work is clicked from the landing
@@ -355,31 +356,40 @@ h1, h2, h3, h4 {
   letter-spacing: var(--tracking-tight);
 }
 
+/* ---------- About page: hero gradient (mirrors .hero's cream-to-white fade) ---------- */
+
+.about-hero-wrap {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--bg) 55%, white) 0%,
+    color-mix(in srgb, var(--bg) 55%, white) 65%,
+    var(--color-paper) 100%
+  );
+}
+
 /* ---------- About page: photo stack + intro (side by side) ---------- */
 
 .about-top {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
   align-items: center;
   gap: clamp(2rem, 5vw, 4rem);
   padding-block: 0.5rem 3rem;
 }
 
 .photo-stack {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  row-gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1rem, 2.5vw, 1.75rem);
 }
 
 .photo-stack-item {
   position: relative;
-  width: clamp(5rem, 13vw, 8.5rem);
+  width: 100%;
   aspect-ratio: 4 / 5;
-  margin-left: clamp(-2.25rem, -5vw, -1.375rem);
   padding: 0;
   border: 4px solid var(--color-paper);
-  border-radius: 0.75rem;
+  border-radius: 0.875rem;
   overflow: hidden;
   background: var(--color-brand-soft);
   box-shadow: var(--shadow-card);
@@ -393,9 +403,7 @@ h1, h2, h3, h4 {
               box-shadow 220ms ease;
 }
 
-.photo-stack-item:first-child { margin-left: 0; }
-
-.photo-stack-item svg { width: 32%; height: 32%; }
+.photo-stack-item svg { width: 28%; height: 28%; }
 
 .photo-stack-item img {
   width: 100%;
@@ -475,24 +483,28 @@ h1, h2, h3, h4 {
   border-radius: 1.25rem;
   padding: clamp(1.5rem, 3vw, 2rem);
   box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
 }
+
+.education-item .education-year { align-self: flex-start; }
 
 .education-item h3 {
   font-size: var(--text-h4);
   font-weight: 600;
   color: var(--color-ink);
-  margin-bottom: 0.25rem;
 }
 
-.education-meta {
+.education-major {
   margin: 0;
   font-size: var(--text-body-sm);
   color: var(--color-ink-secondary);
 }
 
-.education-note {
-  margin: 0.25rem 0 0;
-  font-size: var(--text-caption);
+.education-location {
+  margin: 0;
+  font-size: var(--text-body-sm);
   color: var(--color-ink-muted);
 }
 
@@ -504,7 +516,11 @@ h1, h2, h3, h4 {
 
 .timeline-item {
   display: grid;
-  grid-template-columns: minmax(5rem, 9rem) 2rem 1fr;
+  /* fixed first-column width, not minmax() — each <li> is its own grid
+     container, so a content-sized track resolves to a different width per
+     row (short "2026" vs. "May – Aug 2022"), throwing the dot/rail out of
+     alignment between rows and making the connecting line look broken */
+  grid-template-columns: 6.5rem 2rem 1fr;
   padding-block: clamp(1.75rem, 3.5vw, 2.5rem);
 }
 
