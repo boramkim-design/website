@@ -328,6 +328,20 @@ h1, h2, h3, h4 {
   letter-spacing: var(--tracking-tight);
 }
 
+/* ---------- Generic page intro (non-hero pages, e.g. about.html) ---------- */
+/* Top padding matches .hero's so content clears the absolutely-positioned navbar. */
+
+.page-intro {
+  padding: 6.5rem 0 4rem;
+  text-align: center;
+}
+
+.page-intro h1 {
+  font-size: var(--text-h1);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
 .hero-copy {
   position: relative;
   z-index: 5;
@@ -864,6 +878,7 @@ h1, h2, h3, h4 {
      hero here too (~84px: 18px*2 padding + 48px burger) — 24px left the
      headline starting underneath it */
   .hero { min-height: auto; padding: 96px var(--page-gutter) 40px; align-items: stretch; }
+  .page-intro { padding: 96px var(--page-gutter) 40px; }
 
   /* Reorder so both icon groups sit together as one row directly under the headline. */
   .hero-content { order: 1; }
