@@ -1,3 +1,16 @@
+// Cross-page hash links (e.g. index.html#work from about.html) land with
+// the browser's native jump landing at the top instead of the target section —
+// the hero's dynamic viewport height (100svh) isn't settled yet when that jump
+// happens. Redo it once everything (fonts, images) has actually loaded.
+if (location.hash) {
+  const hashTarget = document.querySelector(location.hash);
+  if (hashTarget) {
+    const scrollToHashTarget = () => hashTarget.scrollIntoView({ behavior: "instant" });
+    if (document.readyState === "complete") scrollToHashTarget();
+    else window.addEventListener("load", scrollToHashTarget);
+  }
+}
+
 const burger = document.getElementById("navBurger");
 const mobileMenu = document.getElementById("mobileMenu");
 
