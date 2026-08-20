@@ -25,6 +25,7 @@
   --text-caption: 0.875rem;
   --text-eyebrow: 0.8125rem;
   --text-metric: clamp(2.5rem, 1.8rem + 3.0vw, 3.75rem);
+  --text-num-lg: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem); /* case-study row numbering */
 
   --leading-display: 1.0;
   --leading-tight: 1.10;
@@ -40,6 +41,8 @@
   --measure: 52rem;
   --measure-wide: 72rem; /* docs/landing-structure-update.md §0b — card grids only */
   --page-gutter: clamp(1.25rem, 5vw, 3rem);
+  --rail-width: 8rem; /* design-system.md §4.1 — case-study side nav rail */
+  --rail-gap: 2.5rem;
 
   /* Elevation — docs/landing-structure-update.md §0a */
   --shadow-card: 0 1px 2px rgb(26 23 20 / .05),
@@ -70,6 +73,13 @@
   --color-teal: #1f6f63;
   --color-teal-soft: #e7f1ef;
   --color-focus: #b25a14;
+
+  /* Case-study project accent (urcareer.html) — teal duo alongside the
+     sitewide orange brand, scoped to case-study components only. */
+  --color-teal-ink: #175247;
+  --color-teal-muted: #4f7a72;
+  --color-teal-line: #a7c6be;
+  --color-teal-mist: #fbfdfc;
 }
 
 .measure {
@@ -889,17 +899,6 @@ h1, h2, h3, h4 {
   color: var(--color-ink);
 }
 
-.work-head-link {
-  display: inline-block;
-  margin-top: 0.875rem;
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: var(--text-body-sm);
-  color: var(--color-brand-ink);
-}
-
-.work-head-link:hover { text-decoration: underline; }
-
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -930,6 +929,14 @@ h1, h2, h3, h4 {
   margin-bottom: 1.25rem;
   display: grid;
   place-items: center;
+  overflow: hidden;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .case-body { padding-inline: 0.625rem; }
@@ -962,71 +969,6 @@ h1, h2, h3, h4 {
   font-size: var(--text-body-sm);
   line-height: var(--leading-body);
   color: var(--color-ink-secondary);
-}
-
-/* ---------- Case list (work.html) — text left, screen right, stacked rows ---------- */
-
-.case-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.case-row {
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  align-items: center;
-  gap: clamp(2rem, 5vw, 4.5rem);
-  padding-block: clamp(2.5rem, 5vw, 4rem);
-  border-bottom: 1px solid var(--color-line);
-  text-decoration: none;
-  color: inherit;
-}
-
-.case-list .case-row:first-child { padding-top: 0; }
-.case-list .case-row:last-child { border-bottom: none; padding-bottom: 0; }
-
-.case-row h3 {
-  margin: 0 0 0.75rem;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--text-h3);
-  line-height: var(--leading-snug);
-  letter-spacing: var(--tracking-tight);
-  color: var(--color-ink);
-}
-
-.case-row p {
-  margin: 0 0 1rem;
-  font-size: var(--text-body);
-  line-height: var(--leading-body);
-  color: var(--color-ink-secondary);
-}
-
-.case-row-link {
-  display: inline-block;
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: var(--text-body-sm);
-  color: var(--color-brand-ink);
-}
-
-.case-row:hover .case-row-link { text-decoration: underline; }
-
-.case-row-screen {
-  aspect-ratio: 16 / 10;
-  border-radius: 1rem;
-  background: var(--color-brand-soft);
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  box-shadow: var(--shadow-card);
-  transition: box-shadow 180ms cubic-bezier(.22,.61,.36,1),
-              transform  180ms cubic-bezier(.22,.61,.36,1);
-}
-
-.case-row:hover .case-row-screen {
-  box-shadow: var(--shadow-card-hover);
-  transform: translateY(-3px);
 }
 
 /* ---------- Contact ---------- */
@@ -1196,6 +1138,516 @@ h1, h2, h3, h4 {
   color: var(--color-ink-muted);
 }
 
+/* ---------- Case study pages (urcareer.html) ---------- */
+/* design-system.md §9.1 — case studies follow §2–5 with no exception, so
+   these components use the standard palette, not the landing/about tokens.
+   The project's own teal duo (--color-teal-ink etc.) is this page's one
+   accent, playing the role §2.2 assigns to a case's own identity. */
+
+body.case-page {
+  background: var(--color-paper);
+  color: var(--color-ink-secondary);
+}
+
+.cs-casenav {
+  display: none;
+  position: fixed;
+  top: 22vh;
+  z-index: 40;
+  width: var(--rail-width);
+  right: calc(50% + (var(--measure) + 2 * var(--page-gutter)) / 2 + var(--rail-gap));
+}
+
+@media (min-width: 1300px) {
+  .cs-casenav { display: block; }
+}
+
+.cs-casenav ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cs-casenav a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  font-family: var(--font-accent);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-muted);
+  transition: color 260ms cubic-bezier(.65,0,.35,1);
+}
+
+.cs-casenav a::before {
+  content: "";
+  width: 12px;
+  height: 2px;
+  background: var(--color-line-strong);
+  flex: none;
+  transition: all 260ms cubic-bezier(.65,0,.35,1);
+}
+
+.cs-casenav a:hover { color: var(--color-ink); }
+.cs-casenav a.is-active { color: var(--color-teal-ink); }
+.cs-casenav a.is-active::before { width: 26px; background: var(--color-teal); }
+
+.cs-hero { padding-top: 7.75rem; padding-bottom: 2.5rem; }
+
+.cs-chiprow { display: flex; flex-wrap: wrap; gap: 0.4375rem; margin-bottom: 1.5rem; }
+
+.cs-chip {
+  display: inline-block;
+  padding: 0.3125rem 0.6875rem;
+  border-radius: 999px;
+  background: var(--color-teal-soft);
+  font-family: var(--font-accent);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-teal-ink);
+}
+
+.cs-hero-title {
+  font-size: var(--text-h1);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+}
+
+.cs-lead {
+  margin-top: 1.5rem;
+  font-size: var(--text-lead);
+  line-height: var(--leading-snug);
+  color: var(--color-ink-secondary);
+}
+
+.cs-figure { margin: 0; }
+
+.cs-frame {
+  border: 1px solid var(--color-line);
+  border-radius: 1.125rem;
+  overflow: hidden;
+  background: var(--color-paper-sunken);
+  position: relative;
+}
+
+.cs-frame img { display: block; width: 100%; height: auto; }
+
+.cs-figure-hero .cs-frame {
+  aspect-ratio: 7 / 5;
+  background: var(--color-teal-mist);
+}
+
+.cs-figure-hero .cs-frame img {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  width: calc(100% - 4rem);
+  height: calc(100% - 2rem);
+  object-fit: cover;
+  object-position: center top;
+}
+
+.cs-frame-embed { padding: 0; }
+.cs-frame-embed iframe { display: block; width: 100%; height: min(70vh, 640px); border: 0; }
+
+.cs-ph {
+  aspect-ratio: 16 / 9;
+  display: grid;
+  place-items: center;
+  color: var(--color-ink-muted);
+  font-family: var(--font-accent);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  text-align: center;
+  padding-inline: 1rem;
+}
+
+.cs-figure figcaption {
+  margin-top: 0.75rem;
+  font-family: var(--font-accent);
+  font-size: var(--text-caption);
+  line-height: var(--leading-snug);
+  color: var(--color-ink-muted);
+}
+
+.cs-meta-strip {
+  margin: 2.5rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding-block: 1.5rem;
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.cs-meta-strip dt {
+  margin-bottom: 0.5rem;
+  font-family: var(--font-accent);
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-accent);
+  color: var(--color-ink-muted);
+}
+
+.cs-meta-strip dd {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+}
+
+.cs-block {
+  padding-bottom: clamp(4.5rem, 8vw, 8rem);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  scroll-margin-top: 6rem;
+}
+
+.cs-block:first-of-type { padding-top: clamp(4.5rem, 8vw, 8rem); }
+
+.cs-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-accent);
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  letter-spacing: var(--tracking-accent);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.cs-eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  background: var(--color-line-strong);
+  flex: none;
+}
+
+.cs-eyebrow.is-accent { color: var(--color-teal-ink); }
+.cs-eyebrow.is-accent::before { background: var(--color-teal); }
+
+h2.cs-sec {
+  margin-top: 1rem;
+  font-size: var(--text-h2);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+}
+
+.cs-block > p { margin-top: 1.5rem; }
+
+.cs-insightbox-standalone { margin-top: 1.5rem; }
+
+.cs-sub { margin-top: clamp(2.25rem, 4vw, 3.5rem); }
+
+.cs-sublabel {
+  font-family: var(--font-accent);
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-accent);
+  color: var(--color-ink-secondary);
+}
+
+.cs-sub h3 {
+  margin-top: 0.75rem;
+  font-size: var(--text-h3);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+}
+
+.cs-sub h3 + p { margin-top: 1rem; }
+.cs-sub .cs-figure { margin-top: 1.5rem; }
+.cs-sub .cs-pull:first-of-type { margin-top: 2rem; }
+
+.cs-insightgrid {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.25rem;
+}
+
+.cs-insightbox {
+  padding: 1.5rem;
+  background: var(--color-teal-soft);
+  border-left: 3px solid var(--color-teal);
+  border-radius: 0.875rem;
+}
+
+.cs-insightbox-n {
+  display: block;
+  font-family: var(--font-accent);
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-accent);
+  color: var(--color-teal-ink);
+}
+
+.cs-insightbox p { margin-top: 0.75rem; color: var(--color-ink); }
+.cs-insightbox p:first-child { margin-top: 0; }
+
+.cs-insightbox cite {
+  display: block;
+  margin-top: 1rem;
+  font-style: normal;
+  font-family: var(--font-accent);
+  font-size: var(--text-caption);
+  color: var(--color-teal-muted);
+}
+
+.cs-pull {
+  margin: 2rem 0 0;
+  padding-left: 1.5rem;
+  border-left: 2px solid var(--color-teal-line);
+}
+
+.cs-pull p {
+  font-family: var(--font-display);
+  font-size: var(--text-lead);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+  margin: 0;
+}
+
+.cs-pull cite {
+  display: block;
+  margin-top: 0.75rem;
+  font-style: normal;
+  font-family: var(--font-accent);
+  font-size: var(--text-caption);
+  color: var(--color-teal-muted);
+}
+
+.cs-stats {
+  margin-top: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--color-line);
+  border-radius: 0.875rem;
+  overflow: hidden;
+}
+
+.cs-stat { padding: 1.5rem; border-right: 1px solid var(--color-line); }
+.cs-stat:last-child { border-right: none; }
+
+.cs-stat-label {
+  display: block;
+  margin-bottom: 1rem;
+  font-family: var(--font-accent);
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-accent);
+  color: var(--color-ink-muted);
+}
+
+.cs-stat-value {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-metric);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+  color: var(--color-teal-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.cs-stat-context {
+  font-size: var(--text-caption);
+  line-height: var(--leading-snug);
+  color: var(--color-ink-muted);
+}
+
+.cs-rowlist {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--color-line);
+}
+
+.cs-rowitem {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  padding-block: 2rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.cs-rowitem-num {
+  padding-top: 0.25rem;
+  font-family: var(--font-accent);
+  font-weight: 700;
+  font-size: var(--text-num-lg);
+  line-height: 1;
+  color: var(--color-teal);
+  letter-spacing: var(--tracking-accent);
+}
+
+.cs-rowitem h4 {
+  margin-bottom: 1rem;
+  font-size: var(--text-h3);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+}
+
+.cs-tradeoffs {
+  margin-top: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.5rem;
+}
+
+.cs-tocol {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-line);
+  border-radius: 0.875rem;
+  overflow: hidden;
+  background: var(--color-paper);
+}
+
+.cs-tocard { padding: 1.25rem; }
+
+.cs-tocard-lbl {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-family: var(--font-accent);
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-accent);
+}
+
+.cs-tocard-val {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--text-h4);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+}
+
+.cs-tocard.is-drop { background: var(--color-teal-mist); }
+.cs-tocard.is-drop .cs-tocard-lbl,
+.cs-tocard.is-drop .cs-tocard-val { color: var(--color-teal-muted); }
+
+.cs-tocard.is-keep {
+  background: var(--color-teal-soft);
+  border-top: 1px solid var(--color-line);
+  box-shadow: inset 3px 0 0 var(--color-teal);
+}
+
+.cs-tocard.is-keep .cs-tocard-lbl { color: var(--color-teal-ink); }
+.cs-tocard.is-keep .cs-tocard-val { color: var(--color-ink); font-weight: 600; }
+
+.cs-tocol p {
+  margin: 0;
+  padding: 1.25rem;
+  border-top: 1px solid var(--color-line);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body);
+  color: var(--color-ink-secondary);
+}
+
+.cs-solrow {
+  display: grid;
+  grid-template-columns: 1fr 19rem;
+  gap: 2rem;
+  align-items: start;
+}
+
+.cs-solrow + .cs-solrow { margin-top: clamp(3rem, 6vw, 4.5rem); }
+
+.cs-claim {
+  margin-top: 1rem;
+  font-size: var(--text-h3);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+}
+
+.cs-solrow p { margin-top: 1.25rem; }
+
+.cs-grid-2 {
+  margin-top: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+}
+
+.cs-closing { margin-top: 1.25rem; }
+
+.cs-grid-3 {
+  margin-top: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+}
+
+.cs-card {
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-radius: 0.875rem;
+  padding: 1.5rem;
+}
+
+.cs-card-num {
+  display: block;
+  margin-bottom: 1.25rem;
+  font-family: var(--font-accent);
+  font-weight: 700;
+  font-size: 1.375rem;
+  line-height: 1;
+  color: var(--color-teal);
+  letter-spacing: var(--tracking-accent);
+}
+
+.cs-card h4 {
+  margin-bottom: 0.75rem;
+  font-size: var(--text-h4);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+}
+
+.cs-card p { font-size: var(--text-body-sm); line-height: var(--leading-snug); }
+
+.cs-back {
+  text-align: center;
+  padding-block: clamp(2rem, 4vw, 3rem) clamp(4.5rem, 8vw, 7rem);
+}
+
+.cs-more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-accent);
+  font-weight: 600;
+  font-size: var(--text-body-sm);
+  color: var(--color-teal-ink);
+}
+
+.cs-arw { transition: transform 180ms cubic-bezier(.22,.61,.36,1); }
+.cs-more-link:hover .cs-arw { transform: translateX(4px); }
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 900px) {
@@ -1216,6 +1668,16 @@ h1, h2, h3, h4 {
      headline starting underneath it */
   .hero { min-height: auto; padding: 96px var(--page-gutter) 40px; align-items: stretch; }
   .page-intro { padding: 96px var(--page-gutter) 40px; }
+
+  /* Case study page (urcareer.html) — clear the burger nav, then stack the
+     components that assume desktop-width columns. */
+  .cs-hero { padding-top: 96px; padding-bottom: 40px; }
+  .cs-meta-strip { grid-template-columns: repeat(2, 1fr); }
+  .cs-stats { grid-template-columns: 1fr; }
+  .cs-stat { border-right: none; border-bottom: 1px solid var(--color-line); }
+  .cs-stat:last-child { border-bottom: none; }
+  .cs-rowitem { grid-template-columns: 1fr; gap: 1rem; }
+  .cs-solrow { grid-template-columns: 1fr; }
 
   /* photo stack stays on top, intro card below; education cards stack too */
   .about-top { grid-template-columns: 1fr; }

@@ -129,3 +129,59 @@ if (timelineItems.length) {
     timelineItems.forEach((el) => timelineRevealObserver.observe(el));
   }
 }
+
+// Case study pages (e.g. urcareer.html) — shared reveal helper, since there
+// are several repeating groups (section blocks, cards, stats, tradeoffs)
+// instead of just one like the blocks above.
+function makeReveal(elements, { threshold = 0.16, stagger = 70 } = {}) {
+  if (!elements.length) return;
+
+  if (reduceMotion) {
+    elements.forEach((el) => el.classList.add("is-visible"));
+    return;
+  }
+
+  elements.forEach((el, i) => {
+    el.classList.add("reveal");
+    el.style.transitionDelay = `${i * stagger}ms`;
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      observer.unobserve(entry.target);
+    });
+  }, { threshold });
+
+  elements.forEach((el) => observer.observe(el));
+}
+
+makeReveal(document.querySelectorAll(".cs-block"), { threshold: 0.1, stagger: 0 });
+makeReveal(document.querySelectorAll(".cs-solrow"), { stagger: 90 });
+makeReveal(document.querySelectorAll(".cs-card"));
+makeReveal(document.querySelectorAll(".cs-rowitem"));
+makeReveal(document.querySelectorAll(".cs-tocol"));
+makeReveal(document.querySelectorAll(".cs-stat"));
+makeReveal(document.querySelectorAll(".cs-insightbox"));
+
+// Case study pages: highlight whichever section the reader is currently in
+// on the floating side nav (.cs-casenav), mirrors the timeline logic above.
+const casenavLinks = [...document.querySelectorAll(".cs-casenav a")];
+
+if (casenavLinks.length) {
+  const casenavSections = casenavLinks
+    .map((link) => document.querySelector(link.getAttribute("href")))
+    .filter(Boolean);
+
+  const casenavObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      casenavLinks.forEach((link) => link.classList.remove("is-active"));
+      const active = casenavLinks.find((link) => link.getAttribute("href") === `#${entry.target.id}`);
+      if (active) active.classList.add("is-active");
+    });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+
+  casenavSections.forEach((section) => casenavObserver.observe(section));
+}

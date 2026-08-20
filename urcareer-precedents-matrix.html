@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Precedents, market research matrix</title>
+<style>
+:root { --ink:#15171a; --mut:#7c8590; --line:#e6e8eb; --bg:#f7f8f9; }
+* { box-sizing:border-box; }
+html,body { margin:0; height:100%; background:var(--bg); color:var(--ink);
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased; overflow:hidden; }
+
+#viewport { position:fixed; inset:0; overflow:hidden; cursor:grab;
+  background: radial-gradient(circle at 1px 1px, #dfe3e7 1px, transparent 0) 0 0/28px 28px, var(--bg); }
+#viewport.drag { cursor:grabbing; }
+#stage { transform-origin:0 0; width:1980px; padding:56px 56px 72px; }
+
+.sheet { background:#fff; border:1px solid var(--line); border-radius:18px;
+  padding:40px 44px 44px; box-shadow:0 1px 2px rgba(20,24,28,.04), 0 24px 60px -30px rgba(20,24,28,.25); }
+
+h1 { font-size:27px; letter-spacing:-.02em; margin:0 0 6px; font-weight:650; }
+.sub { color:var(--mut); font-size:13.5px; margin:0 0 26px; line-height:1.55; max-width:880px; }
+
+table { width:100%; border-collapse:separate; border-spacing:0; }
+th, td { text-align:left; vertical-align:middle; }
+thead th { font-weight:550; color:var(--mut); }
+th.cg { font-size:10.5px; text-transform:uppercase; letter-spacing:.1em; color:#a3abb4;
+  padding:0 0 10px; text-align:center; border-bottom:1px solid var(--line); }
+th.cg + th.cg { border-left:1px solid var(--line); }
+th.ch { width:60px; padding:14px 2px 14px; text-align:center; vertical-align:top; }
+.chip { display:block; width:13px; height:13px; border-radius:50%; margin:0 auto 7px;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.10); }
+.chl { display:block; font-size:10.5px; line-height:1.25; color:#5c646d; }
+thead th.spacer { border-bottom:1px solid var(--line); }
+thead th.divide { border-bottom:1px solid var(--line); border-left:1px solid var(--line); }
+
+tbody tr.grow td { padding:26px 0 9px; }
+tbody tr.grow span { font-size:10.5px; text-transform:uppercase; letter-spacing:.12em;
+  color:#9aa2ab; font-weight:600; }
+tbody tr:not(.grow) > * { border-top:1px solid #f0f2f4; padding:15px 6px; vertical-align:top; }
+tbody tr:not(.grow):hover > * { background:#fbfcfd; }
+
+th.name { width:270px; padding-right:16px !important; }
+.name .logo { width:34px; height:34px; border-radius:9px; display:inline-flex;
+  align-items:center; justify-content:center; vertical-align:middle; margin-right:11px;
+  background:#fff; box-shadow:inset 0 0 0 1px var(--line); position:relative; }
+.name .logo svg { width:19px; height:19px; }
+.name .logo.mono { font-size:11.5px; font-weight:750; letter-spacing:.01em; }
+.name .logo.mono i { position:absolute; right:3px; bottom:3px; width:6px; height:6px; border-radius:50%; }
+.nm { display:inline-block; vertical-align:middle; max-width:212px; }
+.nm b { display:block; font-size:13px; font-weight:600; letter-spacing:-.005em; line-height:1.3; }
+.nm em { display:block; font-style:normal; font-size:11px; color:var(--mut); margin-top:2px;
+  line-height:1.35; }
+.new { font-size:8.5px; text-transform:uppercase; letter-spacing:.08em; font-weight:700;
+  color:#3E77B8; background:#eef4fb; border-radius:4px; padding:2px 4px; vertical-align:2px;
+  margin-left:5px; }
+
+td.c { text-align:center; padding-top:19px !important; }
+td.c span { display:inline-block; width:17px; height:17px; border-radius:50%;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.11); }
+td.c .off { width:5px; height:5px; background:#e2e5e8; box-shadow:none; }
+
+td.rowlabel { width:132px; border-left:1px solid var(--line); padding-left:16px !important;
+  padding-right:10px !important; }
+td.rowlabel span { font-size:11px; font-weight:600; line-height:1.35; letter-spacing:-.005em;
+  color:#c2c8ce; display:block; }
+
+td.txt { font-size:11.5px; line-height:1.55; width:300px; padding-left:18px !important; }
+td.pro { color:#3c444c; }
+td.con { color:#9b6a4a; width:340px; }
+thead th.hpro, thead th.hcon { font-size:10.5px; text-transform:uppercase; letter-spacing:.1em;
+  color:#a3abb4; padding:0 0 10px 18px; border-bottom:1px solid var(--line); }
+
+
+#ui { position:fixed; right:20px; bottom:20px; display:flex; align-items:center; gap:8px; z-index:9;
+  background:rgba(255,255,255,.94); backdrop-filter:blur(6px); padding:8px 10px;
+  border:1px solid var(--line); border-radius:14px; box-shadow:0 6px 20px -8px rgba(0,0,0,.2); }
+#ui button { all:unset; cursor:pointer; min-width:40px; height:40px; padding:0 10px; border-radius:10px;
+  display:grid; place-items:center; font-size:17px; color:#4b525a; font-weight:600; }
+#ui button:hover { background:#f1f3f5; }
+#ui button:active { background:#e8ebee; }
+#ui .z { display:grid; place-items:center; min-width:50px; font-size:12px; color:var(--mut);
+  font-variant-numeric:tabular-nums; }
+#ui input[type=range] { -webkit-appearance:none; appearance:none; width:104px; height:40px;
+  background:transparent; cursor:pointer; }
+#ui input[type=range]::-webkit-slider-runnable-track { height:4px; border-radius:2px; background:#dfe3e7; }
+#ui input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none;
+  width:16px; height:16px; border-radius:50%; background:#fff; border:1px solid #b6bcc3;
+  box-shadow:0 1px 3px rgba(0,0,0,.2); margin-top:-6px; }
+#ui input[type=range]::-moz-range-track { height:4px; border-radius:2px; background:#dfe3e7; }
+#ui input[type=range]::-moz-range-thumb { width:16px; height:16px; border:1px solid #b6bcc3;
+  border-radius:50%; background:#fff; }
+#hint { position:fixed; left:20px; bottom:24px; font-size:11px; color:#aab1b8; z-index:9; }
+</style></head>
+<body>
+<div id="viewport"><div id="stage"><div class="sheet">
+  <h1>Precedents</h1>
+  <p class="sub">Seventeen existing services mapped against the kinds of support a career changer needs.
+  Filled dots mark what each one actually offers. The right-hand columns summarise what it does well
+  and where it runs out, checked against provider sites, pricing pages and public reviews.</p>
+  <table>
+    <thead>
+      <tr><th class="spacer"></th><th class="cg" colspan="3">Guidance &amp; people</th><th class="cg" colspan="4">Learning &amp; community</th><th class="cg" colspan="2">Jobs &amp; fit</th><th class="divide"></th><th class="hpro">What it offers</th><th class="hcon">Where it falls short</th></tr>
+      <tr><th></th><th class="ch"><span class="chip" style="background:#B0553F"></span><span class="chl">Career<br>Coaching</span></th><th class="ch"><span class="chip" style="background:#D8952F"></span><span class="chl">Mentorship</span></th><th class="ch"><span class="chip" style="background:#8C9A4A"></span><span class="chl">General<br>Support</span></th><th class="ch"><span class="chip" style="background:#4C9B6A"></span><span class="chl">Workshops</span></th><th class="ch"><span class="chip" style="background:#3B959C"></span><span class="chl">Study<br>Groups</span></th><th class="ch"><span class="chip" style="background:#3E77B8"></span><span class="chl">Networking</span></th><th class="ch"><span class="chip" style="background:#6B66BE"></span><span class="chl">Resources</span></th><th class="ch"><span class="chip" style="background:#955FB4"></span><span class="chl">Job<br>Search</span></th><th class="ch"><span class="chip" style="background:#BC5478"></span><span class="chl">Assessment</span></th><th></th><th></th><th></th></tr>
+    </thead>
+    <tbody><tr class="grow"><td colspan="13"><span>Career services &amp; coaching</span></td></tr><tr><th class="name"><span class="logo mono" style="color:#F47A20">CJ</span><span class="nm"><b>CareerJoy</b><em>Fee-based coaching firm, Canada</em></span></th><td class="c"><span style="background:#B0553F"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#4C9B6A"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span style="background:#955FB4"></span></td><td class="c"><span style="background:#BC5478"></span></td><td class="rowlabel"><span>CareerJoy</span></td><td class="txt pro">Career coaching, resume writing, interview preparation and career exploration delivered by certified coaches across Canada. Pricing for individual services such as a resume review or a 1:1 session is published openly.</td><td class="txt con">Full career transition packages require a significant financial commitment, which makes the complete program a high-cost option on a tight budget.</td></tr><tr><th class="name"><span class="logo mono" style="color:#2F6E9E">CMS</span><span class="nm"><b>CMS Career Management Solutions</b><em>Employer-paid outplacement, Canada</em></span></th><td class="c"><span style="background:#B0553F"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#8C9A4A"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="rowlabel"><span>CMS</span></td><td class="txt pro">Structured outplacement programs — full-service, basic and virtual — that give departing employees dedicated career coaching plus transition materials.</td><td class="txt con">Strictly a B2B service paid for by the employer. Individuals cannot buy the program or reach it independently.</td></tr><tr><th class="name"><span class="logo mono" style="color:#29903D">CC</span><span class="nm"><b>Canada Career Counselling</b><em>Registered psychologists, Canada-wide</em></span></th><td class="c"><span style="background:#B0553F"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#BC5478"></span></td><td class="rowlabel"><span>Canada Career Counselling</span></td><td class="txt pro">Career discovery and planning guided by registered psychologists and senior consultants, available across Canada, with sessions often reimbursable through extended health plans.</td><td class="txt con">The base cost is high at $215–$280 an hour, and practical job search strategy usually sits outside a standard psychological counselling session.</td></tr><tr><th class="name"><span class="logo mono" style="color:#FAB228">NC</span><span class="nm"><b>Network Capital</b><em>Global career community, India-based</em></span></th><td class="c"><span class="off"></span></td><td class="c"><span style="background:#D8952F"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#4C9B6A"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#3E77B8"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="rowlabel"><span>Network Capital</span></td><td class="txt pro">A large global mentoring community with cohort-based fellowships and masterclasses from industry leaders. Basic membership at $250 a year keeps continuous learning and subgroup networking within reach.</td><td class="txt con">Structured 1:1 mentorship plans jump to as much as $5,000 a year, and the guidance leans toward general leadership and communication rather than profession-specific hard skills.</td></tr><tr class="grow"><td colspan="13"><span>Community &amp; targeted support</span></td></tr><tr><th class="name"><span class="logo mono" style="color:#283986">AI</span><span class="nm"><b>AIMGA</b><em>Alberta Intl. Medical Graduates Assoc.</em></span></th><td class="c"><span class="off"></span></td><td class="c"><span style="background:#D8952F"></span></td><td class="c"><span style="background:#8C9A4A"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#3B959C"></span></td><td class="c"><span style="background:#3E77B8"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="rowlabel"><span>AIMGA</span></td><td class="txt pro">Highly specialised non-profit support: mentorship, exam study groups and alternative pathway guidance designed specifically to help internationally trained doctors enter the Canadian healthcare system.</td><td class="txt con">Extremely niche — restricted to medical professionals and concentrated in one province. Capacity is limited and depends on grant funding and volunteer availability.</td></tr><tr><th class="name"><span class="logo mono" style="color:#5A6472">VT</span><span class="nm"><b>Career Transition Services for Veterans</b><em>Veterans Affairs Canada</em></span></th><td class="c"><span style="background:#B0553F"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#8C9A4A"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span style="background:#955FB4"></span></td><td class="c"><span class="off"></span></td><td class="rowlabel"><span>Veterans (VAC)</span></td><td class="txt pro">Dedicated 1:1 career counselling, resume preparation and interview training built around the move from military service into civilian work.</td><td class="txt con">Strictly gated. Access is limited to serving members, veterans and their families, so it is closed to the general public.</td></tr><tr><th class="name"><span class="logo mono" style="color:#111827">AD</span><span class="nm"><b>ADPList <span class="new">new</span></b><em>Volunteer mentor network, global</em></span></th><td class="c"><span class="off"></span></td><td class="c"><span style="background:#D8952F"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#4C9B6A"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#3E77B8"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="rowlabel"><span>ADPList</span></td><td class="txt pro">Completely free 1:1 mentoring sessions with verified professionals in design, product, engineering and tech, with booking, video calls and action plans built into the platform.</td><td class="txt con">Sought-after mentors are hard to book because schedules are limited. Since it runs entirely on volunteers, the quality and structure of advice vary heavily from mentor to mentor.</td></tr><tr class="grow"><td colspan="13"><span>Job platforms</span></td></tr><tr><th class="name"><span class="logo"><svg viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span><span class="nm"><b>LinkedIn</b><em>Professional network</em></span></th><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#3E77B8"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span style="background:#955FB4"></span></td><td class="c"><span style="background:#BC5478"></span></td><td class="rowlabel"><span>LinkedIn</span></td><td class="txt pro">The largest global professional network, pairing a massive job board with direct recruiter access, alumni networks, skill assessments and LinkedIn Learning.</td><td class="txt con">At this volume Easy Apply converts poorly. Advanced networking and applicant insight sit behind an expensive Premium subscription, and ghost or recycled postings are common.</td></tr><tr><th class="name"><span class="logo"><svg viewBox="0 0 24 24" fill="#003A9B"><path d="M11.566 21.5633v-8.762c.2553.0231.5009.0346.758.0346 1.2225 0 2.3739-.3206 3.3506-.8928v9.6182c0 .8219-.1957 1.4287-.5757 1.8338-.378.4033-.8808.6049-1.491.6049-.6007 0-1.0766-.2016-1.468-.6183-.3781-.4032-.5739-1.01-.5739-1.8184zM11.589.5659c2.5447-.8929 5.4424-.8449 7.6186.987.405.3687.8673.8334 1.0515 1.3806.2207.6913-.7695-.073-.9057-.167-.71-.4532-1.4182-.8334-2.2127-1.0946C12.8614.3873 8.8122 2.709 6.2945 6.315c-1.0516 1.5939-1.7367 3.2721-2.299 5.1174-.0614.2017-.1094.4647-.2207.6413-.1113.2036-.048-.5453-.048-.5702.0845-.7623.2438-1.4997.4414-2.237C5.3292 5.3375 7.897 2.0655 11.5891.5658zm4.9281 7.0587c0 1.6686-1.353 3.0224-3.0205 3.0224-1.6677 0-3.0186-1.3538-3.0186-3.0224 0-1.6687 1.351-3.0224 3.0186-3.0224 1.6676 0 3.0205 1.3518 3.0205 3.0224Z"/></svg></span><span class="nm"><b>Indeed</b><em>Job aggregator</em></span></th><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span style="background:#955FB4"></span></td><td class="c"><span style="background:#BC5478"></span></td><td class="rowlabel"><span>Indeed</span></td><td class="txt pro">The widest aggregator of listings globally, with an easy search interface, salary transparency tools and quick application features.</td><td class="txt con">Saturated with duplicate, staffing agency and stale postings. It delivers volume but no personalised direction on what to apply for.</td></tr><tr><th class="name"><span class="logo"><svg viewBox="0 0 24 24" fill="#00A162"><path d="M14.1093.0006c-.0749-.0074-.1348.0522-.1348.127v3.451c0 .0673.0537.1194.121.127 2.619.172 4.6092.9501 4.6092 3.6814H13.086a.1343.1343 0 0 0-.1348.1347v8.9644c0 .0748.06.1347.1348.1347h10.0034c.0748 0 .1347-.0599.1347-.1347V7.342c0-2.2374-.7996-4.0558-2.4159-5.3279C19.3191.8469 17.0874.1428 14.1093.0006ZM.9107 7.387a.1342.1342 0 0 0-.1347.1347v8.9566c0 .0748.06.1347.1347.1347h5.6189c0 2.7313-1.9902 3.5094-4.6091 3.6815-.0674.0075-.1192.0596-.1192.127v3.451c0 .0747.06.1343.1348.1269 2.9781-.1422 5.2078-.8463 6.6969-2.0136 1.6163-1.272 2.4159-3.0905 2.4159-5.3278V7.5217a.1343.1343 0 0 0-.1348-.1347z"/></svg></span><span class="nm"><b>Glassdoor</b><em>Employer reviews</em></span></th><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#3E77B8"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span style="background:#955FB4"></span></td><td class="c"><span class="off"></span></td><td class="rowlabel"><span>Glassdoor</span></td><td class="txt pro">Strong for researching company culture, with unvarnished employee reviews, typical interview questions and salary comparison next to an active job board.</td><td class="txt con">Review data is crowdsourced and self-selected, and older reviews are rarely weighted down, so ratings can drift from current management and labour market reality.</td></tr><tr><th class="name"><span class="logo mono" style="color:#2F3639">Z<i style="background:#B2E522"></i></span><span class="nm"><b>ZipRecruiter</b><em>Matching job board</em></span></th><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#955FB4"></span></td><td class="c"><span class="off"></span></td><td class="rowlabel"><span>ZipRecruiter</span></td><td class="txt pro">Proactive algorithmic matching pushes a candidate profile directly to employers and delivers relevant postings without a manual search.</td><td class="txt con">A significant share of matches comes from third-party staffing agencies. Match quality drops noticeably for senior or specialised roles, and salary detail is often hidden.</td></tr><tr><th class="name"><span class="logo mono" style="color:#009391">H</span><span class="nm"><b>Huzzle</b><em>AI hiring &amp; talent marketplace</em></span></th><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#3E77B8"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#955FB4"></span></td><td class="c"><span class="off"></span></td><td class="rowlabel"><span>Huzzle</span></td><td class="txt pro">An AI-powered global hiring and talent marketplace that connects candidates with remote roles, averaging an 11-day hiring cycle.</td><td class="txt con">Highly competitive by design, explicitly filtering for the top 2% of global talent. It works purely as a matching platform and offers no developmental guidance for an early-stage career changer.</td></tr><tr class="grow"><td colspan="13"><span>Learning, assessment &amp; career discovery</span></td></tr><tr><th class="name"><span class="logo"><svg viewBox="0 0 24 24" fill="#0056D2"><path d="M11.374 23.977c-4.183-.21-8.006-2.626-9.959-6.347-2.097-3.858-1.871-8.864.732-12.454C4.748 1.338 9.497-.698 14.281.23c4.583.857 8.351 4.494 9.358 8.911 1.122 4.344-.423 9.173-3.925 12.04-2.289 1.953-5.295 2.956-8.34 2.797zm7.705-8.05a588.737 588.737 0 0 0-3.171-1.887c-.903 1.483-2.885 2.248-4.57 1.665-2.024-.639-3.394-2.987-2.488-5.134.801-2.009 2.79-2.707 4.357-2.464a4.19 4.19 0 0 1 2.623 1.669c1.077-.631 2.128-1.218 3.173-1.855-2.03-3.118-6.151-4.294-9.656-2.754-3.13 1.423-4.89 4.68-4.388 7.919.54 3.598 3.73 6.486 7.716 6.404a7.664 7.664 0 0 0 6.404-3.563z"/></svg></span><span class="nm"><b>Coursera</b><em>Online learning</em></span></th><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#BC5478"></span></td><td class="rowlabel"><span>Coursera</span></td><td class="txt pro">Affordable self-paced professional certificates and courses from top universities and industry leaders, useful for building tangible, current skills.</td><td class="txt con">Employers recognise the brand but rarely treat a certificate as a full qualification. The catalogue also assumes you already know which path you are training for.</td></tr><tr><th class="name"><span class="logo mono" style="color:#009DA8">SU</span><span class="nm"><b>SkillUp</b><em>Skills-first career nonprofit, US</em></span></th><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span style="background:#955FB4"></span></td><td class="c"><span style="background:#BC5478"></span></td><td class="rowlabel"><span>SkillUp</span></td><td class="txt pro">A free non-profit platform with skills assessments, curated training programs and step-by-step guidance aimed at matching people to growing, in-demand industries.</td><td class="txt con">Available in the United States only and focused on jobs that need no college degree, which limits its relevance for highly educated career changers elsewhere.</td></tr><tr><th class="name"><span class="logo mono" style="color:#FF005C">DS</span><span class="nm"><b>Deeper Signals</b><em>Talent assessment platform</em></span></th><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#BC5478"></span></td><td class="rowlabel"><span>Deeper Signals</span></td><td class="txt pro">Modern, scientifically validated personality and core driver assessments with intuitive digital coaching, fast feedback and development tools.</td><td class="txt con">Designed and priced for enterprise HR teams, consultancies and coaches, starting at $79 per user. It stops at psychological insight and leaves the actual career matching to you.</td></tr><tr><th class="name"><span class="logo mono" style="color:#6B7280">AT</span><span class="nm"><b>Aptitude Test &amp; Career Test</b><em>123test, CareerExplorer and similar</em></span></th><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#BC5478"></span></td><td class="rowlabel"><span>Aptitude &amp; career tests</span></td><td class="txt pro">Quick, accessible and often free at entry level — a low-effort starting point for sparking first ideas about work styles and broad industries.</td><td class="txt con">Most platforms lock the comprehensive, actionable report behind a paywall. Free results are static lists of generic job titles with no local labour market context and no concrete next step.</td></tr><tr><th class="name"><span class="logo mono" style="color:#7C6BB0">PW</span><span class="nm"><b>PathwayU</b><em>Career assessment for colleges</em></span></th><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span class="off"></span></td><td class="c"><span style="background:#6B66BE"></span></td><td class="c"><span style="background:#955FB4"></span></td><td class="c"><span style="background:#BC5478"></span></td><td class="rowlabel"><span>PathwayU</span></td><td class="txt pro">A predictive, science-based tool that integrates personality assessment, labour market data and job boards to align students with purpose-driven careers in a single flow.</td><td class="txt con">An enterprise B2B product used by colleges and universities. Individuals can only reach it while enrolled at a participating institution, and access often ends at graduation.</td></tr></tbody>
+  </table>
+</div></div></div>
+
+<div id="ui">
+  <button id="out" title="Zoom out (−)">&minus;</button>
+  <input id="slider" type="range" min="0" max="1000" value="0" title="Zoom" aria-label="Zoom">
+  <button id="in" title="Zoom in (+)">+</button>
+  <div class="z" id="pct">100%</div>
+  <button id="fit" title="Fit to screen (0)" style="font-size:12px">Fit</button>
+</div>
+<div id="hint">Drag to pan &middot; double-click to zoom in &middot; slider or +/&minus; to zoom</div>
+
+<script>
+const vp=document.getElementById('viewport'), st=document.getElementById('stage'),
+      pct=document.getElementById('pct'), sl=document.getElementById('slider');
+const MIN=.35, MAX=4;
+let s=1,x=0,y=0,fitS=1;
+function t2s(t){ return MIN*Math.pow(MAX/MIN, t/1000); }
+function s2t(v){ return 1000*Math.log(v/MIN)/Math.log(MAX/MIN); }
+function clamp(){ const w=st.offsetWidth*s, h=st.scrollHeight*s,
+    vw=vp.clientWidth, vh=vp.clientHeight, m=80;
+  x = w<=vw ? (vw-w)/2 : Math.min(m, Math.max(vw-w-m, x));
+  y = h<=vh ? (vh-h)/2 : Math.min(m, Math.max(vh-h-m, y)); }
+function apply(){ clamp();
+  st.style.transform='translate('+x+'px,'+y+'px) scale('+s+')';
+  pct.textContent=Math.round(s*100)+'%'; sl.value=s2t(s); }
+function fit(){ const w=st.offsetWidth, h=st.scrollHeight;
+  s=Math.max(MIN, Math.min(vp.clientWidth/w, 1)); fitS=s;
+  x=(vp.clientWidth-w*s)/2; y=Math.max((vp.clientHeight-h*s)/2, 0); apply(); }
+function zoomTo(ns,cx,cy){ ns=Math.min(MAX,Math.max(MIN,ns));
+  if(cx==null){ cx=vp.clientWidth/2; cy=vp.clientHeight/2; }
+  x=cx-(cx-x)*(ns/s); y=cy-(cy-y)*(ns/s); s=ns; apply(); }
+function zoomAt(f,cx,cy){ zoomTo(s*f,cx,cy); }
+vp.addEventListener('wheel',e=>{ e.preventDefault();
+  zoomAt(Math.exp(-e.deltaY*0.0022), e.clientX, e.clientY); },{passive:false});
+let down=false,px=0,py=0,pts=new Map(),pinchD=0,pinchS=1;
+vp.addEventListener('pointerdown',e=>{ pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(pts.size===2){ const [a,b]=[...pts.values()];
+    pinchD=Math.hypot(a.x-b.x,a.y-b.y); pinchS=s; down=false; vp.classList.remove('drag'); return; }
+  down=true;px=e.clientX;py=e.clientY;
+  vp.classList.add('drag'); vp.setPointerCapture(e.pointerId); });
+vp.addEventListener('pointermove',e=>{
+  if(pts.has(e.pointerId)) pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(pts.size===2){ const [a,b]=[...pts.values()];
+    const d=Math.hypot(a.x-b.x,a.y-b.y);
+    if(pinchD) zoomTo(pinchS*d/pinchD,(a.x+b.x)/2,(a.y+b.y)/2); return; }
+  if(!down)return;
+  x+=e.clientX-px; y+=e.clientY-py; px=e.clientX; py=e.clientY; apply(); });
+function endPt(e){ pts.delete(e.pointerId); if(pts.size<2) pinchD=0;
+  down=false; vp.classList.remove('drag'); }
+vp.addEventListener('pointerup',endPt);
+vp.addEventListener('pointercancel',endPt);
+vp.addEventListener('dblclick',e=>{
+  if(s>fitS*1.9) zoomTo(fitS,e.clientX,e.clientY); else zoomAt(2,e.clientX,e.clientY); });
+sl.addEventListener('input',()=>zoomTo(t2s(+sl.value)));
+document.getElementById('in').onclick=()=>zoomAt(1.3);
+document.getElementById('out').onclick=()=>zoomAt(1/1.3);
+document.getElementById('fit').onclick=fit;
+addEventListener('keydown',e=>{ if(e.key==='0')fit();
+  if(e.key==='+'||e.key==='=')zoomAt(1.3);
+  if(e.key==='-')zoomAt(1/1.3); });
+addEventListener('resize',fit);
+window.addEventListener('load',fit); fit();
+</script>
+</body></html>

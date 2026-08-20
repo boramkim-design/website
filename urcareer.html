@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ürcareer — Boram Kim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Sofia+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="case-page">
+
+<header class="navbar">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html#home">
+      <img class="nav-logo" src="images/logo-bk.png" alt="Boram Kim logo">
+      <span class="brand-name">Boram Kim</span>
+    </a>
+
+    <nav class="nav-pill" aria-label="Main navigation">
+      <a href="index.html#home" class="nav-link">Home</a>
+      <a href="index.html#work" class="nav-link active">Work</a>
+      <a href="about.html" class="nav-link">About</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a class="btn-linkedin" href="https://www.linkedin.com/in/boramkim/" aria-label="LinkedIn" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6.5 0h3.8v1.64h.05c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21h-4V9Z"/>
+        </svg>
+      </a>
+      <button class="nav-burger" id="navBurger" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+    <a href="index.html#home" class="mobile-link">Home</a>
+    <a href="index.html#work" class="mobile-link active">Work</a>
+    <a href="about.html" class="mobile-link">About</a>
+  </nav>
+</header>
+
+<nav class="cs-casenav" aria-label="Case study sections">
+  <ol>
+    <li><a href="#why">Why</a></li>
+    <li><a href="#context">Context</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#problems">Problems</a></li>
+    <li><a href="#explore">Ideation</a></li>
+    <li><a href="#solution">Solution</a></li>
+    <li><a href="#outcome">Outcome</a></li>
+    <li><a href="#learnings">Learnings</a></li>
+  </ol>
+</nav>
+
+<main id="main">
+
+  <header class="cs-hero measure">
+    <div class="cs-chiprow">
+      <span class="cs-chip">ürcareer</span>
+      <span class="cs-chip">Mobile</span>
+      <span class="cs-chip">0→1</span>
+      <span class="cs-chip">SME collaboration</span>
+    </div>
+    <h1 class="cs-hero-title">A personal career coach for professionals starting over</h1>
+    <p class="cs-lead">Turn a career transition from a lonely guessing game into a guided path through tailored recommendations, real mentors, and a community that's been there.</p>
+  </header>
+
+  <div class="measure">
+    <figure class="cs-figure cs-figure-hero">
+      <div class="cs-frame">
+        <img src="images/urcareer-hero.png" alt="ürcareer mobile app: career match home screen and mentor directory">
+      </div>
+    </figure>
+  </div>
+
+  <div class="measure">
+    <dl class="cs-meta-strip">
+      <div><dt>Role</dt><dd>Solo UX/UI Designer</dd></div>
+      <div><dt>Timeline</dt><dd>8 weeks</dd></div>
+      <div><dt>Tools</dt><dd>Figma<br>Mural<br>Claude</dd></div>
+      <div><dt>Skills</dt><dd>UX Research<br>Prototyping<br>Cross-functional Collaboration</dd></div>
+    </dl>
+  </div>
+
+  <section class="cs-block measure" id="why">
+    <div class="cs-eyebrow is-accent">Why this project</div>
+    <h2 class="cs-sec">Have you ever wondered what your life would be like<br>if you chose a different career?</h2>
+    <p>For years as a teacher, my focus was on helping others find their path. But when it came time to navigate my own pivot into product design, I hit a wall. I was drowning in fragmented advice and generic job boards that completely ignored the skills I already had. The whole process felt incredibly lonely, and it left me with one question:</p>
+    <div class="cs-insightbox cs-insightbox-standalone">
+      <p>Why is changing careers so difficult, even for experienced professionals?</p>
+    </div>
+  </section>
+
+  <section class="cs-block measure" id="context">
+    <div class="cs-eyebrow">Context</div>
+    <h2 class="cs-sec">41% of the workforce is ready to pivot, but the system leaves them stranded</h2>
+    <div class="cs-stats">
+      <div class="cs-stat">
+        <span class="cs-stat-label">Consider a change</span>
+        <span class="cs-stat-value">41%</span>
+        <span class="cs-stat-context">of professionals surveyed</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat-label">Career exploration</span>
+        <span class="cs-stat-value">3–7</span>
+        <span class="cs-stat-context">jobs before retirement</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat-label">Late-stage pivots</span>
+        <span class="cs-stat-value">11–19%</span>
+        <span class="cs-stat-context">of retirees engage in transitions</span>
+      </div>
+    </div>
+    <p>Changing careers is no longer the exception. Most people will do it several times, and a significant share keep doing it late into their working lives. Yet the support around them is still built for a first job, not a fourth: it assumes you already know the destination and only need help applying. For someone leaving an established career, the hard part is deciding what to move toward, and who can tell them what that work is actually like. That gap is what this project set out to close.</p>
+  </section>
+
+  <section class="cs-block measure" id="research">
+    <div class="cs-eyebrow">Research</div>
+    <h2 class="cs-sec">What already exists, and what people actually said</h2>
+
+    <div class="cs-sub">
+      <div class="cs-sublabel">Precedents</div>
+      <h3>The market serves job seekers, not career changers</h3>
+      <p>I audited 17 different career platforms across Canada. The pattern was clear: current solutions cater to people who already know their exact next step.</p>
+
+      <figure class="cs-figure">
+        <div class="cs-frame cs-frame-embed">
+          <iframe src="urcareer-precedents-matrix.html" title="Precedents market research matrix" loading="lazy"></iframe>
+        </div>
+      </figure>
+
+      <div class="cs-insightgrid">
+        <div class="cs-insightbox">
+          <span class="cs-insightbox-n">1</span>
+          <p>Products assume users just need another generic job board or are willing to pay for expensive private coaching.</p>
+        </div>
+        <div class="cs-insightbox">
+          <span class="cs-insightbox-n">2</span>
+          <p>Standalone mentorship networks lack the context a mid-career pivot needs, leaving space for a platform that connects resources with the right mentors.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-sub">
+      <div class="cs-sublabel">Interviews</div>
+      <h3>The hidden cost of a career pivot</h3>
+      <p>I spoke with three professionals who made drastic career leaps. Their stories revealed a shared reality: without an accessible network, transitioning is a lonely and unnecessarily time-consuming process.</p>
+
+      <blockquote class="cs-pull">
+        <p>"Some sort of mentorship is so important when going through transitions."</p>
+        <cite>— A massage therapist who navigated multiple occupations, from horse keeping to sales.</cite>
+      </blockquote>
+      <blockquote class="cs-pull">
+        <p>"I did everything on my own, which cost me a lot of time."</p>
+        <cite>— An artist who transitioned from marine biology.</cite>
+      </blockquote>
+      <blockquote class="cs-pull">
+        <p>"I would have liked to meet someone who works in the field that I was interested in to hear about the actual work environment."</p>
+        <cite>— A software developer student transitioning from childcare education.</cite>
+      </blockquote>
+
+      <div class="cs-insightbox" style="margin-top:2rem">
+        <span class="cs-insightbox-n">Takeaway</span>
+        <p>All three wanted a connection with someone already working in their target field. Without one, building a new path came down to trial and error.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-block measure" id="problems">
+    <div class="cs-eyebrow">The problems</div>
+    <h2 class="cs-sec">The three core frictions stalling career transitions</h2>
+    <div class="cs-rowlist">
+      <div class="cs-rowitem">
+        <span class="cs-rowitem-num">01</span>
+        <div>
+          <h4>No personalized starting point</h4>
+          <p>Advice is everywhere, but it is too broad. Job boards and existing resources are rarely tailored to a professional's actual background or transferable skills.</p>
+        </div>
+      </div>
+      <div class="cs-rowitem">
+        <span class="cs-rowitem-num">02</span>
+        <div>
+          <h4>Mentorship is a closed network</h4>
+          <p>Finding someone who has successfully navigated the same transition is difficult. Guidance and mentorship currently rely heavily on existing personal connections.</p>
+        </div>
+      </div>
+      <div class="cs-rowitem">
+        <span class="cs-rowitem-num">03</span>
+        <div>
+          <h4>No real-world context</h4>
+          <p>Professionals need a reliable space to hear real-world stories. There are few accessible ways to ask questions and learn what the new career is actually like day-to-day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-block measure" id="explore">
+    <div class="cs-eyebrow">Ideation &amp; collaboration</div>
+    <h2 class="cs-sec">Cutting the noise: prioritizing the right features</h2>
+    <p>I mapped out every possible feature to solve these frictions. Reviewing that ideation with a career expert, we saw the product risking feature bloat, so we cut the passive and out-of-scope ideas and kept only what users could act on.</p>
+
+    <div class="cs-tradeoffs">
+      <div class="cs-tocol">
+        <div class="cs-tocard is-drop"><span class="cs-tocard-lbl">Dropped</span><span class="cs-tocard-val">Lengthy aptitude tests</span></div>
+        <div class="cs-tocard is-keep"><span class="cs-tocard-lbl">Kept</span><span class="cs-tocard-val">Quick, user-driven inputs</span></div>
+        <p>Instead of sending users away to take external personality tests, we focused on gathering their actual experience and skill sets directly to provide immediately curated resources.</p>
+      </div>
+      <div class="cs-tocol">
+        <div class="cs-tocard is-drop"><span class="cs-tocard-lbl">Dropped</span><span class="cs-tocard-val">Clinical career coaching</span></div>
+        <div class="cs-tocard is-keep"><span class="cs-tocard-lbl">Kept</span><span class="cs-tocard-val">Accessible 1:1 mentorships</span></div>
+        <p>We removed formal career coaches and psychologists from the scope. The priority was creating a space for peer networking and direct connections with industry mentors.</p>
+      </div>
+      <div class="cs-tocol">
+        <div class="cs-tocard is-drop"><span class="cs-tocard-lbl">Dropped</span><span class="cs-tocard-val">Passive inspirational stories</span></div>
+        <div class="cs-tocard is-keep"><span class="cs-tocard-lbl">Kept</span><span class="cs-tocard-val">Active Q&amp;A forums</span></div>
+        <p>Reading about someone else's success does not provide practical help. We replaced one-way inspirational speeches with an active forum where users can ask real questions and get informative answers.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-block measure" id="solution">
+    <div class="cs-solrow">
+      <div>
+        <div class="cs-eyebrow is-accent">Solution 01</div>
+        <h3 class="cs-claim">Tailored recommendations, not a job board</h3>
+        <p>A pivot takes more than matching past job titles. Onboarding captures professional skills, soft skills, and workplace priorities, and that profile drives every career match percentage and mentor suggestion on the platform.</p>
+      </div>
+      <figure class="cs-figure">
+        <div class="cs-frame"><div class="cs-ph">Careers screen · recommendations</div></div>
+        <figcaption>Skills and priorities captured once, reused across every recommendation.</figcaption>
+      </figure>
+    </div>
+
+    <div class="cs-solrow">
+      <div>
+        <div class="cs-eyebrow is-accent">Solution 02</div>
+        <h3 class="cs-claim">Direct access to industry mentors</h3>
+        <p>Getting into a new field usually means knowing the right people. This opens closed networks by connecting users directly with established professionals in their target industry. Because cold outreach is intimidating, they can send a short message for a quick question or a structured request for long-term mentorship.</p>
+      </div>
+      <figure class="cs-figure">
+        <div class="cs-frame"><div class="cs-ph">Mentor screen · matching</div></div>
+        <figcaption>Two levels of commitment: a quick message, or a formal mentorship request.</figcaption>
+      </figure>
+    </div>
+
+    <div class="cs-solrow">
+      <div>
+        <div class="cs-eyebrow is-accent">Solution 03</div>
+        <h3 class="cs-claim">A community that's already been there</h3>
+        <p>Career transitions feel isolating. The forum gives users a place to ask questions and read real stories from peers who have made the same move, and switching between career topics keeps exploration open.</p>
+      </div>
+      <figure class="cs-figure">
+        <div class="cs-frame"><div class="cs-ph">Dashboard screen · community</div></div>
+        <figcaption>Practical Q&amp;A and real stories, browsable by career.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="cs-block measure" id="outcome">
+    <div class="cs-eyebrow">Outcome</div>
+    <h2 class="cs-sec">Where it landed</h2>
+    <p>Testing across both in-person and online sessions strongly validated the product's direction. While revealing a few minor visual and text elements to refine, participants successfully completed the tasks and shared overwhelmingly positive feedback.</p>
+
+    <div class="cs-grid-2">
+      <div class="cs-insightbox">
+        <p>"Getting recommendations based on my specific skills and preferences really feels like having a personal career coach at hand."</p>
+        <cite>— User testing participant</cite>
+      </div>
+      <div class="cs-insightbox">
+        <p>"The flow is so straightforward. For the first time, figuring out my next career move felt manageable instead of completely overwhelming."</p>
+        <cite>— User testing participant</cite>
+      </div>
+    </div>
+
+    <p class="cs-closing">Building a tool designed to solve a directly experienced problem was deeply satisfying. Seeing that exact value translate to the users made the entire journey incredibly meaningful.</p>
+  </section>
+
+  <section class="cs-block measure" id="learnings">
+    <div class="cs-eyebrow">Learnings</div>
+    <h2 class="cs-sec">Three things I'm taking forward</h2>
+    <div class="cs-grid-3">
+      <div class="cs-card">
+        <span class="cs-card-num">01</span>
+        <h4>Prioritizing local market context</h4>
+        <p>Career transition tools need to reflect the realities of the local job market. Bringing in region-specific labour data, standards, and resources can make recommendations more relevant and actionable.</p>
+      </div>
+      <div class="cs-card">
+        <span class="cs-card-num">02</span>
+        <h4>Making the most of expert collaboration</h4>
+        <p>Working with a subject matter expert taught me to communicate with greater focus. With limited time, clearly framing the right questions helps make each conversation more meaningful and productive.</p>
+      </div>
+      <div class="cs-card">
+        <span class="cs-card-num">03</span>
+        <h4>An open question about the business model</h4>
+        <p>How might the platform build and retain an active mentor community at scale? Creating a sustainable model for mentor participation remains an important next step for long-term service delivery.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="cs-back measure">
+    <a href="index.html#work" class="cs-more-link">Back to all work <span class="cs-arw">→</span></a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <span class="avatar footer-mark">BK</span>
+  <p class="footer-tagline">Thanks for stopping by.</p>
+
+  <div class="footer-links">
+    <a href="mailto:boram.g.kim@gmail.com" aria-label="Email">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+        <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <a href="https://www.linkedin.com/in/boramkim/" aria-label="LinkedIn" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6.5 0h3.8v1.64h.05c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21h-4V9Z"/>
+      </svg>
+    </a>
+  </div>
+
+  <p class="footer-copyright">&copy; Boram Kim <span id="footerYear"></span></p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
