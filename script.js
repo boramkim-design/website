@@ -57,7 +57,7 @@ document.querySelector(".contact-form")?.addEventListener("submit", (e) => {
 // Reveal motion — docs/landing-structure-update.md §6.
 // No Motion/React in this stack, so `whileInView` is implemented as a plain
 // IntersectionObserver instead.
-const revealEls = document.querySelectorAll(".work-head h2, .case");
+const revealEls = document.querySelectorAll(".work-head h2, .case, .timeline-item");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 if (reduceMotion) {
