@@ -57,7 +57,7 @@ document.querySelector(".contact-form")?.addEventListener("submit", (e) => {
 // Reveal motion — docs/landing-structure-update.md §6.
 // No Motion/React in this stack, so `whileInView` is implemented as a plain
 // IntersectionObserver instead.
-const revealEls = document.querySelectorAll(".work-head h2, .case, .timeline-item");
+const revealEls = document.querySelectorAll(".work-head h2, .case");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 if (reduceMotion) {
@@ -106,4 +106,26 @@ if (timelineItems.length) {
   }, { rootMargin: "-45% 0px -45% 0px" });
 
   timelineItems.forEach((item) => timelineObserver.observe(item));
+
+  // Own reveal-in pass (separate from revealEls above) so its timing isn't
+  // shared with unrelated elements on other pages — reuses the same
+  // .reveal/.is-visible CSS pair.
+  if (reduceMotion) {
+    timelineItems.forEach((el) => el.classList.add("is-visible"));
+  } else {
+    timelineItems.forEach((el, i) => {
+      el.classList.add("reveal");
+      el.style.transitionDelay = `${i * 70}ms`;
+    });
+
+    const timelineRevealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        timelineRevealObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.2 });
+
+    timelineItems.forEach((el) => timelineRevealObserver.observe(el));
+  }
 }
