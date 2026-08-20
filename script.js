@@ -78,3 +78,32 @@ if (reduceMotion) {
 
   revealEls.forEach((el) => revealObserver.observe(el));
 }
+
+// About page: photo stack — click brings a photo to the front of the pile.
+const photoStackItems = document.querySelectorAll(".photo-stack-item");
+
+if (photoStackItems.length) {
+  let topZ = photoStackItems.length;
+  photoStackItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      photoStackItems.forEach((i) => i.classList.remove("is-front"));
+      topZ += 1;
+      item.style.zIndex = topZ;
+      item.classList.add("is-front");
+    });
+  });
+}
+
+// About page: career timeline — highlight whichever entry is crossing the
+// vertical center of the viewport as the reader scrolls.
+const timelineItems = document.querySelectorAll(".timeline-item");
+
+if (timelineItems.length) {
+  const timelineObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      entry.target.classList.toggle("is-active", entry.isIntersecting);
+    });
+  }, { rootMargin: "-45% 0px -45% 0px" });
+
+  timelineItems.forEach((item) => timelineObserver.observe(item));
+}
