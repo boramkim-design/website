@@ -169,6 +169,7 @@ h1, h2, h3, h4 {
 }
 
 .brand-name {
+  font-family: var(--font-display);
   font-weight: 700;
   font-size: 17px;
   color: var(--yellow);
@@ -378,7 +379,7 @@ h1, h2, h3, h4 {
 .btn-primary, .btn-secondary {
   padding: 14px 26px;
   border-radius: 10px;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 14px;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
