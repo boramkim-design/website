@@ -488,12 +488,6 @@ h1, h2, h3, h4 {
   display: block;
 }
 
-.chalkboard-icon {
-  width: 0.85em;
-  height: 0.85em;
-  display: block;
-}
-
 .icon-bubble.active .bubble-circle {
   transform: scale(1.1);
   filter: drop-shadow(0 8px 12px rgba(17, 18, 20, 0.18));
