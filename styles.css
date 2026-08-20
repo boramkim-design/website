@@ -360,7 +360,7 @@ h1, h2, h3, h4 {
 
 .subtitle {
   color: var(--gray-dark);
-  font-weight: 600;
+  font-weight: 500;
   font-size: var(--text-lead);
   line-height: var(--leading-snug);
   margin: 0 0 32px;
