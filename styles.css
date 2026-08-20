@@ -156,6 +156,18 @@ h1, h2, h3, h4 {
   flex-shrink: 0;
 }
 
+.nav-logo {
+  width: var(--nav-h);
+  height: var(--nav-h);
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 4px 16px rgba(17, 18, 20, 0.06);
+  object-fit: contain;
+  padding: 6px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
 .brand-name {
   font-weight: 700;
   font-size: 17px;
