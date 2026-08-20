@@ -171,6 +171,7 @@ h1, h2, h3, h4 {
 .brand-name {
   font-weight: 700;
   font-size: 17px;
+  color: var(--yellow);
 }
 
 .nav-pill {
@@ -377,7 +378,7 @@ h1, h2, h3, h4 {
 .btn-primary, .btn-secondary {
   padding: 14px 26px;
   border-radius: 10px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 14px;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
