@@ -185,3 +185,213 @@ if (casenavLinks.length) {
 
   casenavSections.forEach((section) => casenavObserver.observe(section));
 }
+
+// Case study pages: inline Solution-section video players. Each autoplays
+// muted, can be paused/resumed with its own button, and pauses itself when
+// scrolled out of view so several videos aren't all decoding at once.
+const PLAY_ICON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+const PAUSE_ICON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>';
+
+document.querySelectorAll(".cs-video").forEach((wrap) => {
+  const video = wrap.querySelector(".cs-video-el");
+  const button = wrap.querySelector(".cs-video-pp");
+  if (!video || !button) return;
+
+  let userPaused = false;
+
+  function syncButton() {
+    button.innerHTML = video.paused ? PLAY_ICON : PAUSE_ICON;
+    button.setAttribute("aria-label", video.paused ? "Play video" : "Pause video");
+  }
+
+  button.addEventListener("click", () => {
+    userPaused = !video.paused;
+    if (video.paused) video.play(); else video.pause();
+  });
+
+  video.addEventListener("play", syncButton);
+  video.addEventListener("pause", syncButton);
+
+  if (reduceMotion) {
+    video.pause();
+    userPaused = true;
+  }
+  syncButton();
+
+  const videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        if (!userPaused) video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+  }, { threshold: 0.3 });
+
+  videoObserver.observe(wrap);
+});
+
+// Case study pages: pan/zoom diagram viewer (.cs-viewer) — drag to pan,
+// buttons or ⌘/Ctrl+scroll to zoom, double-click to toggle, always starts
+// fit-to-frame. Used for large system-map and reference-board images.
+document.querySelectorAll(".cs-viewer").forEach((viewer) => {
+  const stage = viewer.querySelector(".cs-vstage");
+  const img = stage && stage.querySelector("img");
+  if (!stage || !img) return;
+
+  const pctLabel = viewer.querySelector(".cs-vctrl-pct");
+  const slider = viewer.querySelector(".cs-vctrl-slider");
+  let fit = 1, scale = 1, tx = 0, ty = 0, natW = 0, natH = 0;
+  // `el` starts as the placeholder <img> and gets swapped for the inlined
+  // <svg> once it's fetched — see start(). Every other function reads this
+  // variable rather than closing over `img`, so the swap is transparent.
+  let el = img;
+  // Fixed relative to "fit", so on a narrow (mobile-width) stage the same
+  // 6x ceiling used to land on much smaller absolute text than on desktop,
+  // since "fit" itself is smaller there. 10x keeps a legible floor across
+  // stage widths.
+  const maxZoom = 10;
+
+  // Slider covers [fit, fit*maxZoom] exponentially, same feel as the
+  // precedents-matrix zoom slider — a linear scrub over that big a range
+  // would bunch all the useful zoom levels into the first few pixels.
+  function t2s(t) { return fit * Math.pow(maxZoom, t / 1000); }
+  function s2t(s) { return 1000 * Math.log(Math.max(s / fit, 1)) / Math.log(maxZoom); }
+
+  function apply() {
+    el.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`;
+    if (pctLabel) pctLabel.textContent = `${Math.round((scale / fit) * 100)}%`;
+    if (slider) slider.value = String(Math.round(s2t(scale)));
+  }
+
+  function clamp() {
+    const W = stage.clientWidth, H = stage.clientHeight;
+    const w = natW * scale, h = natH * scale;
+    tx = w <= W ? (W - w) / 2 : Math.min(0, Math.max(W - w, tx));
+    ty = h <= H ? (H - h) / 2 : Math.min(0, Math.max(H - h, ty));
+  }
+
+  function fitNow() {
+    if (!natW) return;
+    const W = stage.clientWidth, H = stage.clientHeight;
+    fit = Math.min(W / natW, H / natH);
+    scale = fit;
+    clamp();
+    apply();
+  }
+
+  function startView() {
+    fitNow();
+    const z = parseFloat(stage.dataset.startZoom || "0");
+    if (!z || z <= 1) return;
+    const ax = parseFloat(stage.dataset.startX ?? "0.5");
+    const ay = parseFloat(stage.dataset.startY ?? "0.5");
+    scale = fit * z;
+    tx = stage.clientWidth / 2 - ax * natW * scale;
+    ty = stage.clientHeight / 2 - ay * natH * scale;
+    clamp();
+    apply();
+  }
+
+  function zoomAt(factor, cx, cy) {
+    const ns = Math.min(Math.max(scale * factor, fit), Math.max(fit, maxZoom * fit));
+    if (ns === scale) return;
+    const r = stage.getBoundingClientRect();
+    const px = (cx - r.left - tx) / scale, py = (cy - r.top - ty) / scale;
+    scale = ns;
+    tx = cx - r.left - px * scale;
+    ty = cy - r.top - py * scale;
+    clamp();
+    apply();
+  }
+
+  function zoomCenter(factor) {
+    const r = stage.getBoundingClientRect();
+    zoomAt(factor, r.left + r.width / 2, r.top + r.height / 2);
+  }
+
+  function sizeAndStart() {
+    // data-natural-width/height (explicit override) wins if present;
+    // otherwise use whatever size was already resolved (viewBox for an
+    // inlined <svg>, naturalWidth for a plain <img> fallback).
+    const explicitW = parseFloat(stage.dataset.naturalWidth);
+    const explicitH = parseFloat(stage.dataset.naturalHeight);
+    natW = explicitW || natW || el.naturalWidth;
+    natH = explicitH || natH || el.naturalHeight;
+    el.style.width = `${natW}px`;
+    el.style.height = `${natH}px`;
+    startView();
+  }
+
+  // An <img src="*.svg"> only ever rasterizes once, at its laid-out CSS
+  // size, then a CSS transform: scale() just stretches that cached bitmap
+  // — fine near "fit", but it turns to mush once a viewer starts pre-zoomed
+  // (the two leverage-point sub-viewers open at ~2.7x already). Fetching
+  // the SVG and inlining its markup makes it a live vector element instead,
+  // so the browser repaints it at full sharpness at any zoom level.
+  const src = img.getAttribute("src");
+  fetch(src)
+    .then((r) => r.text())
+    .then((svgText) => {
+      const svg = new DOMParser().parseFromString(svgText, "image/svg+xml").documentElement;
+      if (svg.tagName.toLowerCase() !== "svg") throw new Error("not an svg");
+      svg.classList.add("cs-vmedia");
+      const vb = (svg.getAttribute("viewBox") || "").trim().split(/[\s,]+/).map(Number);
+      if (vb.length === 4 && vb.every((n) => !Number.isNaN(n))) {
+        natW = vb[2];
+        natH = vb[3];
+      }
+      img.replaceWith(svg);
+      el = svg;
+      sizeAndStart();
+    })
+    .catch(() => {
+      // Fall back to the plain <img> (e.g. cross-origin source) rather
+      // than leaving the viewer inert.
+      if (img.complete && img.naturalWidth) sizeAndStart();
+      else img.addEventListener("load", sizeAndStart);
+    });
+  window.addEventListener("resize", fitNow);
+
+  viewer.querySelectorAll("[data-z]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const action = button.dataset.z;
+      if (action === "in") zoomCenter(1.4);
+      else if (action === "out") zoomCenter(1 / 1.4);
+      else fitNow();
+    });
+  });
+
+  if (slider) {
+    slider.addEventListener("input", () => {
+      const target = t2s(parseFloat(slider.value));
+      const factor = target / scale;
+      if (factor && isFinite(factor)) zoomCenter(factor);
+    });
+  }
+
+  stage.addEventListener("wheel", (e) => {
+    if (!(e.ctrlKey || e.metaKey)) return;
+    e.preventDefault();
+    zoomAt(e.deltaY < 0 ? 1.12 : 1 / 1.12, e.clientX, e.clientY);
+  }, { passive: false });
+
+  stage.addEventListener("dblclick", (e) => zoomAt(scale > fit * 1.05 ? fit / scale : 2.2, e.clientX, e.clientY));
+
+  let drag = null;
+  stage.addEventListener("pointerdown", (e) => {
+    drag = { x: e.clientX, y: e.clientY, tx, ty };
+    stage.classList.add("is-dragging");
+    stage.setPointerCapture(e.pointerId);
+  });
+  stage.addEventListener("pointermove", (e) => {
+    if (!drag) return;
+    tx = drag.tx + (e.clientX - drag.x);
+    ty = drag.ty + (e.clientY - drag.y);
+    clamp();
+    apply();
+  });
+  const endDrag = () => { drag = null; stage.classList.remove("is-dragging"); };
+  stage.addEventListener("pointerup", endDrag);
+  stage.addEventListener("pointercancel", endDrag);
+});

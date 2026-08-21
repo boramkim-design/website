@@ -137,7 +137,7 @@ Reason: the landing page's job is introduction and personality (the "side quests
   --landing-ink: #16181D;
   --landing-gray: #6B7280;
   --landing-gray-dark: #4B4F58;
-  --landing-accent: #FBB622; /* yellow — replaces --color-brand here */
+  --landing-accent: #EE964B; /* orange — replaces --color-brand here */
   --landing-black: #111214; /* nav pills, buttons, avatar */
   --landing-white: #FFFFFF;
 }

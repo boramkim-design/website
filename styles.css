@@ -4,7 +4,7 @@
   --ink: #16181d;
   --gray: #6b7280;
   --gray-dark: #4b4f58;
-  --yellow: #fbb622;
+  --yellow: #ee964b;
   --black: #111214;
   --white: #ffffff;
   --nav-h: 48px;
@@ -73,13 +73,6 @@
   --color-teal: #1f6f63;
   --color-teal-soft: #e7f1ef;
   --color-focus: #b25a14;
-
-  /* Case-study project accent (urcareer.html) — teal duo alongside the
-     sitewide orange brand, scoped to case-study components only. */
-  --color-teal-ink: #175247;
-  --color-teal-muted: #4f7a72;
-  --color-teal-line: #a7c6be;
-  --color-teal-mist: #fbfdfc;
 }
 
 .measure {
@@ -184,11 +177,8 @@ h1, h2, h3, h4 {
   width: var(--nav-h);
   height: var(--nav-h);
   border-radius: 50%;
-  background: var(--white);
   box-shadow: 0 4px 16px rgba(17, 18, 20, 0.06);
-  object-fit: contain;
-  padding: 6px;
-  box-sizing: border-box;
+  object-fit: cover;
   flex-shrink: 0;
 }
 
@@ -196,7 +186,7 @@ h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 17px;
-  color: var(--yellow);
+  color: var(--gray-dark);
 }
 
 .nav-pill {
@@ -251,9 +241,9 @@ h1, h2, h3, h4 {
   justify-content: center;
   width: var(--nav-h);
   height: var(--nav-h);
-  background: var(--white);
-  color: var(--black);
-  border-radius: 12px;
+  background: var(--yellow);
+  color: var(--white);
+  border-radius: 50%;
   box-shadow: 0 4px 16px rgba(17, 18, 20, 0.06);
   transition: transform 0.15s ease;
 }
@@ -1138,11 +1128,11 @@ h1, h2, h3, h4 {
   color: var(--color-ink-muted);
 }
 
-/* ---------- Case study pages (urcareer.html) ---------- */
+/* ---------- Case study pages (e.g. urcareer.html) ---------- */
 /* design-system.md §9.1 — case studies follow §2–5 with no exception, so
-   these components use the standard palette, not the landing/about tokens.
-   The project's own teal duo (--color-teal-ink etc.) is this page's one
-   accent, playing the role §2.2 assigns to a case's own identity. */
+   these components use the standard sitewide palette (orange brand, used
+   sparingly, plus neutral ink) rather than a bespoke per-project accent —
+   every case study should read as one system, not each with its own hue. */
 
 body.case-page {
   background: var(--color-paper);
@@ -1195,25 +1185,12 @@ body.case-page {
 }
 
 .cs-casenav a:hover { color: var(--color-ink); }
-.cs-casenav a.is-active { color: var(--color-teal-ink); }
-.cs-casenav a.is-active::before { width: 26px; background: var(--color-teal); }
+.cs-casenav a.is-active { color: var(--color-brand-ink); }
+.cs-casenav a.is-active::before { width: 26px; background: var(--color-brand); }
 
 .cs-hero { padding-top: 7.75rem; padding-bottom: 2.5rem; }
 
-.cs-chiprow { display: flex; flex-wrap: wrap; gap: 0.4375rem; margin-bottom: 1.5rem; }
-
-.cs-chip {
-  display: inline-block;
-  padding: 0.3125rem 0.6875rem;
-  border-radius: 999px;
-  background: var(--color-teal-soft);
-  font-family: var(--font-accent);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-teal-ink);
-}
+.cs-hero .tags { margin-bottom: 1.5rem; }
 
 .cs-hero-title {
   font-size: var(--text-h1);
@@ -1241,37 +1218,37 @@ body.case-page {
 
 .cs-frame img { display: block; width: 100%; height: auto; }
 
-.cs-figure-hero .cs-frame {
-  aspect-ratio: 7 / 5;
-  background: var(--color-teal-mist);
-}
-
-.cs-figure-hero .cs-frame img {
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
-  width: calc(100% - 4rem);
-  height: calc(100% - 2rem);
-  object-fit: cover;
-  object-position: center top;
-}
+.cs-hero-img { display: block; width: 100%; height: auto; }
 
 .cs-frame-embed { padding: 0; }
 .cs-frame-embed iframe { display: block; width: 100%; height: min(70vh, 640px); border: 0; }
 
-.cs-ph {
-  aspect-ratio: 16 / 9;
+.cs-video { position: relative; }
+
+.cs-video-el { display: block; width: 100%; height: auto; }
+
+.cs-video-pp {
+  position: absolute;
+  right: 0.875rem;
+  bottom: 0.875rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-line-strong);
+  background: color-mix(in srgb, var(--color-paper) 88%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--color-ink);
   display: grid;
   place-items: center;
-  color: var(--color-ink-muted);
-  font-family: var(--font-accent);
-  font-weight: 600;
-  font-size: 0.8125rem;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  text-align: center;
-  padding-inline: 1rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: transform 180ms cubic-bezier(.22,.61,.36,1),
+              background 180ms cubic-bezier(.22,.61,.36,1);
 }
+
+.cs-video-pp:hover { background: var(--color-paper); transform: scale(1.06); }
+.cs-video-pp svg { display: block; width: 14px; height: 14px; }
 
 .cs-figure figcaption {
   margin-top: 0.75rem;
@@ -1290,6 +1267,9 @@ body.case-page {
   border-top: 1px solid var(--color-line);
   border-bottom: 1px solid var(--color-line);
 }
+
+.cs-meta-strip.is-tri { grid-template-columns: 1.3fr 1fr 1fr; }
+@media (max-width: 640px) { .cs-meta-strip.is-tri { grid-template-columns: 1fr; } }
 
 .cs-meta-strip dt {
   margin-bottom: 0.5rem;
@@ -1315,6 +1295,13 @@ body.case-page {
   scroll-margin-top: 6rem;
 }
 
+/* Reset first — the browser default UA margin-bottom on <p> was never
+   overridden, so it stacked on top of each box's own bottom padding and
+   made the space under the text look bigger than the space above it.
+   Placed here (same specificity as the more specific rules below) so
+   source order lets those still set their own margin-top afterward. */
+.cs-block p { margin: 0; }
+
 .cs-block:first-of-type { padding-top: clamp(4.5rem, 8vw, 8rem); }
 
 .cs-eyebrow {
@@ -1336,9 +1323,6 @@ body.case-page {
   background: var(--color-line-strong);
   flex: none;
 }
-
-.cs-eyebrow.is-accent { color: var(--color-teal-ink); }
-.cs-eyebrow.is-accent::before { background: var(--color-teal); }
 
 h2.cs-sec {
   margin-top: 1rem;
@@ -1384,8 +1368,8 @@ h2.cs-sec {
 
 .cs-insightbox {
   padding: 1.5rem;
-  background: var(--color-teal-soft);
-  border-left: 3px solid var(--color-teal);
+  background: var(--color-brand-soft);
+  border-left: 3px solid var(--color-brand);
   border-radius: 0.875rem;
 }
 
@@ -1396,7 +1380,7 @@ h2.cs-sec {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: var(--tracking-accent);
-  color: var(--color-teal-ink);
+  color: var(--color-brand-ink);
 }
 
 .cs-insightbox p { margin-top: 0.75rem; color: var(--color-ink); }
@@ -1408,13 +1392,13 @@ h2.cs-sec {
   font-style: normal;
   font-family: var(--font-accent);
   font-size: var(--text-caption);
-  color: var(--color-teal-muted);
+  color: var(--color-ink-muted);
 }
 
 .cs-pull {
-  margin: 2rem 0 0;
+  margin: 2.5rem 0 0;
   padding-left: 1.5rem;
-  border-left: 2px solid var(--color-teal-line);
+  border-left: 2px solid var(--color-line-strong);
 }
 
 .cs-pull p {
@@ -1431,7 +1415,7 @@ h2.cs-sec {
   font-style: normal;
   font-family: var(--font-accent);
   font-size: var(--text-caption);
-  color: var(--color-teal-muted);
+  color: var(--color-ink-muted);
 }
 
 .cs-stats {
@@ -1462,11 +1446,14 @@ h2.cs-sec {
   margin-bottom: 0.5rem;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: var(--text-metric);
+  /* smaller ceiling than --text-metric — at the full 3.75rem, "11-19%" (the
+     widest value in this row) wraps to two lines in a 3-column stat box */
+  font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
-  color: var(--color-teal-ink);
+  color: var(--color-ink);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .cs-stat-context {
@@ -1497,7 +1484,7 @@ h2.cs-sec {
   font-weight: 700;
   font-size: var(--text-num-lg);
   line-height: 1;
-  color: var(--color-teal);
+  color: var(--color-ink-muted);
   letter-spacing: var(--tracking-accent);
 }
 
@@ -1512,8 +1499,8 @@ h2.cs-sec {
 .cs-tradeoffs {
   margin-top: 2.5rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
 }
 
 .cs-tocol {
@@ -1545,17 +1532,24 @@ h2.cs-sec {
   letter-spacing: var(--tracking-tight);
 }
 
-.cs-tocard.is-drop { background: var(--color-teal-mist); }
+.cs-tocard.is-drop { background: var(--color-paper-sunken); }
 .cs-tocard.is-drop .cs-tocard-lbl,
-.cs-tocard.is-drop .cs-tocard-val { color: var(--color-teal-muted); }
+.cs-tocard.is-drop .cs-tocard-val { color: var(--color-ink-muted); }
 
-.cs-tocard.is-keep {
-  background: var(--color-teal-soft);
-  border-top: 1px solid var(--color-line);
-  box-shadow: inset 3px 0 0 var(--color-teal);
+/* One of the three "dropped" labels runs to two lines while the other two
+   fit on one — reserve two lines' height on all of them so the "kept"
+   card below starts at the same row across all three columns. */
+.cs-tocard.is-drop .cs-tocard-val {
+  min-height: calc(2 * var(--text-h4) * var(--leading-snug));
 }
 
-.cs-tocard.is-keep .cs-tocard-lbl { color: var(--color-teal-ink); }
+.cs-tocard.is-keep {
+  background: var(--color-brand-soft);
+  border-top: 1px solid var(--color-line);
+  box-shadow: inset 3px 0 0 var(--color-brand);
+}
+
+.cs-tocard.is-keep .cs-tocard-lbl { color: var(--color-brand-ink); }
 .cs-tocard.is-keep .cs-tocard-val { color: var(--color-ink); font-weight: 600; }
 
 .cs-tocol p {
@@ -1595,6 +1589,15 @@ h2.cs-sec {
 
 .cs-closing { margin-top: 1.25rem; }
 
+.cs-footnote {
+  margin-top: 4rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-line);
+  font-size: var(--text-caption);
+  line-height: var(--leading-snug);
+  color: var(--color-ink-muted);
+}
+
 .cs-grid-3 {
   margin-top: 2.5rem;
   display: grid;
@@ -1616,7 +1619,7 @@ h2.cs-sec {
   font-weight: 700;
   font-size: 1.375rem;
   line-height: 1;
-  color: var(--color-teal);
+  color: var(--color-brand-ink);
   letter-spacing: var(--tracking-accent);
 }
 
@@ -1630,23 +1633,301 @@ h2.cs-sec {
 
 .cs-card p { font-size: var(--text-body-sm); line-height: var(--leading-snug); }
 
-.cs-back {
-  text-align: center;
-  padding-block: clamp(2rem, 4vw, 3rem) clamp(4.5rem, 8vw, 7rem);
+.cs-more-grid {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1.75rem;
 }
 
-.cs-more-link {
-  display: inline-flex;
-  align-items: center;
+/* ---------- Case study: image placeholder (asset not delivered yet) ---------- */
+
+.cs-ph {
+  aspect-ratio: 16 / 9;
+  display: grid;
+  place-items: center;
   gap: 0.5rem;
+  border: 1px dashed var(--color-line-strong);
+  border-radius: 1.125rem;
+  background: var(--color-paper-sunken);
+  color: var(--color-ink-muted);
+  font-family: var(--font-accent);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+/* ---------- Case study: pan/zoom diagram viewer ---------- */
+
+.cs-viewer {
+  border: 1px solid var(--color-line);
+  border-radius: 1.125rem;
+  overflow: hidden;
+  background: var(--color-paper-sunken);
+}
+
+.cs-vstage {
+  position: relative;
+  height: min(70vh, 620px);
+  overflow: hidden;
+  background: var(--color-paper-sunken);
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.cs-vstage.is-dragging { cursor: grabbing; }
+
+.cs-vstage img,
+.cs-vstage svg.cs-vmedia {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  max-width: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.cs-viewer.is-sub .cs-vstage { height: min(58vh, 460px); background: var(--color-paper); }
+
+/* Floating zoom control, bottom-right of the stage — matches the pan/zoom
+   widget already shipped in urcareer-precedents-matrix.html (−/slider/+,
+   percent readout, Fit), reused here so every diagram viewer feels the same. */
+.cs-vctrl {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.5rem;
+  background: color-mix(in srgb, var(--color-paper) 92%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  box-shadow: var(--shadow-card);
+}
+
+.cs-vctrl-btn {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  min-width: 2rem;
+  height: 2rem;
+  padding-inline: 0.5rem;
+  border-radius: 0.625rem;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-accent);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-ink-secondary);
+  transition: background 180ms cubic-bezier(.20,0,0,1);
+}
+
+.cs-vctrl-btn:hover { background: var(--color-paper-sunken); }
+.cs-vctrl-btn:active { background: var(--color-line); }
+
+.cs-vctrl-fit {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-brand-ink);
+}
+
+.cs-vctrl-pct {
+  min-width: 2.75rem;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-size: 0.75rem;
+  color: var(--color-brand-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.cs-vctrl-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 5.5rem;
+  height: 2rem;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.cs-vctrl-slider::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: var(--color-line-strong); }
+.cs-vctrl-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-paper);
+  border: 1px solid var(--color-line-strong);
+  box-shadow: 0 1px 3px rgba(26,23,20,.2);
+  margin-top: -5px;
+}
+.cs-vctrl-slider::-moz-range-track { height: 4px; border-radius: 2px; background: var(--color-line-strong); }
+.cs-vctrl-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 50%;
+  background: var(--color-paper);
+}
+
+.cs-vhint {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 4;
+  padding: 0.25rem 0.625rem;
+  background: color-mix(in srgb, var(--color-paper) 85%, transparent);
+  border-radius: 999px;
+  font-family: var(--font-accent);
+  font-size: 0.6875rem;
+  color: var(--color-brand-ink);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 700px) { .cs-vhint { display: none; } }
+@media (max-width: 460px) { .cs-vctrl-slider { width: 3.5rem; } }
+
+/* ---------- Case study: map + leverage-point overlay pairing ---------- */
+
+.cs-mapset + .cs-mapset { margin-top: var(--space-section, clamp(4.5rem, 8vw, 8rem)); }
+
+.cs-setnum {
+  font-family: var(--font-accent);
+  font-weight: 700;
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--tracking-accent);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.cs-derived {
+  margin-top: 2.5rem;
+  position: relative;
+  padding-top: 2.5rem;
+}
+
+.cs-derived::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 2rem;
+  background: var(--color-line-strong);
+}
+
+.cs-derived::after {
+  content: "Overlay";
+  position: absolute;
+  top: calc(2rem - 0.7rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-paper);
+  padding-inline: 0.75rem;
+  font-family: var(--font-accent);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-accent);
+  color: var(--color-ink-muted);
+}
+
+.cs-well {
+  background: var(--color-paper-sunken);
+  border: 1px solid var(--color-line);
+  border-radius: 1.125rem;
+  padding: 2rem;
+}
+
+@media (max-width: 600px) { .cs-well { padding: 1.25rem; } }
+
+.cs-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 860px) { .cs-split { grid-template-columns: 1fr; gap: 1.5rem; } }
+
+.cs-addlist {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cs-addlist li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+}
+
+.cs-addlist li::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-top: 0.35em;
+  background: var(--color-ink-muted);
+}
+
+/* ---------- Case study: positive/negative comparison grid ---------- */
+
+.cs-compare {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(0,.7fr) minmax(0,1fr) minmax(0,1fr);
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+@media (max-width: 640px) { .cs-compare { grid-template-columns: 1fr; } }
+
+.cs-compare-head {
+  font-family: var(--font-accent);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-accent);
+  text-align: center;
+}
+
+.cs-compare-head.is-positive { color: var(--color-teal); }
+.cs-compare-head.is-negative { color: var(--color-brand-ink); }
+
+.cs-compare-row {
   font-family: var(--font-accent);
   font-weight: 600;
   font-size: var(--text-body-sm);
-  color: var(--color-teal-ink);
+  color: var(--color-ink);
+  align-self: center;
 }
 
-.cs-arw { transition: transform 180ms cubic-bezier(.22,.61,.36,1); }
-.cs-more-link:hover .cs-arw { transform: translateX(4px); }
+.cs-compare-cell {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+}
+
+.cs-compare-cell.is-positive { background: var(--color-teal-soft); }
+.cs-compare-cell.is-negative { background: var(--color-brand-soft); }
 
 /* ---------- Responsive ---------- */
 
@@ -1673,6 +1954,7 @@ h2.cs-sec {
      components that assume desktop-width columns. */
   .cs-hero { padding-top: 96px; padding-bottom: 40px; }
   .cs-meta-strip { grid-template-columns: repeat(2, 1fr); }
+  .cs-tradeoffs { grid-template-columns: repeat(2, 1fr); }
   .cs-stats { grid-template-columns: 1fr; }
   .cs-stat { border-right: none; border-bottom: 1px solid var(--color-line); }
   .cs-stat:last-child { border-bottom: none; }
@@ -1785,6 +2067,9 @@ h2.cs-sec {
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
+
+  /* Case study page — 2-up tradeoff cards get cramped below this width */
+  .cs-tradeoffs { grid-template-columns: 1fr; }
 }
 
 /* ---------- Reveal motion (docs/landing-structure-update.md §6) ---------- */

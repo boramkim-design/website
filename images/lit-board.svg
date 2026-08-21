@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="762" viewBox="0 0 1240 762" font-family="Inter, Helvetica Neue, Arial, sans-serif">
+<rect width="1240" height="762" fill="#FFFFFF"></rect>
+<line x1="44" y1="56" x2="78" y2="56" stroke="#C9762F" stroke-width="2"></line>
+<text x="90" y="61" font-size="12" letter-spacing="2.4" font-weight="600" fill="#C9762F">LITERATURE REVIEW</text>
+<text x="44" y="106" font-size="32" font-weight="700" fill="#1F1E1C">16 papers, sorted by what they concluded</text>
+<text x="44" y="134" font-size="14.5" fill="#6E6A63">Read across seven countries and four age groups, deliberately including the papers that disagreed with my assumptions.</text>
+<line x1="44.0" y1="156" x2="261.6" y2="156" stroke="#8A867E" stroke-width="2.5"></line>
+<text x="44.0" y="178" font-size="12.5" font-weight="700" letter-spacing="0.3" fill="#8A867E">Mixed / no effect</text>
+<text x="261.6" y="178" font-size="11" fill="#6E6A63" text-anchor="end">4 papers</text>
+<rect x="44.0" y="190" width="217.6" height="104" rx="6" fill="#F1F0EC" stroke="#DCD9D2"></rect>
+<text x="60.0" y="217" font-size="11" font-weight="700" letter-spacing="1" fill="#8A867E">01</text>
+<text x="60.0" y="240" font-size="13.5" font-weight="600" fill="#1F1E1C">Are social platforms bad</text>
+<text x="60.0" y="258" font-size="13.5" font-weight="600" fill="#1F1E1C">for our well-being?</text>
+<text x="60.0" y="280" font-size="10.5" fill="#6E6A63">Ortiz-Ospina 2019 · global data</text>
+<rect x="44.0" y="306" width="217.6" height="104" rx="6" fill="#F1F0EC" stroke="#DCD9D2"></rect>
+<text x="60.0" y="333" font-size="11" font-weight="700" letter-spacing="1" fill="#8A867E">02</text>
+<text x="60.0" y="356" font-size="13.5" font-weight="600" fill="#1F1E1C">Well-being shapes use,</text>
+<text x="60.0" y="374" font-size="13.5" font-weight="600" fill="#1F1E1C">not only the reverse</text>
+<text x="60.0" y="396" font-size="10.5" fill="#6E6A63">Griffioen 2021 · Netherlands</text>
+<rect x="44.0" y="422" width="217.6" height="104" rx="6" fill="#F1F0EC" stroke="#DCD9D2"></rect>
+<text x="60.0" y="449" font-size="11" font-weight="700" letter-spacing="1" fill="#8A867E">03</text>
+<text x="60.0" y="472" font-size="13.5" font-weight="600" fill="#1F1E1C">Effects differ person</text>
+<text x="60.0" y="490" font-size="13.5" font-weight="600" fill="#1F1E1C">to person</text>
+<text x="60.0" y="512" font-size="10.5" fill="#6E6A63">Griffioen 2022 · young adults</text>
+<rect x="44.0" y="538" width="217.6" height="104" rx="6" fill="#F1F0EC" stroke="#DCD9D2"></rect>
+<text x="60.0" y="565" font-size="11" font-weight="700" letter-spacing="1" fill="#8A867E">04</text>
+<text x="60.0" y="588" font-size="13.5" font-weight="600" fill="#1F1E1C">Social media in</text>
+<text x="60.0" y="606" font-size="13.5" font-weight="600" fill="#1F1E1C">later life</text>
+<text x="60.0" y="628" font-size="10.5" fill="#6E6A63">Quinn 2019 · older adults</text>
+<line x1="277.6" y1="156" x2="495.20000000000005" y2="156" stroke="#5E7D3E" stroke-width="2.5"></line>
+<text x="277.6" y="178" font-size="12.5" font-weight="700" letter-spacing="0.3" fill="#5E7D3E">Positive</text>
+<text x="495.20000000000005" y="178" font-size="11" fill="#6E6A63" text-anchor="end">3 papers</text>
+<rect x="277.6" y="190" width="217.6" height="104" rx="6" fill="#EDF2E4" stroke="#D3DFC0"></rect>
+<text x="293.6" y="217" font-size="11" font-weight="700" letter-spacing="1" fill="#5E7D3E">05</text>
+<text x="293.6" y="240" font-size="13.5" font-weight="600" fill="#1F1E1C">Helps newcomers settle</text>
+<text x="293.6" y="258" font-size="13.5" font-weight="600" fill="#1F1E1C">into a workplace</text>
+<text x="293.6" y="280" font-size="10.5" fill="#6E6A63">Cai 2020 · China, employees</text>
+<rect x="277.6" y="306" width="217.6" height="104" rx="6" fill="#EDF2E4" stroke="#D3DFC0"></rect>
+<text x="293.6" y="333" font-size="11" font-weight="700" letter-spacing="1" fill="#5E7D3E">06</text>
+<text x="293.6" y="356" font-size="13.5" font-weight="600" fill="#1F1E1C">Supported students</text>
+<text x="293.6" y="374" font-size="13.5" font-weight="600" fill="#1F1E1C">through COVID-19</text>
+<text x="293.6" y="396" font-size="10.5" fill="#6E6A63">Tkáčová 2021 · Slovakia, teens</text>
+<rect x="277.6" y="422" width="217.6" height="104" rx="6" fill="#EDF2E4" stroke="#D3DFC0"></rect>
+<text x="293.6" y="449" font-size="11" font-weight="700" letter-spacing="1" fill="#5E7D3E">07</text>
+<text x="293.6" y="472" font-size="13.5" font-weight="600" fill="#1F1E1C">Family bonding lifts</text>
+<text x="293.6" y="490" font-size="13.5" font-weight="600" fill="#1F1E1C">academic performance</text>
+<text x="293.6" y="512" font-size="10.5" fill="#6E6A63">Zhang 2024 · India, students</text>
+<line x1="511.2" y1="156" x2="728.8" y2="156" stroke="#9B5FA8" stroke-width="2.5"></line>
+<text x="511.2" y="178" font-size="12.5" font-weight="700" letter-spacing="0.3" fill="#9B5FA8">Negative</text>
+<text x="728.8" y="178" font-size="11" fill="#6E6A63" text-anchor="end">4 papers</text>
+<rect x="511.2" y="190" width="217.6" height="104" rx="6" fill="#F4EDF6" stroke="#E4D4E9"></rect>
+<text x="527.2" y="217" font-size="11" font-weight="700" letter-spacing="1" fill="#9B5FA8">08</text>
+<text x="527.2" y="240" font-size="13.5" font-weight="600" fill="#1F1E1C">Reliance grows out</text>
+<text x="527.2" y="258" font-size="13.5" font-weight="600" fill="#1F1E1C">of isolation</text>
+<text x="527.2" y="280" font-size="10.5" fill="#6E6A63">Dutt 2023 · Norway</text>
+<rect x="511.2" y="306" width="217.6" height="104" rx="6" fill="#F4EDF6" stroke="#E4D4E9"></rect>
+<text x="527.2" y="333" font-size="11" font-weight="700" letter-spacing="1" fill="#9B5FA8">09</text>
+<text x="527.2" y="356" font-size="13.5" font-weight="600" fill="#1F1E1C">Even positive posts</text>
+<text x="527.2" y="374" font-size="13.5" font-weight="600" fill="#1F1E1C">create pressure</text>
+<text x="527.2" y="396" font-size="10.5" fill="#6E6A63">Devos 2023 · adolescents</text>
+<rect x="511.2" y="422" width="217.6" height="104" rx="6" fill="#F4EDF6" stroke="#E4D4E9"></rect>
+<text x="527.2" y="449" font-size="11" font-weight="700" letter-spacing="1" fill="#9B5FA8">10</text>
+<text x="527.2" y="472" font-size="13.5" font-weight="600" fill="#1F1E1C">FoMO, stalking and</text>
+<text x="527.2" y="490" font-size="13.5" font-weight="600" fill="#1F1E1C">comparison → fatigue</text>
+<text x="527.2" y="512" font-size="10.5" fill="#6E6A63">Tandon 2021 · multi-country</text>
+<rect x="511.2" y="538" width="217.6" height="104" rx="6" fill="#F4EDF6" stroke="#E4D4E9"></rect>
+<text x="527.2" y="565" font-size="11" font-weight="700" letter-spacing="1" fill="#9B5FA8">11</text>
+<text x="527.2" y="588" font-size="13.5" font-weight="600" fill="#1F1E1C">Compulsive use →</text>
+<text x="527.2" y="606" font-size="13.5" font-weight="600" fill="#1F1E1C">anxiety, depression</text>
+<text x="527.2" y="628" font-size="10.5" fill="#6E6A63">Dhir 2018 · adolescents</text>
+<line x1="744.8" y1="156" x2="962.4" y2="156" stroke="#B45A38" stroke-width="2.5"></line>
+<text x="744.8" y="178" font-size="12.5" font-weight="700" letter-spacing="0.3" fill="#B45A38">Addiction</text>
+<text x="962.4" y="178" font-size="11" fill="#6E6A63" text-anchor="end">3 papers</text>
+<rect x="744.8" y="190" width="217.6" height="104" rx="6" fill="#FAEBE4" stroke="#F0D2C4"></rect>
+<text x="760.8" y="217" font-size="11" font-weight="700" letter-spacing="1" fill="#B45A38">12</text>
+<text x="760.8" y="240" font-size="13.5" font-weight="600" fill="#1F1E1C">Addiction harms health</text>
+<text x="760.8" y="258" font-size="13.5" font-weight="600" fill="#1F1E1C">and productivity</text>
+<text x="760.8" y="280" font-size="10.5" fill="#6E6A63">Priyadarshini 2020 · India</text>
+<rect x="744.8" y="306" width="217.6" height="104" rx="6" fill="#FAEBE4" stroke="#F0D2C4"></rect>
+<text x="760.8" y="333" font-size="11" font-weight="700" letter-spacing="1" fill="#B45A38">13</text>
+<text x="760.8" y="356" font-size="13.5" font-weight="600" fill="#1F1E1C">Addiction feeds</text>
+<text x="760.8" y="374" font-size="13.5" font-weight="600" fill="#1F1E1C">impulse buying</text>
+<text x="760.8" y="396" font-size="10.5" fill="#6E6A63">Nikolinakou 2023 · U.S.</text>
+<rect x="744.8" y="422" width="217.6" height="104" rx="6" fill="#FAEBE4" stroke="#F0D2C4"></rect>
+<text x="760.8" y="449" font-size="11" font-weight="700" letter-spacing="1" fill="#B45A38">14</text>
+<text x="760.8" y="472" font-size="13.5" font-weight="600" fill="#1F1E1C">Ethics of the</text>
+<text x="760.8" y="490" font-size="13.5" font-weight="600" fill="#1F1E1C">attention economy</text>
+<text x="760.8" y="512" font-size="10.5" fill="#6E6A63">Bhargava 2020 · theory</text>
+<line x1="978.4" y1="156" x2="1196.0" y2="156" stroke="#C9762F" stroke-width="2.5"></line>
+<text x="978.4" y="178" font-size="12.5" font-weight="700" letter-spacing="0.3" fill="#C9762F">Deciding factors</text>
+<text x="1196.0" y="178" font-size="11" fill="#6E6A63" text-anchor="end">2 papers</text>
+<rect x="978.4" y="190" width="217.6" height="104" rx="6" fill="#FBF0E2" stroke="#F2DEC2"></rect>
+<text x="994.4" y="217" font-size="11" font-weight="700" letter-spacing="1" fill="#C9762F">15</text>
+<text x="994.4" y="240" font-size="13.5" font-weight="600" fill="#1F1E1C">Impulse beats willpower</text>
+<text x="994.4" y="258" font-size="13.5" font-weight="600" fill="#1F1E1C">(dual-system)</text>
+<text x="994.4" y="280" font-size="10.5" fill="#6E6A63">Zahrai 2022 · New Zealand</text>
+<rect x="978.4" y="306" width="217.6" height="104" rx="6" fill="#FBF0E2" stroke="#F2DEC2"></rect>
+<text x="994.4" y="333" font-size="11" font-weight="700" letter-spacing="1" fill="#C9762F">16</text>
+<text x="994.4" y="356" font-size="13.5" font-weight="600" fill="#1F1E1C">Mindset: agency and</text>
+<text x="994.4" y="374" font-size="13.5" font-weight="600" fill="#1F1E1C">meaning</text>
+<text x="994.4" y="396" font-size="10.5" fill="#6E6A63">Lee &amp; Hancock 2023 · U.S.</text>
+<line x1="44" y1="680" x2="1196" y2="680" stroke="#E2DED6"></line>
+<text x="44" y="710" font-size="13" fill="#6E6A63">Sorting them this way made the pattern visible: the papers do not disagree about social media, they disagree about <tspan font-weight="700" fill="#1F1E1C">who is using it and how.</tspan></text>
+</svg>
