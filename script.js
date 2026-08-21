@@ -351,7 +351,11 @@ document.querySelectorAll(".cs-viewer").forEach((viewer) => {
       if (img.complete && img.naturalWidth) sizeAndStart();
       else img.addEventListener("load", sizeAndStart);
     });
-  window.addEventListener("resize", fitNow);
+  // Re-run the configured view (not just fitNow) on resize — mobile browsers
+  // fire resize constantly as their chrome (URL bar, etc.) shows/hides, and
+  // a bare fitNow() would silently wipe a sub-viewer's pre-zoomed framing
+  // back to plain Fit on every one of those.
+  window.addEventListener("resize", startView);
 
   viewer.querySelectorAll("[data-z]").forEach((button) => {
     button.addEventListener("click", () => {

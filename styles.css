@@ -30,6 +30,7 @@
   --leading-display: 1.0;
   --leading-tight: 1.10;
   --leading-snug: 1.35;
+  --leading-relaxed: 1.5;
   --leading-body: 1.72;
 
   --tracking-display: -0.022em;
@@ -278,24 +279,43 @@ h1, h2, h3, h4 {
 .mobile-menu {
   display: none;
   flex-direction: column;
-  max-width: var(--measure);
-  margin: 12px auto 0;
-  padding: 0 var(--page-gutter);
+  width: 200px;
+  padding: 0 8px;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.25s ease;
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(17, 18, 20, 0.06);
+  box-sizing: border-box;
+  transition: max-height 0.25s ease, padding 0.25s ease;
 }
+
+/* Padding only applies once open — at max-height:0 it left a persistent
+   sliver visible even "closed", since Chrome doesn't collapse padding
+   along with a max-height clamp the way it does ordinary content. */
+.mobile-menu.open { padding: 4px 8px; }
 
 .mobile-menu.open {
   max-height: 240px;
 }
 
 .mobile-link {
+  position: relative;
   padding: 14px 6px;
   font-weight: 600;
   font-size: 15px;
   color: var(--ink);
-  border-bottom: 1px solid rgba(17, 18, 20, 0.08);
+}
+
+/* Inset from the link's own padding edges (shorter than full-bleed) and
+   skipped on the last item — no divider needed below "About". */
+.mobile-link:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 0;
+  border-bottom: 1px solid rgba(17, 18, 20, 0.05);
 }
 
 .mobile-link.active { color: var(--black); font-weight: 700; }
@@ -1097,7 +1117,8 @@ h1, h2, h3, h4 {
 .footer-mark {
   width: 36px;
   height: 36px;
-  font-size: 12px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .footer-tagline {
@@ -1223,14 +1244,17 @@ body.case-page {
 .cs-frame-embed { padding: 0; }
 .cs-frame-embed iframe { display: block; width: 100%; height: min(70vh, 640px); border: 0; }
 
-.cs-video { position: relative; }
+.cs-video { position: relative; overflow: hidden; }
 
-.cs-video-el { display: block; width: 100%; height: auto; }
+/* Source export has a hairline dark column baked into its right edge —
+   scale past the frame by a hair and let the wrapper's overflow clip it,
+   rather than re-encoding. */
+.cs-video-el { display: block; width: 101%; height: auto; }
 
 .cs-video-pp {
   position: absolute;
-  right: 0.875rem;
-  bottom: 0.875rem;
+  right: 0.5rem;
+  top: 0.5rem;
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 50%;
@@ -1268,7 +1292,7 @@ body.case-page {
   border-bottom: 1px solid var(--color-line);
 }
 
-.cs-meta-strip.is-tri { grid-template-columns: 1.3fr 1fr 1fr; }
+.cs-meta-strip.is-tri { grid-template-columns: 1.4fr 1.1fr 0.8fr; }
 @media (max-width: 640px) { .cs-meta-strip.is-tri { grid-template-columns: 1fr; } }
 
 .cs-meta-strip dt {
@@ -1284,7 +1308,7 @@ body.case-page {
 .cs-meta-strip dd {
   margin: 0;
   font-size: var(--text-body-sm);
-  line-height: var(--leading-snug);
+  line-height: var(--leading-relaxed);
   color: var(--color-ink);
 }
 
@@ -1405,7 +1429,7 @@ h2.cs-sec {
   font-family: var(--font-display);
   font-size: var(--text-lead);
   line-height: var(--leading-snug);
-  color: var(--color-ink);
+  color: var(--color-brand-ink);
   margin: 0;
 }
 
@@ -1451,7 +1475,7 @@ h2.cs-sec {
   font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
-  color: var(--color-ink);
+  color: var(--color-brand-ink);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -1460,40 +1484,6 @@ h2.cs-sec {
   font-size: var(--text-caption);
   line-height: var(--leading-snug);
   color: var(--color-ink-muted);
-}
-
-.cs-rowlist {
-  margin-top: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid var(--color-line);
-}
-
-.cs-rowitem {
-  display: grid;
-  grid-template-columns: 4.5rem 1fr;
-  gap: 1.5rem;
-  align-items: start;
-  padding-block: 2rem;
-  border-bottom: 1px solid var(--color-line);
-}
-
-.cs-rowitem-num {
-  padding-top: 0.25rem;
-  font-family: var(--font-accent);
-  font-weight: 700;
-  font-size: var(--text-num-lg);
-  line-height: 1;
-  color: var(--color-ink-muted);
-  letter-spacing: var(--tracking-accent);
-}
-
-.cs-rowitem h4 {
-  margin-bottom: 1rem;
-  font-size: var(--text-h3);
-  line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-tight);
-  color: var(--color-ink);
 }
 
 .cs-tradeoffs {
@@ -1563,10 +1553,16 @@ h2.cs-sec {
 
 .cs-solrow {
   display: grid;
-  grid-template-columns: 1fr 19rem;
-  gap: 2rem;
+  grid-template-columns: 17rem 1fr;
+  gap: 2.75rem;
   align-items: start;
 }
+
+/* Video first (left, on the smaller track), text second (right) — flipped
+   visually via order rather than DOM order, so reading/AT order still
+   hits the description before the demo clip. */
+.cs-solrow > .cs-figure { order: 1; }
+.cs-solrow > div:first-child { order: 2; }
 
 .cs-solrow + .cs-solrow { margin-top: clamp(3rem, 6vw, 4.5rem); }
 
@@ -1578,13 +1574,27 @@ h2.cs-sec {
   color: var(--color-ink);
 }
 
-.cs-solrow p { margin-top: 1.25rem; }
+/* Heading picks up the project accent here (scoped to solrow, not the
+   shared .cs-claim used elsewhere); body gets a narrower measure so lines
+   don't run the full (now-wider) text column, plus a bit more breathing
+   room between eyebrow / heading / body. */
+.cs-solrow .cs-claim { margin-top: 1.25rem; color: var(--color-brand-ink); }
+.cs-solrow p { margin-top: 1.5rem; max-width: 32rem; }
 
 .cs-grid-2 {
   margin-top: 1.25rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   gap: 1rem;
+}
+
+/* These two are map thumbnails, not reading content — keep them side by
+   side even on narrow screens so they read as a pair, not a repeat of the
+   full map figures right below them. */
+.cs-grid-2.is-maps { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 480px) {
+  .cs-grid-2.is-maps { gap: 0.625rem; }
+  .cs-grid-2.is-maps .cs-card { padding: 0.875rem; }
 }
 
 .cs-closing { margin-top: 1.25rem; }
@@ -1629,6 +1639,22 @@ h2.cs-sec {
   line-height: var(--leading-snug);
   letter-spacing: var(--tracking-tight);
   color: var(--color-ink);
+}
+
+/* Problems section only — its cards stand in for a missing image, so the
+   heading also takes the accent and a bit more size (elsewhere just the
+   card number is accented, at the shared, smaller .cs-card-num size). */
+#problems .cs-card h4 { font-size: var(--text-lead); color: var(--color-brand-ink); }
+#problems .cs-card-num { color: var(--color-ink-muted); }
+
+.cs-card-thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 0.625rem;
+  border: 1px solid var(--color-line);
+  margin-bottom: 1rem;
 }
 
 .cs-card p { font-size: var(--text-body-sm); line-height: var(--leading-snug); }
@@ -1806,7 +1832,7 @@ h2.cs-sec {
   font-size: var(--text-eyebrow);
   letter-spacing: var(--tracking-accent);
   text-transform: uppercase;
-  color: var(--color-ink-muted);
+  color: var(--color-brand-ink);
 }
 
 .cs-derived {
@@ -1896,7 +1922,15 @@ h2.cs-sec {
   align-items: stretch;
 }
 
-@media (max-width: 640px) { .cs-compare { grid-template-columns: 1fr; } }
+/* Stays a 3-column table at every width — cells just shrink — rather than
+   collapsing to one column, which loses the positive/negative pairing that
+   is the whole point of this comparison. */
+@media (max-width: 640px) {
+  .cs-compare { gap: 0.4rem; }
+  .cs-compare-head { font-size: 0.6875rem; }
+  .cs-compare-row { font-size: var(--text-caption); }
+  .cs-compare-cell { padding: 0.625rem; font-size: var(--text-caption); }
+}
 
 .cs-compare-head {
   font-family: var(--font-accent);
@@ -1914,8 +1948,13 @@ h2.cs-sec {
   font-family: var(--font-accent);
   font-weight: 600;
   font-size: var(--text-body-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-accent);
   color: var(--color-ink);
   align-self: center;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 .cs-compare-cell {
@@ -1940,9 +1979,25 @@ h2.cs-sec {
 
   .nav-inner { grid-template-columns: 1fr; }
 
-  .nav-burger { display: flex; }
+  /* Fixed (not absolute, like the rest of .navbar) so the burger and its
+     menu — unlike the LinkedIn button — stay on screen while scrolling,
+     the same way .nav-pill does on desktop. Pinned to the left since
+     .nav-brand is hidden here and would otherwise leave that side empty. */
+  .nav-burger {
+    display: flex;
+    position: fixed;
+    top: 16px;
+    left: var(--page-gutter);
+    z-index: 50;
+  }
 
-  .mobile-menu { display: flex; }
+  .mobile-menu {
+    display: flex;
+    position: fixed;
+    top: calc(16px + var(--nav-h) + 8px);
+    left: var(--page-gutter);
+    z-index: 50;
+  }
 
   /* top padding clears .navbar, which is position:absolute and overlaps the
      hero here too (~84px: 18px*2 padding + 48px burger) — 24px left the
@@ -1958,12 +2013,16 @@ h2.cs-sec {
   .cs-stats { grid-template-columns: 1fr; }
   .cs-stat { border-right: none; border-bottom: 1px solid var(--color-line); }
   .cs-stat:last-child { border-bottom: none; }
-  .cs-rowitem { grid-template-columns: 1fr; gap: 1rem; }
   .cs-solrow { grid-template-columns: 1fr; }
 
-  /* photo stack stays on top, intro card below; education cards stack too */
+  /* photo stack stays on top, intro card below */
   .about-top { grid-template-columns: 1fr; }
-  .education-grid { grid-template-columns: 1fr; }
+
+  /* .photo-stack was still 2 columns here, so each photo took half of the
+     now-full-width row instead of half of .about-top's ~40% column — one
+     row of 4 (keeping each item's own --rot tilt for a bit of zigzag)
+     instead of blowing them up to nearly double size. */
+  .photo-stack { grid-template-columns: repeat(4, 1fr); gap: 0.625rem; }
 
   /* Reorder so both icon groups sit together as one row directly under the headline. */
   .hero-content { order: 1; }
@@ -2070,6 +2129,11 @@ h2.cs-sec {
 
   /* Case study page — 2-up tradeoff cards get cramped below this width */
   .cs-tradeoffs { grid-template-columns: 1fr; }
+
+  /* Education cards stay 3-across through tablet widths (stacking them
+     there just leaves each short card floating in a lot of empty space) —
+     only stack once truly cramped. */
+  .education-grid { grid-template-columns: 1fr; }
 }
 
 /* ---------- Reveal motion (docs/landing-structure-update.md §6) ---------- */
