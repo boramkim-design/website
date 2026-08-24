@@ -1379,6 +1379,10 @@ body.case-page {
   flex: none;
 }
 
+/* Sub-item numbering (e.g. "1-1") reads better as a bare label —
+   the leading rule is sized for section-level eyebrows. */
+.cs-eyebrow.is-plain::before { content: none; }
+
 h2.cs-sec {
   margin-top: 1rem;
   font-size: var(--text-h2);
