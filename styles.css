@@ -1654,6 +1654,12 @@ h2.cs-sec {
 .cs-solrow > .cs-figure { order: 1; }
 .cs-solrow > div:first-child { order: 2; }
 
+/* Cudagra only: text on the wide track (left), video on the narrow one
+   (right) — natural DOM order, so no order flip needed here. */
+.cs-solrow.is-reverse { grid-template-columns: 1fr 17rem; }
+.cs-solrow.is-reverse > .cs-figure { order: 2; }
+.cs-solrow.is-reverse > div:first-child { order: 1; }
+
 .cs-solrow + .cs-solrow { margin-top: clamp(3rem, 6vw, 4.5rem); }
 
 .cs-claim {
@@ -2154,6 +2160,7 @@ h2.cs-sec {
   .cs-stat { border-right: none; border-bottom: 1px solid var(--color-line); }
   .cs-stat:last-child { border-bottom: none; }
   .cs-solrow { grid-template-columns: 1fr; }
+  .cs-solrow.is-reverse { grid-template-columns: 1fr; }
 
   /* photo stack stays on top, intro card below */
   .about-top { grid-template-columns: 1fr; }
