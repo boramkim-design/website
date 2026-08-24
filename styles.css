@@ -1953,9 +1953,9 @@ h2.cs-sec {
   border: 1px solid var(--color-line);
   border-radius: 1.125rem;
   padding: 1.25rem 1.5rem;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--text-lead);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-body);
   line-height: var(--leading-snug);
   color: var(--color-ink);
 }
