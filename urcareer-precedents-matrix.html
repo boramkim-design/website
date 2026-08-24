@@ -139,7 +139,7 @@ function zoomTo(ns,cx,cy){ ns=Math.min(MAX,Math.max(MIN,ns));
   x=cx-(cx-x)*(ns/s); y=cy-(cy-y)*(ns/s); s=ns; apply(); }
 function zoomAt(f,cx,cy){ zoomTo(s*f,cx,cy); }
 vp.addEventListener('wheel',e=>{ e.preventDefault();
-  zoomAt(Math.exp(-e.deltaY*0.0022), e.clientX, e.clientY); },{passive:false});
+  zoomAt(Math.exp(-e.deltaY*0.0032), e.clientX, e.clientY); },{passive:false});
 let down=false,px=0,py=0,pts=new Map(),pinchD=0,pinchS=1;
 vp.addEventListener('pointerdown',e=>{ pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
   if(pts.size===2){ const [a,b]=[...pts.values()];

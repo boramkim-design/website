@@ -949,9 +949,17 @@ h1, h2, h3, h4 {
   object-position: center top;
 }
 
+/* Full-bleed screenshot thumbs (e.g. hero-image reuse) crop badly at 3:2 —
+   show the whole image centered on the thumb's existing brand-soft bg
+   instead of covering and cutting off the edges. */
+.thumb.is-contain img {
+  object-fit: contain;
+  object-position: center;
+}
+
 .case-body { padding-inline: 0.625rem; }
 
-.tags { display: flex; gap: 0.4375rem; flex-wrap: wrap; margin-bottom: 0.6875rem; }
+.tags { display: flex; gap: 0.4375rem; flex-wrap: wrap; margin-bottom: 0.9375rem; }
 
 .tag {
   padding: 0.3125rem 0.6875rem;
@@ -965,10 +973,10 @@ h1, h2, h3, h4 {
 }
 
 .case h3 {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.625rem;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: var(--text-h4);
+  font-size: var(--text-lead);
   line-height: var(--leading-snug);
   letter-spacing: var(--tracking-tight);
   color: var(--color-ink);
@@ -1240,6 +1248,22 @@ body.case-page {
 .cs-frame img { display: block; width: 100%; height: auto; }
 
 .cs-hero-img { display: block; width: 100%; height: auto; }
+
+/* Stand-in for a figure whose real asset isn't ready yet — same frame,
+   a plain label instead of an image. */
+.cs-ph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  font-family: var(--font-accent);
+  font-size: var(--text-caption);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-accent);
+  color: var(--color-ink-muted);
+}
 
 .cs-frame-embed { padding: 0; }
 .cs-frame-embed iframe { display: block; width: 100%; height: min(70vh, 640px); border: 0; }
@@ -1597,6 +1621,22 @@ h2.cs-sec {
   .cs-grid-2.is-maps .cs-card { padding: 0.875rem; }
 }
 
+.cs-maps-hint {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  font-family: var(--font-accent);
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  letter-spacing: var(--tracking-accent);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.cs-maps-hint svg { animation: nudge 2.2s ease-in-out infinite; }
+
 .cs-closing { margin-top: 1.25rem; }
 
 .cs-footnote {
@@ -1639,6 +1679,14 @@ h2.cs-sec {
   line-height: var(--leading-snug);
   letter-spacing: var(--tracking-tight);
   color: var(--color-ink);
+}
+
+/* .cs-card-num used on an h4 (e.g. the map-picker cards) needs to win over
+   the .cs-card h4 rule above, which otherwise outranks it (0,1,1 vs 0,1,0)
+   and overwrites its color/font-size back to the plain heading look. */
+.cs-card h4.cs-card-num {
+  font-size: 1.375rem;
+  color: var(--color-brand-ink);
 }
 
 /* Problems section only — its cards stand in for a missing image, so the
@@ -2154,4 +2202,5 @@ h2.cs-sec {
   html { scroll-behavior: auto; }
   .icon-bubble { animation: none; }
   .scroll-cue svg { animation: none; }
+  .cs-maps-hint svg { animation: none; }
 }

@@ -377,7 +377,7 @@ document.querySelectorAll(".cs-viewer").forEach((viewer) => {
   stage.addEventListener("wheel", (e) => {
     if (!(e.ctrlKey || e.metaKey)) return;
     e.preventDefault();
-    zoomAt(e.deltaY < 0 ? 1.12 : 1 / 1.12, e.clientX, e.clientY);
+    zoomAt(e.deltaY < 0 ? 1.045 : 1 / 1.045, e.clientX, e.clientY);
   }, { passive: false });
 
   stage.addEventListener("dblclick", (e) => zoomAt(scale > fit * 1.05 ? fit / scale : 2.2, e.clientX, e.clientY));

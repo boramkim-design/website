@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boram Kim | Cudagra</title>
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+<link rel="icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Sofia+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="case-page">
+
+<header class="navbar">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html#home">
+      <img class="nav-logo" src="images/logo-bk.png" alt="Boram Kim logo">
+      <span class="brand-name">Boram Kim</span>
+    </a>
+
+    <nav class="nav-pill" aria-label="Main navigation">
+      <a href="index.html#home" class="nav-link">Home</a>
+      <a href="index.html#work" class="nav-link active">Work</a>
+      <a href="about.html" class="nav-link">About</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a class="btn-linkedin" href="https://www.linkedin.com/in/boramkim/" aria-label="LinkedIn" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6.5 0h3.8v1.64h.05c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21h-4V9Z"/>
+        </svg>
+      </a>
+      <button class="nav-burger" id="navBurger" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+    <a href="index.html#home" class="mobile-link">Home</a>
+    <a href="index.html#work" class="mobile-link active">Work</a>
+    <a href="about.html" class="mobile-link">About</a>
+  </nav>
+</header>
+
+<nav class="cs-casenav" aria-label="Case study sections">
+  <ol>
+    <li><a href="#context">Context</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#reframe">Reframe</a></li>
+    <li><a href="#redesign">Redesign</a></li>
+    <li><a href="#solution">Solution</a></li>
+    <li><a href="#flow">Flow</a></li>
+    <li><a href="#learnings">Learnings</a></li>
+  </ol>
+</nav>
+
+<main id="main">
+
+  <header class="cs-hero measure">
+    <div class="tags">
+      <span class="tag">UX Research</span>
+      <span class="tag">UX Improvement</span>
+      <span class="tag">Sports Community</span>
+      <span class="tag">Mobile</span>
+    </div>
+    <h1 class="cs-hero-title">Turning two thousand sign-ups into a community</h1>
+    <p class="cs-lead">Cudagra is a sports app where you find a local game and join strangers on the court. Making it easy to see who those strangers are, and to trust them enough to show up, is what turns sign-ups into a community and a weekly habit.</p>
+  </header>
+
+  <div class="measure">
+    <figure class="cs-figure">
+      <img class="cs-hero-img" src="images/cudagra-hero.png" alt="The redesigned Cudagra profile shown across several phone screens: player stats, game history, player qualities, frequent playmates, and highlights">
+    </figure>
+  </div>
+
+  <div class="measure">
+    <dl class="cs-meta-strip">
+      <div><dt>Role</dt><dd>UX Designer<br>· Team of 2<br>(Designer +<br>Project Manager)</dd></div>
+      <div><dt>Timeline</dt><dd>6 weeks</dd></div>
+      <div><dt>Skills</dt><dd>User Interview<br>Problem Framing<br>Prototyping<br>Cross-functional Collaboration</dd></div>
+      <div><dt>Tools</dt><dd>Figma<br>Figma Make &amp;<br>Claude Design<br>(UI Refresh)</dd></div>
+    </dl>
+  </div>
+
+  <section class="cs-block measure" id="context">
+    <div class="cs-eyebrow">Context</div>
+    <h2 class="cs-sec">2,000 people had signed up. Almost nobody was playing.</h2>
+    <p>Over its first year Cudagra had gained enough users to fill courts across Calgary, and had partnered with major venues to host them. But people were hesitant to invite someone they didn't know, or to join a game full of strangers, so the games never got arranged.</p>
+
+    <figure class="cs-figure" style="margin-top:2rem">
+      <div class="cs-frame"><img src="images/cudagra-kickoff.png" alt="Video call with the Cudagra founding team during the project kickoff"></div>
+      <figcaption>Kicking off with the founding team.</figcaption>
+    </figure>
+
+    <div class="cs-split" style="margin-top:2.5rem">
+      <ul class="cs-addlist" style="margin-top:0">
+        <li>Are there not enough games?</li>
+        <li>Are there not enough users?</li>
+        <li>Is the invite flow too complicated?</li>
+        <li>Is it too hard to find a game?</li>
+      </ul>
+      <div>
+        <p>Our goal was to lift daily activity by 25%, and the team had four ideas about what was holding it back.</p>
+        <p style="margin-top:1.25rem">All four were about numbers or technical issues, so we started by checking whether the real problem was on that list.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-block measure" id="research">
+    <div class="cs-eyebrow">Research</div>
+    <h2 class="cs-sec">What already existed, and what people actually said</h2>
+
+    <div class="cs-sub">
+      <div class="cs-sublabel">Current state</div>
+      <h3>What the app looked like when we started</h3>
+      <figure class="cs-figure">
+        <div class="cs-frame"><div class="cs-ph" style="aspect-ratio:832/386">Screens: profile, game list, game dashboard, notifications</div></div>
+        <figcaption>Profile, the game list, the game dashboard, and notifications as they shipped.</figcaption>
+      </figure>
+    </div>
+
+    <div class="cs-sub">
+      <div class="cs-sublabel">User interviews</div>
+      <h3>Seven users told us the blocker wasn't on our list</h3>
+      <p>The Cudagra team recruited seven active users quickly, and the project manager and I ran each interview online for 20 to 30 minutes. Almost everyone wanted to use the app more than they did, so the sessions filled up with the needs and pain points standing in the way.</p>
+
+      <h4 style="margin-top:2rem; font-size:var(--text-lead); letter-spacing:var(--tracking-tight); color:var(--color-brand-ink)">Who else is here?</h4>
+      <div class="cs-insightgrid" style="margin-top:1.25rem">
+        <div class="cs-insightbox">
+          <span class="cs-insightbox-n">No visibility of other players or activity</span>
+          <p>"I am not sure who else is using it."</p>
+        </div>
+        <div class="cs-insightbox">
+          <span class="cs-insightbox-n">Wants clearer social structure</span>
+          <p>"An easier way to see your groups, teams, and friends."</p>
+        </div>
+      </div>
+
+      <h4 style="margin-top:2.5rem; font-size:var(--text-lead); letter-spacing:var(--tracking-tight); color:var(--color-brand-ink)">Who am I playing with?</h4>
+      <div class="cs-insightgrid" style="margin-top:1.25rem">
+        <div class="cs-insightbox">
+          <span class="cs-insightbox-n">Seeing people first makes joining possible</span>
+          <p>"As an introvert, it is helpful to see who is playing."</p>
+        </div>
+        <div class="cs-insightbox">
+          <span class="cs-insightbox-n">Wants real player information</span>
+          <p>"Knowing the age group matters, especially for hockey."</p>
+        </div>
+        <div class="cs-insightbox">
+          <span class="cs-insightbox-n">Trust has no home in the app</span>
+          <p>"Profiles and ratings would help with unfamiliar people."</p>
+        </div>
+      </div>
+
+      <h4 style="margin-top:2.5rem; font-size:var(--text-lead); letter-spacing:var(--tracking-tight); color:var(--color-brand-ink)">Will this be a good game?</h4>
+      <div class="cs-insightgrid" style="margin-top:1.25rem">
+        <div class="cs-insightbox">
+          <span class="cs-insightbox-n">Fit and attitude, not just ability</span>
+          <p>"Are you going to be fun, and are you going to be fast?"</p>
+        </div>
+        <div class="cs-insightbox">
+          <span class="cs-insightbox-n">Wants matching on goals, not just sport</span>
+          <p>"Skill matters. Novice vs expert might not be fun."</p>
+        </div>
+        <div class="cs-insightbox">
+          <span class="cs-insightbox-n">Social proof carries the decision</span>
+          <p>"If my friend is cool to golf with, I trust their pick."</p>
+        </div>
+      </div>
+
+      <div class="cs-insightbox" style="margin-top:2rem">
+        <span class="cs-insightbox-n">Takeaway</span>
+        <p>Nobody cared how many games or players were on there. They were closing the app before they ever got as far as searching for a game or sending an invite, because they couldn't tell whether these people would give them a game worth showing up for.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-block measure" id="reframe">
+    <div class="cs-eyebrow">The reframe</div>
+    <h2 class="cs-sec">Not a technical fix, but a question of how people approach each other</h2>
+    <p>There was a critical gap in the information people needed to connect with others through sports. A game can be just as fun or just as boring as the people you're playing with, and no one wants to risk wasting precious playing time on the wrong match. Once we saw it that way, the question we were designing for changed:</p>
+    <div class="cs-insightbox cs-insightbox-standalone">
+      <p>How might we build enough trust for someone to play beyond their own social circle?</p>
+    </div>
+  </section>
+
+  <section class="cs-block measure" id="redesign">
+    <div class="cs-eyebrow">The redesign</div>
+    <h2 class="cs-sec">The profile is where a community starts</h2>
+    <p>The profile does two jobs at once. It tells you enough about a stranger to make the first message easy. And the games and groups someone has joined give you a hint of what else is out there, a nudge to look past your own search.</p>
+    <figure class="cs-figure" style="margin-top:2rem">
+      <div class="cs-frame"><div class="cs-ph" style="aspect-ratio:16/9">Screen: the redesigned profile, full screen</div></div>
+      <figcaption>The redesigned profile in full. The four solutions below break down what sits inside it.</figcaption>
+    </figure>
+  </section>
+
+  <section class="cs-block measure" id="solution">
+    <div class="cs-eyebrow">Solution 01</div>
+    <h2 class="cs-sec">Giving people enough to go on before they connect</h2>
+    <p>Everyone we interviewed arrived with a wish list of what they wanted to know about a stranger. Some of it was factual, like the level they play at and the sports they play, and some of it was contextual, like what they are actually like on the court and who else has played with them. The profile's job became carrying all of it, so people have enough to go on before they ever send a message.</p>
+
+    <div class="cs-solrow">
+      <div>
+        <div class="cs-eyebrow">1-1</div>
+        <h3 class="cs-claim">Sports information</h3>
+        <p>The first thing every user checked when deciding who to play with. Each sport carries a level and an intent, casual or competition, so two people can tell whether they are after the same kind of game before either of them commits an afternoon to it.</p>
+      </div>
+      <figure class="cs-figure">
+        <div class="cs-frame"><div class="cs-ph" style="aspect-ratio:9/16">Video: adding a sport, level and preference</div></div>
+        <figcaption>Level and intent, set per sport.</figcaption>
+      </figure>
+    </div>
+
+    <div class="cs-solrow">
+      <div>
+        <div class="cs-eyebrow">1-2</div>
+        <h3 class="cs-claim">Player qualities</h3>
+        <p>The other thing people wanted settled before hitting invite was whether this would be good company. Players submit qualities for each other after every game, so what you read comes from people who have actually shared a court with them.</p>
+      </div>
+      <figure class="cs-figure">
+        <div class="cs-frame"><div class="cs-ph" style="aspect-ratio:9/16">Video: submitting feedback after a game</div></div>
+        <figcaption>Qualities are given, not self-declared.</figcaption>
+      </figure>
+    </div>
+
+    <div class="cs-solrow">
+      <div>
+        <div class="cs-eyebrow">1-3</div>
+        <h3 class="cs-claim">Frequent playmates</h3>
+        <p>Facts and other people's opinions still leave a gap if you don't know who gave them. Mutual connections close it: tapping Frequent Playmates shows who you both play with, and how often. Spotting a single name you recognise makes the whole thing feel less like messaging a stranger.</p>
+      </div>
+      <figure class="cs-figure">
+        <div class="cs-frame"><div class="cs-ph" style="aspect-ratio:9/16">Video: opening a mutual connection</div></div>
+        <figcaption>Shared game counts, so a stranger feels a little less like one.</figcaption>
+      </figure>
+    </div>
+
+    <div class="cs-solrow">
+      <div>
+        <div class="cs-eyebrow">1-4</div>
+        <h3 class="cs-claim">Highlights</h3>
+        <p>A short, social feed of recent games gives context nothing else on the profile can: who this person is when they are playing, rather than how they describe themselves. It also gives people a reason to open the app after a game and not only before one, and to share the fun of it with the people they played with.</p>
+      </div>
+      <figure class="cs-figure">
+        <div class="cs-frame"><div class="cs-ph" style="aspect-ratio:9/16">Highlights section</div></div>
+        <figcaption>The part of a profile people enjoy rather than assess.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="cs-block measure" id="flow">
+    <div class="cs-eyebrow">Solution 02</div>
+    <h2 class="cs-sec">Inviting goes both ways</h2>
+    <p>In the current version, only the host can invite people to a game. The hosts we interviewed said they only invited from their own social circles, because they had no basis for picking anyone else. But Cudagra's value is building a sports community out of those circles, and that only happens if interest can travel in the other direction too.</p>
+
+    <div class="cs-solrow">
+      <div>
+        <div class="cs-eyebrow">2-1</div>
+        <h3 class="cs-claim">Ask to join</h3>
+        <p>Players can tell a host they are interested in joining, which makes inviting someone new far less of a guess. The host opens their profile, sees whether it looks like a good match, and makes the call with something to go on rather than a hunch.</p>
+      </div>
+      <figure class="cs-figure">
+        <div class="cs-frame"><div class="cs-ph" style="aspect-ratio:9/16">Screen: asking to join a game</div></div>
+        <figcaption>One tap, not a commitment, and nothing to feel bad about if it goes unanswered.</figcaption>
+      </figure>
+    </div>
+
+    <div class="cs-solrow">
+      <div>
+        <div class="cs-eyebrow">2-2</div>
+        <h3 class="cs-claim">Save for notification</h3>
+        <p>Saving a game, whether from someone's profile or the home dashboard, asks whether you want to hear about the same or similar games later. It keeps people close to the games they were curious about without asking them to commit to one group.</p>
+      </div>
+      <figure class="cs-figure">
+        <div class="cs-frame"><div class="cs-ph" style="aspect-ratio:9/16">Screen: notification prompt on save</div></div>
+        <figcaption>Interest recorded now, acted on later.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="cs-block measure" id="learnings">
+    <div class="cs-eyebrow">Learnings</div>
+    <h2 class="cs-sec">What I'm taking with me</h2>
+    <div class="cs-grid-3" style="margin-top:2.5rem">
+      <div class="cs-card">
+        <span class="cs-card-num">01</span>
+        <h4>Research is the shortcut</h4>
+        <p>We opened the project with four theories about why nobody was playing, and every one of them sounded right. The interviews pointed somewhere else entirely. Research feels like the slow path until you count the weeks it saves you from building the wrong thing.</p>
+      </div>
+      <div class="cs-card">
+        <span class="cs-card-num">02</span>
+        <h4>The hard part was choosing what to show</h4>
+        <p>There are dozens of things you could tell someone about a stranger, and as many ways to show each one. Narrowing that to a handful was the longest argument of the project. Competitor research and the interviews got us to a shortlist, and the ones that survived were the ones we could give a reason for.</p>
+      </div>
+      <div class="cs-card">
+        <span class="cs-card-num">03</span>
+        <h4>The venue might be the missing piece</h4>
+        <p>We ran a two-hour survey at the Genesis Centre, a partner venue. The responses were too thin to shape this redesign, but standing in the building was its own finding: the people are already there, at fixed times, in groups. Games led by the venue rather than by individuals could fill a court at a time instead of a seat at a time, and that's the direction I'd explore next.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-block measure">
+    <div class="cs-eyebrow">More case studies</div>
+    <div class="cs-more-grid">
+      <a class="case" href="urcareer.html">
+        <div class="thumb" aria-hidden="true">
+          <img src="images/urcareer-hero.png" alt="">
+        </div>
+        <div class="case-body">
+          <div class="tags"><span class="tag">Mobile</span><span class="tag">0→1</span></div>
+          <h3>ürcareer</h3>
+          <p>Career changers were navigating alone with generic job boards. Built a mobile platform with tailored matches, mentor access, and a peer community.</p>
+        </div>
+      </a>
+      <a class="case" href="system-mapping.html">
+        <div class="thumb" aria-hidden="true">
+          <img src="images/system-mapping-hero.jpg" alt="">
+        </div>
+        <div class="case-body">
+          <div class="tags"><span class="tag">Systems thinking</span><span class="tag">Research</span></div>
+          <h3>Creating a Path to Well-Being in the Social Media Maze</h3>
+          <p>Social media's effect on well-being is tangled and contradictory. Mapped it as causal and actor system maps to find where the system can actually be moved.</p>
+        </div>
+      </a>
+      <a class="case" href="index.html#work">
+        <div class="thumb" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="14" rx="1.5" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="9" r="1.4" stroke="currentColor" stroke-width="1.3"/><path d="m5 16 4.5-4.5L12 14l3-3 4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="case-body">
+          <div class="tags"><span class="tag">Product Design</span><span class="tag">Fintech</span></div>
+          <h3>Simplifying Cross-Border Payments</h3>
+          <p>Unclear status states were causing users to abandon transfers mid-flow. Clearer states and error recovery cut drop-off by 28%.</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <span class="avatar footer-mark">BK</span>
+  <p class="footer-tagline">Thanks for stopping by.</p>
+
+  <div class="footer-links">
+    <a href="mailto:boram.g.kim@gmail.com" aria-label="Email">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+        <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <a href="https://www.linkedin.com/in/boramkim/" aria-label="LinkedIn" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6.5 0h3.8v1.64h.05c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21h-4V9Z"/>
+      </svg>
+    </a>
+  </div>
+
+  <p class="footer-copyright">&copy; Boram Kim <span id="footerYear"></span></p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
