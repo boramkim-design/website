@@ -950,11 +950,17 @@ h1, h2, h3, h4 {
 }
 
 /* Full-bleed screenshot thumbs (e.g. hero-image reuse) crop badly at 3:2 —
-   show the whole image centered on the thumb's existing brand-soft bg
-   instead of covering and cutting off the edges. */
+   show the whole image centered instead of covering and cutting off the
+   edges. Plain paper bg, not the shared brand-soft one: two case cards
+   sitting side by side on the same orange tint read as near-duplicates. */
+.thumb.is-contain {
+  background: var(--color-paper);
+}
+
 .thumb.is-contain img {
   object-fit: contain;
   object-position: center;
+  transform: scale(var(--thumb-zoom, 1));
 }
 
 .case-body { padding-inline: 0.625rem; }
@@ -1932,6 +1938,32 @@ h2.cs-sec {
 }
 
 @media (max-width: 860px) { .cs-split { grid-template-columns: 1fr; gap: 1.5rem; } }
+
+.cs-hypo {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  align-content: start;
+}
+
+@media (max-width: 480px) { .cs-hypo { grid-template-columns: 1fr; } }
+
+.cs-hypo-bubble {
+  background: var(--color-paper-sunken);
+  border: 1px solid var(--color-line);
+  border-radius: 1.125rem;
+  padding: 1.25rem 1.5rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-lead);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+}
+
+.cs-hypo-bubble.is-brand {
+  background: var(--color-brand-soft);
+  border-color: transparent;
+}
 
 .cs-addlist {
   list-style: none;
