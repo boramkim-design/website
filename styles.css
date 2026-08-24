@@ -1471,6 +1471,7 @@ h2.cs-sec {
 .cs-note p {
   font-family: var(--font-display);
   font-weight: 600;
+  font-size: var(--text-body-sm);
   color: var(--color-ink);
   margin: 0;
 }
@@ -2010,7 +2011,7 @@ h2.cs-sec {
   padding: 1rem 1.25rem;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: var(--text-body);
+  font-size: var(--text-body-sm);
   line-height: var(--leading-snug);
   color: var(--color-ink);
 }
