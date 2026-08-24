@@ -509,8 +509,6 @@ h1, h2, h3, h4 {
   gap: 0.625rem;
 }
 
-.education-item .education-year { align-self: flex-start; }
-
 .education-item h3 {
   font-size: var(--text-h4);
   font-weight: 600;
