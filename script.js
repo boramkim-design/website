@@ -46,15 +46,18 @@ if (heroSection && heroHighlight && archBubbles.length) {
   const centerIndex = (archBubbles.length - 1) / 2;
   let hasPlayed = false;
 
-  // Circular arch: badge i's angle is (i - center) * (117.4 / 6) degrees,
-  // spread across -58.7deg..+58.7deg. x/y offsets from the apex follow the
-  // standard parametric-circle formulas at radius 374px — ~640px total
-  // width, ~180px height difference between the apex and the two ends.
-  const ARCH_RADIUS = 374;
-  const ARCH_SPAN_DEGREES = 117.4;
+  // Circular arch: badge i's angle is (i - center) * (42.5 / (n-1)) degrees,
+  // spread across -21.25deg..+21.25deg regardless of badge count. x/y offsets
+  // from the apex follow the standard parametric-circle formulas at radius
+  // 1306px — ~900px total width, ~80px height difference between the apex
+  // and the two ends. Below ARCH_REFERENCE_WIDTH the whole arch scales down
+  // (radius only) so it still fits a narrower viewport.
+  const ARCH_RADIUS = 1306;
+  const ARCH_SPAN_DEGREES = 42.5;
+  const ARCH_REFERENCE_WIDTH = 900;
   const ARCH_STEP_DEGREES = ARCH_SPAN_DEGREES / (archBubbles.length - 1);
   const toRad = (deg) => (deg * Math.PI) / 180;
-  const edgeDrop = ARCH_RADIUS * (1 - Math.cos(toRad(ARCH_STEP_DEGREES * centerIndex)));
+  const getArchScale = () => Math.min(1, window.innerWidth / ARCH_REFERENCE_WIDTH);
 
   const getSampleBubbleRadius = () => {
     const sampleCircle = archBubbles[Math.round(centerIndex)].querySelector(".bubble-circle");
@@ -88,7 +91,9 @@ if (heroSection && heroHighlight && archBubbles.length) {
 
     const apexViewportX = getApexViewportX();
     const bubbleRadius = getSampleBubbleRadius();
-    const archClearance = 48; // min gap between the arch's lowest point and the headline's top
+    const archClearance = 24; // min gap between the arch's lowest point and the headline's top
+    const radius = ARCH_RADIUS * getArchScale();
+    const edgeDrop = radius * (1 - Math.cos(toRad(ARCH_STEP_DEGREES * centerIndex)));
     const headingEl = document.querySelector(".hero-content h1");
     const headingRect = (headingEl || heroHighlight).getBoundingClientRect();
     const apexViewportY = headingRect.top - archClearance - bubbleRadius - edgeDrop;
@@ -100,8 +105,8 @@ if (heroSection && heroHighlight && archBubbles.length) {
       const anchorY = anchorViewportY - containerRect.top;
       const thetaDeg = (i - centerIndex) * ARCH_STEP_DEGREES;
       const thetaRad = toRad(thetaDeg);
-      const xOffset = ARCH_RADIUS * Math.sin(thetaRad);
-      const yOffset = ARCH_RADIUS * (1 - Math.cos(thetaRad));
+      const xOffset = radius * Math.sin(thetaRad);
+      const yOffset = radius * (1 - Math.cos(thetaRad));
       const finalX = apexViewportX + xOffset - containerRect.left;
       const finalY = apexViewportY + yOffset - containerRect.top;
       return { el, anchorX, anchorY, finalX, finalY };
@@ -112,31 +117,21 @@ if (heroSection && heroHighlight && archBubbles.length) {
     const targets = computeArchTargets();
 
     targets.forEach(({ el, anchorX, anchorY, finalX, finalY }, i) => {
-      el.classList.add("is-positioned");
-      el.style.setProperty("--arch-delay", `${i * 70}ms`);
+      el.style.setProperty("--anchor-x", `${anchorX}px`);
+      el.style.setProperty("--anchor-y", `${anchorY}px`);
+      el.style.setProperty("--final-x", `${finalX}px`);
+      el.style.setProperty("--final-y", `${finalY}px`);
+      el.style.setProperty("--arch-delay", `${i * 80}ms`);
 
       if (prefersReducedMotion) {
-        el.style.transition = "none";
+        el.style.animation = "none";
         el.style.left = `${finalX}px`;
         el.style.top = `${finalY}px`;
         el.style.opacity = "1";
         el.style.transform = "translate(-50%, -50%) scale(1)";
-        return;
       }
 
-      el.style.transition = "none";
-      el.style.left = `${anchorX}px`;
-      el.style.top = `${anchorY}px`;
-      el.style.opacity = "0";
-      el.style.transform = "translate(-50%, -50%) scale(0.3)";
-
-      void el.offsetWidth; // force reflow so the start state actually paints
-
-      el.style.transition = "";
-      el.style.left = `${finalX}px`;
-      el.style.top = `${finalY}px`;
-      el.style.opacity = "1";
-      el.style.transform = "translate(-50%, -50%) scale(1)";
+      el.classList.add("is-positioned");
     });
 
     hasPlayed = true;
@@ -144,7 +139,8 @@ if (heroSection && heroHighlight && archBubbles.length) {
 
   const snapToArch = () => {
     computeArchTargets().forEach(({ el, finalX, finalY }) => {
-      el.style.transition = "none";
+      el.style.setProperty("--final-x", `${finalX}px`);
+      el.style.setProperty("--final-y", `${finalY}px`);
       el.style.left = `${finalX}px`;
       el.style.top = `${finalY}px`;
     });
@@ -153,12 +149,16 @@ if (heroSection && heroHighlight && archBubbles.length) {
   const clearArchOverrides = () => {
     archBubbles.forEach((el) => {
       el.classList.remove("is-positioned");
+      el.style.removeProperty("--anchor-x");
+      el.style.removeProperty("--anchor-y");
+      el.style.removeProperty("--final-x");
+      el.style.removeProperty("--final-y");
+      el.style.removeProperty("--arch-delay");
       el.style.left = "";
       el.style.top = "";
       el.style.opacity = "";
       el.style.transform = "";
-      el.style.transition = "";
-      el.style.removeProperty("--arch-delay");
+      el.style.animation = "";
     });
     hasPlayed = false;
   };
@@ -193,16 +193,16 @@ if (heroSection && heroHighlight && archBubbles.length) {
 
   // Shared story card: one instance, repositioned and repopulated per
   // click rather than a separate speech-bubble tooltip per badge. Reuses
-  // the clicked badge's own icon (no separate emoji) and, on desktop,
-  // always opens at a fixed spot above the arch's apex badge so it never
-  // covers a neighboring badge.
+  // the clicked badge's own icon (no separate emoji) and always opens
+  // directly above the clicked badge, clamped horizontally so it never
+  // runs off the hero's edges.
   const heroCard = document.getElementById("iconStoryCard");
   const heroCardIcon = document.getElementById("iconStoryIcon");
   const heroCardTitle = document.getElementById("iconStoryTitle");
   const heroCardDesc = document.getElementById("iconStoryDesc");
-  const CARD_WIDTH = 230;
+  const CARD_WIDTH = 290;
   const CARD_EDGE_MARGIN = 8;
-  const CARD_GAP_ABOVE_APEX = 92;
+  const CARD_GAP_ABOVE_BADGE = 8;
   let activeBubble = null;
 
   const closeIconCard = () => {
@@ -229,11 +229,7 @@ if (heroSection && heroHighlight && archBubbles.length) {
     const maxX = heroRect.right - CARD_EDGE_MARGIN - halfCard;
     const rawX = clickedRect.left + clickedRect.width / 2;
     const targetX = Math.max(minX, Math.min(maxX, rawX));
-
-    const targetY = isMobileHero()
-      ? clickedRect.top - 14
-      : archBubbles[Math.round(centerIndex)].querySelector(".bubble-circle").getBoundingClientRect().top -
-        CARD_GAP_ABOVE_APEX;
+    const targetY = clickedRect.top - CARD_GAP_ABOVE_BADGE;
 
     heroCard.style.left = `${targetX - heroRect.left}px`;
     heroCard.style.top = `${targetY - heroRect.top}px`;
@@ -259,6 +255,15 @@ if (heroSection && heroHighlight && archBubbles.length) {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeIconCard();
   });
+
+  // Close the card once the hero has scrolled fully out of view — otherwise
+  // it stays pinned mid-screen over whatever section comes next.
+  const heroExitObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) closeIconCard();
+    });
+  });
+  heroExitObserver.observe(heroSection);
 }
 
 const contactForm = document.getElementById("contactForm");

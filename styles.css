@@ -317,12 +317,12 @@ h1, h2, h3, h4 {
   align-content: center; /* without this, the two auto rows stretch to fill
     the hero and each child centers inside its own oversized row instead of
     the headline+copy centering together as one compact block */
-  /* top clears the header, the icon arch above the headline (48px min
-     clearance from the headline itself, computed in script.js), *and* the
-     shared story card that opens 92px above the arch's apex badge — the
-     card's own height (up to ~150px for longer descriptions) has to fit
-     above that point too, empirically verified against all 7 cards. */
-  padding: 43rem 0 5.75rem;
+  /* top clears the header, plus the shallow icon arch above the headline
+     (24px min clearance from the headline itself, computed in script.js) —
+     6.5rem base header clearance + ~124px for the arch's own depth (~80px)
+     and badge size (~44px), plus another 4rem so the centered content sits
+     lower rather than leaving most of the slack as empty space below it. */
+  padding: 18.25rem 0 5.75rem;
   overflow: hidden;
   color: var(--landing-ink);
 
@@ -726,7 +726,7 @@ h1, h2, h3, h4 {
   position: absolute;
   /* matches .hero's own padding, so top:%/bottom:% on bubbles clears the
      header/scroll-cue instead of measuring against the full hero box */
-  top: 6.5rem;
+  top: 16.25rem;
   right: 0;
   bottom: 5.75rem;
   left: 0;
@@ -742,21 +742,55 @@ h1, h2, h3, h4 {
   z-index: 3;
 }
 
+@media (min-width: 769px) {
+  /* Hidden until script.js measures the headline and adds .is-positioned —
+     without this, badges flash in their scattered ambient-float layout
+     first, then jump to the arch's anchor point once JS runs. */
+  .icon-bubble { opacity: 0; }
+}
+
 .icon-bubble.active {
   animation-play-state: paused;
   z-index: 11;
 }
 
 /* Hero icon-bubble entrance: burst out from the "side quests." anchor point
-   and settle into a computed arch (script.js). Once JS takes over placement
-   for a bubble it gets this class instead of the ambient float loop above. */
+   (--anchor-x/--anchor-y) and settle into the computed arch position
+   (--final-x/--final-y, both set by script.js) once JS takes over placement
+   for a bubble. animation-fill-mode: both (in the shorthand below) holds
+   the keyframe's 0% state for the badge's own delay slice instead of
+   showing the animation-free base state, which is what caused each badge
+   to flash at its resting position before snapping back to the anchor. */
 .icon-bubble.is-positioned {
-  animation: none;
-  transition: left 0.5s ease-out,
-              top 0.5s ease-out,
-              opacity 0.5s ease-out,
-              transform 0.5s ease-out;
-  transition-delay: var(--arch-delay, 0s);
+  left: var(--final-x);
+  top: var(--final-y);
+  /* back-out easing (overshoots past scale 1 before settling) reads as a
+     clear "pop" out of the anchor point, rather than a gentle fade-and-glide.
+     idleBob picks up right where badgeIn ends (its own delay + duration) so
+     each badge keeps a small resting bob afterwards — a hint that it's
+     interactive, not just decoration. */
+  animation: badgeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) var(--arch-delay, 0s) both,
+             idleBob var(--duration, 4s) ease-in-out calc(var(--arch-delay, 0s) + 0.6s) infinite;
+}
+
+@keyframes badgeIn {
+  from {
+    left: var(--anchor-x);
+    top: var(--anchor-y);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.1);
+  }
+  to {
+    left: var(--final-x);
+    top: var(--final-y);
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes idleBob {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-6px); }
 }
 
 @keyframes float {
@@ -809,7 +843,7 @@ h1, h2, h3, h4 {
 
 .icon-story-card {
   position: absolute;
-  width: 230px;
+  width: 290px;
   background: var(--white);
   color: var(--ink);
   padding: 14px 16px;
@@ -1320,7 +1354,7 @@ body.case-page {
 .cs-frame-embed { padding: 0; }
 .cs-frame-embed iframe { display: block; width: 100%; height: min(70vh, 640px); border: 0; }
 
-.cs-video { position: relative; overflow: hidden; }
+.cs-video { position: relative; overflow: hidden; border: 1px solid var(--color-line); }
 
 /* Source export has a hairline dark column baked into its right edge —
    scale past the frame by a hair and let the wrapper's overflow clip it,
@@ -2270,12 +2304,13 @@ h2.cs-sec {
     position: relative;
     top: auto;
     left: auto;
+    opacity: 1;
     transform: none !important;
     animation: none;
   }
   .bubble-circle { width: 60px; height: 60px; font-size: 40px; }
   .bubble-icon-img { height: 43px; }
-  .icon-story-card { width: min(230px, 70vw); }
+  .icon-story-card { width: min(290px, 70vw); }
 
   .contact {
     padding: 48px var(--page-gutter) 56px;
@@ -2325,7 +2360,7 @@ h2.cs-sec {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .icon-bubble { animation: none; }
+  .icon-bubble, .icon-bubble.is-positioned { animation: none; }
   .scroll-cue svg { animation: none; }
   .cs-maps-hint svg { animation: none; }
 }
