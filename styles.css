@@ -317,7 +317,12 @@ h1, h2, h3, h4 {
   align-content: center; /* without this, the two auto rows stretch to fill
     the hero and each child centers inside its own oversized row instead of
     the headline+copy centering together as one compact block */
-  padding: 6.5rem 0 5.75rem; /* top clears the header, bottom clears the scroll cue */
+  /* top clears the header, the icon arch above the headline (48px min
+     clearance from the headline itself, computed in script.js), *and* the
+     shared story card that opens 92px above the arch's apex badge — the
+     card's own height (up to ~150px for longer descriptions) has to fit
+     above that point too, empirically verified against all 7 cards. */
+  padding: 43rem 0 5.75rem;
   overflow: hidden;
   color: var(--landing-ink);
 
@@ -799,83 +804,56 @@ h1, h2, h3, h4 {
   filter: drop-shadow(0 8px 12px rgba(17, 18, 20, 0.18));
 }
 
-/* Speech-bubble tooltip */
+/* Icon story card — one shared instance (script.js), repositioned and
+   repopulated per click instead of a per-bubble speech-bubble tooltip. */
 
-.bubble-tooltip {
+.icon-story-card {
   position: absolute;
-  top: 50%;
-  min-width: 210px;
-  max-width: 250px;
+  width: 230px;
   background: var(--white);
   color: var(--ink);
-  padding: 12px 14px;
+  padding: 14px 16px;
   border-radius: 14px;
-  font-size: 13px;
-  line-height: 1.5;
+  box-shadow: 0 12px 30px rgba(17, 18, 20, 0.14);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   text-align: left;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-50%) scale(0.9);
+  transform: translate(-50%, -100%) scale(0.92);
+  transform-origin: bottom center;
   transition: opacity 0.18s ease, transform 0.18s ease;
-  box-shadow: 0 12px 30px rgba(17, 18, 20, 0.14);
-  z-index: 10;
+  z-index: 20;
 }
 
-.bubble-tooltip strong {
+.icon-story-card.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -100%) scale(1);
+}
+
+.icon-story-icon {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-brand-soft);
+  color: var(--landing-accent);
+  display: grid;
+  place-items: center;
+}
+
+.icon-story-icon svg { width: 26px; height: 26px; }
+
+.icon-story-title {
   display: block;
   font-size: 13px;
   margin-bottom: 3px;
   color: var(--ink);
 }
 
-.bubble-tooltip p { margin: 0; color: var(--gray); }
-
-.icon-bubble.active .bubble-tooltip {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(-50%) scale(1);
-}
-
-.bubble-circle[data-tooltip-pos="right"] ~ .bubble-tooltip {
-  left: calc(100% + 16px);
-}
-.bubble-circle[data-tooltip-pos="left"] ~ .bubble-tooltip {
-  right: calc(100% + 16px);
-  left: auto;
-}
-.bubble-circle[data-tooltip-pos="bottom"] ~ .bubble-tooltip {
-  top: calc(100% + 14px);
-  left: 50%;
-  transform: translateX(-50%) scale(0.9);
-}
-.icon-bubble.active .bubble-circle[data-tooltip-pos="bottom"] ~ .bubble-tooltip {
-  transform: translateX(-50%) scale(1);
-}
-
-/* Speech-bubble arrow */
-.bubble-tooltip::after {
-  content: "";
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background: var(--white);
-}
-
-.bubble-circle[data-tooltip-pos="right"] ~ .bubble-tooltip::after {
-  left: -4px;
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-}
-.bubble-circle[data-tooltip-pos="left"] ~ .bubble-tooltip::after {
-  right: -4px;
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-}
-.bubble-circle[data-tooltip-pos="bottom"] ~ .bubble-tooltip::after {
-  top: -4px;
-  left: 50%;
-  transform: translateX(-50%) rotate(45deg);
-}
+.icon-story-desc { margin: 0; font-size: 13px; line-height: 1.5; color: var(--gray); }
 
 /* ---------- Work (Case Studies + Contact) ---------- */
 
@@ -2297,22 +2275,7 @@ h2.cs-sec {
   }
   .bubble-circle { width: 60px; height: 60px; font-size: 40px; }
   .bubble-icon-img { height: 43px; }
-  .bubble-tooltip {
-    position: absolute;
-    left: 0 !important;
-    right: auto !important;
-    top: calc(100% + 10px) !important;
-    max-width: min(230px, 70vw);
-    transform: scale(0.9) !important;
-    transform-origin: top left;
-  }
-  .icon-bubble.active .bubble-tooltip {
-    transform: scale(1) !important;
-  }
-  .bubble-tooltip::after {
-    top: -4px; left: 16px; right: auto;
-    transform: rotate(45deg) !important;
-  }
+  .icon-story-card { width: min(230px, 70vw); }
 
   .contact {
     padding: 48px var(--page-gutter) 56px;

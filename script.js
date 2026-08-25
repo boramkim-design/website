@@ -32,20 +32,6 @@ mobileMenu.querySelectorAll(".mobile-link").forEach((link) => {
 
 const bubbles = document.querySelectorAll(".icon-bubble");
 
-bubbles.forEach((bubble) => {
-  const circle = bubble.querySelector(".bubble-circle");
-  circle.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const wasActive = bubble.classList.contains("active");
-    bubbles.forEach((b) => b.classList.remove("active"));
-    if (!wasActive) bubble.classList.add("active");
-  });
-});
-
-document.addEventListener("click", () => {
-  bubbles.forEach((b) => b.classList.remove("active"));
-});
-
 // Hero icon-bubble entrance: burst out of the "side quests." anchor point
 // and settle into an arch above the headline. Runs once on load, desktop/
 // tablet only — under the 768px breakpoint the existing static flex-wrap
@@ -58,27 +44,41 @@ if (heroSection && heroHighlight && archBubbles.length) {
   const isMobileHero = () => window.matchMedia("(max-width: 768px)").matches;
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const centerIndex = (archBubbles.length - 1) / 2;
-  const maxDistance = centerIndex;
   let hasPlayed = false;
 
-  // Measures the span from the left edge of "designer" to the right edge
-  // of "few" in the headline's first line — the arch is stretched to fit
-  // exactly across that width instead of a fixed px spacing.
-  const getWordSpanRect = () => {
+  // Circular arch: badge i's angle is (i - center) * (117.4 / 6) degrees,
+  // spread across -58.7deg..+58.7deg. x/y offsets from the apex follow the
+  // standard parametric-circle formulas at radius 374px — ~640px total
+  // width, ~180px height difference between the apex and the two ends.
+  const ARCH_RADIUS = 374;
+  const ARCH_SPAN_DEGREES = 117.4;
+  const ARCH_STEP_DEGREES = ARCH_SPAN_DEGREES / (archBubbles.length - 1);
+  const toRad = (deg) => (deg * Math.PI) / 180;
+  const edgeDrop = ARCH_RADIUS * (1 - Math.cos(toRad(ARCH_STEP_DEGREES * centerIndex)));
+
+  const getSampleBubbleRadius = () => {
+    const sampleCircle = archBubbles[Math.round(centerIndex)].querySelector(".bubble-circle");
+    return (sampleCircle ? sampleCircle.getBoundingClientRect().height : 70) / 2;
+  };
+
+  // Apex sits on the horizontal midpoint between "designer" and "few" in
+  // the headline's first line.
+  const getApexViewportX = () => {
     const headingEl = document.querySelector(".hero-content h1");
-    if (!headingEl) return null;
+    if (!headingEl) return heroHighlight.getBoundingClientRect().left;
     const textNode = [...headingEl.childNodes].find(
       (n) => n.nodeType === Node.TEXT_NODE && n.textContent.includes("designer")
     );
-    if (!textNode) return null;
+    if (!textNode) return heroHighlight.getBoundingClientRect().left;
     const text = textNode.textContent;
     const startIdx = text.indexOf("designer");
     const fewIdx = text.indexOf("few");
-    if (startIdx === -1 || fewIdx === -1) return null;
+    if (startIdx === -1 || fewIdx === -1) return heroHighlight.getBoundingClientRect().left;
     const range = document.createRange();
     range.setStart(textNode, startIdx);
     range.setEnd(textNode, fewIdx + "few".length);
-    return range.getBoundingClientRect();
+    const rect = range.getBoundingClientRect();
+    return rect.left + rect.width / 2;
   };
 
   const computeArchTargets = () => {
@@ -86,40 +86,24 @@ if (heroSection && heroHighlight && archBubbles.length) {
     const anchorViewportX = anchorRect.left + anchorRect.width / 2;
     const anchorViewportY = anchorRect.top + anchorRect.height / 2;
 
-    const wordSpanRect = getWordSpanRect();
-    const gapCount = archBubbles.length - 1;
-    const wordSpanLeft = wordSpanRect ? wordSpanRect.left : anchorViewportX - 240;
-    const wordSpanWidth = wordSpanRect ? wordSpanRect.width : 480;
-    const wordSpanMidY = wordSpanRect
-      ? wordSpanRect.top + wordSpanRect.height / 2
-      : anchorViewportY;
-
-    // Reach well past "designer"/"few" on either side — the two end bubbles
-    // land outside the words, not just flush with their edges.
-    const sideReach = wordSpanWidth * 0.35;
-    const spanLeft = wordSpanLeft - sideReach;
-    const spanWidth = wordSpanWidth + sideReach * 2;
-
-    // The peak of the arch rests well above the headline paragraph, and the
-    // two ends sweep down to the vertical middle of the "designer"/"few"
-    // line — a wide rainbow, not a shallow cap sitting just above the text.
+    const apexViewportX = getApexViewportX();
+    const bubbleRadius = getSampleBubbleRadius();
+    const archClearance = 48; // min gap between the arch's lowest point and the headline's top
     const headingEl = document.querySelector(".hero-content h1");
     const headingRect = (headingEl || heroHighlight).getBoundingClientRect();
-    const sampleCircle = archBubbles[Math.round(centerIndex)].querySelector(".bubble-circle");
-    const bubbleRadius = (sampleCircle ? sampleCircle.getBoundingClientRect().height : 70) / 2;
-    const archClearance = 20;
-    const peakViewportY = headingRect.top - bubbleRadius - archClearance;
+    const apexViewportY = headingRect.top - archClearance - bubbleRadius - edgeDrop;
 
     return archBubbles.map((el, i) => {
       const container = el.parentElement;
       const containerRect = container.getBoundingClientRect();
       const anchorX = anchorViewportX - containerRect.left;
       const anchorY = anchorViewportY - containerRect.top;
-      const t = Math.abs(i - centerIndex) / maxDistance; // 0 at center, 1 at the ends
-      const eased = t * t; // stays near the peak, then swoops down toward the ends
-      const finalX = spanLeft + (spanWidth * i) / gapCount - containerRect.left;
-      const finalYViewport = peakViewportY + (wordSpanMidY - peakViewportY) * eased;
-      const finalY = finalYViewport - containerRect.top;
+      const thetaDeg = (i - centerIndex) * ARCH_STEP_DEGREES;
+      const thetaRad = toRad(thetaDeg);
+      const xOffset = ARCH_RADIUS * Math.sin(thetaRad);
+      const yOffset = ARCH_RADIUS * (1 - Math.cos(thetaRad));
+      const finalX = apexViewportX + xOffset - containerRect.left;
+      const finalY = apexViewportY + yOffset - containerRect.top;
       return { el, anchorX, anchorY, finalX, finalY };
     });
   };
@@ -203,13 +187,79 @@ if (heroSection && heroHighlight && archBubbles.length) {
       } else {
         startArch();
       }
+      if (heroCard.classList.contains("is-open")) closeIconCard();
     }, 150);
   });
-}
 
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") bubbles.forEach((b) => b.classList.remove("active"));
-});
+  // Shared story card: one instance, repositioned and repopulated per
+  // click rather than a separate speech-bubble tooltip per badge. Reuses
+  // the clicked badge's own icon (no separate emoji) and, on desktop,
+  // always opens at a fixed spot above the arch's apex badge so it never
+  // covers a neighboring badge.
+  const heroCard = document.getElementById("iconStoryCard");
+  const heroCardIcon = document.getElementById("iconStoryIcon");
+  const heroCardTitle = document.getElementById("iconStoryTitle");
+  const heroCardDesc = document.getElementById("iconStoryDesc");
+  const CARD_WIDTH = 230;
+  const CARD_EDGE_MARGIN = 8;
+  const CARD_GAP_ABOVE_APEX = 92;
+  let activeBubble = null;
+
+  const closeIconCard = () => {
+    if (!activeBubble) return;
+    activeBubble.classList.remove("active");
+    activeBubble = null;
+    heroCard.classList.remove("is-open");
+    heroCard.setAttribute("aria-hidden", "true");
+  };
+
+  const openIconCard = (bubble) => {
+    const circle = bubble.querySelector(".bubble-circle");
+    const svg = circle.querySelector("svg");
+
+    heroCardIcon.innerHTML = "";
+    if (svg) heroCardIcon.appendChild(svg.cloneNode(true));
+    heroCardTitle.textContent = bubble.dataset.title || "";
+    heroCardDesc.textContent = bubble.dataset.desc || "";
+
+    const heroRect = heroSection.getBoundingClientRect();
+    const clickedRect = circle.getBoundingClientRect();
+    const halfCard = CARD_WIDTH / 2;
+    const minX = heroRect.left + CARD_EDGE_MARGIN + halfCard;
+    const maxX = heroRect.right - CARD_EDGE_MARGIN - halfCard;
+    const rawX = clickedRect.left + clickedRect.width / 2;
+    const targetX = Math.max(minX, Math.min(maxX, rawX));
+
+    const targetY = isMobileHero()
+      ? clickedRect.top - 14
+      : archBubbles[Math.round(centerIndex)].querySelector(".bubble-circle").getBoundingClientRect().top -
+        CARD_GAP_ABOVE_APEX;
+
+    heroCard.style.left = `${targetX - heroRect.left}px`;
+    heroCard.style.top = `${targetY - heroRect.top}px`;
+
+    archBubbles.forEach((b) => b.classList.remove("active"));
+    bubble.classList.add("active");
+    activeBubble = bubble;
+    heroCard.classList.add("is-open");
+    heroCard.setAttribute("aria-hidden", "false");
+  };
+
+  archBubbles.forEach((bubble) => {
+    const circle = bubble.querySelector(".bubble-circle");
+    circle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const wasActive = bubble === activeBubble;
+      closeIconCard();
+      if (!wasActive) openIconCard(bubble);
+    });
+  });
+
+  document.addEventListener("click", closeIconCard);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeIconCard();
+  });
+}
 
 const contactForm = document.getElementById("contactForm");
 
