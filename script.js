@@ -58,7 +58,9 @@ if (heroSection && heroHighlight && archBubbles.length) {
   const isMobileHero = () => window.matchMedia("(max-width: 768px)").matches;
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const centerIndex = (archBubbles.length - 1) / 2;
-  const vOffsetByDistance = [0, 4, 12, 24];
+  // Rainbow-style dome: center bubble highest, tapering down toward the
+  // edges — indexed by distance-from-center (0 = center bubble).
+  const vOffsetByDistance = [24, 12, 4, 0];
   let hasPlayed = false;
 
   const computeArchTargets = () => {
