@@ -50,9 +50,42 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") bubbles.forEach((b) => b.classList.remove("active"));
 });
 
-document.querySelector(".contact-form")?.addEventListener("submit", (e) => {
-  e.preventDefault();
-});
+const contactForm = document.getElementById("contactForm");
+
+if (contactForm) {
+  const contactSubmit = contactForm.querySelector(".contact-submit");
+  const contactMessage = document.getElementById("contactFormMessage");
+
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    contactSubmit.disabled = true;
+    contactMessage.textContent = "Sending...";
+    contactMessage.className = "contact-form-message";
+
+    try {
+      const res = await fetch(contactForm.action, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(contactForm),
+      });
+      const result = await res.json();
+
+      if (result.success) {
+        contactMessage.textContent = "Thanks — your message is on its way. I'll reply within a couple of days.";
+        contactMessage.classList.add("is-success");
+        contactForm.reset();
+      } else {
+        throw new Error(result.message || "Submission failed");
+      }
+    } catch (err) {
+      contactMessage.textContent = "Something went wrong sending that. Please try again or email me directly.";
+      contactMessage.classList.add("is-error");
+    } finally {
+      contactSubmit.disabled = false;
+    }
+  });
+}
 
 // Reveal motion — docs/landing-structure-update.md §6.
 // No Motion/React in this stack, so `whileInView` is implemented as a plain

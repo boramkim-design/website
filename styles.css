@@ -870,6 +870,7 @@ h1, h2, h3, h4 {
   --w-orange: #ee964b;
   --w-orange-hover: #e5842f;
   --w-green: #1f6f63;
+  --w-red: #b3432f;
   --w-sub-bg: #fbf6ec;
 
   color: var(--w-body);
@@ -1112,7 +1113,9 @@ h1, h2, h3, h4 {
 
 .contact-submit-row {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 .contact-submit {
@@ -1131,6 +1134,30 @@ h1, h2, h3, h4 {
 .contact-submit:hover {
   background: var(--w-orange-hover);
 }
+
+.contact-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.contact-honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.contact-form-message {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  font-weight: 600;
+  min-height: 1.2em;
+}
+
+.contact-form-message.is-success { color: var(--w-green); }
+.contact-form-message.is-error { color: var(--w-red); }
 
 /* ---------- Footer ---------- */
 

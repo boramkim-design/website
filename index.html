@@ -198,21 +198,24 @@
         <p>Tell me a little about it. I read everything and reply within a couple of days.</p>
       </div>
 
-      <form class="contact-form">
+      <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="5f5751f2-6e60-4d04-9f47-46105db2cbf5">
+        <input type="checkbox" name="botcheck" class="contact-honeypot" tabindex="-1" autocomplete="off">
         <label class="field">
           <span>Name</span>
-          <input type="text" placeholder="Jane Park">
+          <input type="text" name="name" placeholder="Jane Park" required>
         </label>
         <label class="field">
           <span>Email</span>
-          <input type="email" placeholder="jane@company.com">
+          <input type="email" name="email" placeholder="jane@company.com" required>
         </label>
         <label class="field field-full">
           <span>What's on your mind</span>
-          <textarea rows="4" placeholder="A project, a role, or just hello."></textarea>
+          <textarea rows="4" name="message" placeholder="A project, a role, or just hello." required></textarea>
         </label>
         <div class="field-full contact-submit-row">
           <button type="submit" class="contact-submit">Send message</button>
+          <p class="contact-form-message" id="contactFormMessage" role="status" aria-live="polite"></p>
         </div>
       </form>
     </div>
