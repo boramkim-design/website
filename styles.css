@@ -917,7 +917,30 @@ h1, h2, h3, h4 {
   transform: translateY(-3px);
 }
 
+/* Not a link — just previews an upcoming case study. */
+.case.is-soon { cursor: default; }
+.case.is-soon:hover { box-shadow: var(--shadow-card); transform: none; }
+
+.thumb-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  font-family: var(--font-accent);
+  font-weight: 600;
+  font-size: var(--text-eyebrow);
+  letter-spacing: var(--tracking-accent);
+  text-transform: uppercase;
+  color: var(--color-ink);
+  background: color-mix(in srgb, var(--color-paper) 85%, transparent);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  box-shadow: var(--shadow-card);
+  white-space: nowrap;
+}
+
 .thumb {
+  position: relative;
   aspect-ratio: 3 / 2;
   border-radius: 0.625rem;
   background: var(--color-brand-soft);
