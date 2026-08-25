@@ -775,6 +775,13 @@ h1, h2, h3, h4 {
   display: block;
 }
 
+.bubble-icon-svg {
+  height: clamp(1.75rem, 2.7vw, 2.5rem);
+  width: auto;
+  display: block;
+  color: var(--landing-accent);
+}
+
 .icon-bubble.active .bubble-circle {
   transform: scale(1.1);
   filter: drop-shadow(0 8px 12px rgba(17, 18, 20, 0.18));
