@@ -58,9 +58,7 @@ if (heroSection && heroHighlight && archBubbles.length) {
   const isMobileHero = () => window.matchMedia("(max-width: 768px)").matches;
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const centerIndex = (archBubbles.length - 1) / 2;
-  // Rainbow-style dome: center bubble highest, tapering down toward the
-  // edges — indexed by distance-from-center (0 = center bubble).
-  const vOffsetByDistance = [24, 12, 4, 0];
+  const maxDistance = centerIndex;
   let hasPlayed = false;
 
   // Measures the span from the left edge of "designer" to the right edge
@@ -90,28 +88,38 @@ if (heroSection && heroHighlight && archBubbles.length) {
 
     const wordSpanRect = getWordSpanRect();
     const gapCount = archBubbles.length - 1;
-    const spanLeft = wordSpanRect ? wordSpanRect.left : anchorViewportX - 240;
-    const spanWidth = wordSpanRect ? wordSpanRect.width : 480;
+    const wordSpanLeft = wordSpanRect ? wordSpanRect.left : anchorViewportX - 240;
+    const wordSpanWidth = wordSpanRect ? wordSpanRect.width : 480;
+    const wordSpanMidY = wordSpanRect
+      ? wordSpanRect.top + wordSpanRect.height / 2
+      : anchorViewportY;
 
-    // The arch itself rests well above the headline paragraph (not just
-    // barely above the "side quests." baseline) — otherwise the bubbles,
-    // being much taller than the 0/4/12/24px curve, sit on top of the text.
+    // Reach well past "designer"/"few" on either side — the two end bubbles
+    // land outside the words, not just flush with their edges.
+    const sideReach = wordSpanWidth * 0.35;
+    const spanLeft = wordSpanLeft - sideReach;
+    const spanWidth = wordSpanWidth + sideReach * 2;
+
+    // The peak of the arch rests well above the headline paragraph, and the
+    // two ends sweep down to the vertical middle of the "designer"/"few"
+    // line — a wide rainbow, not a shallow cap sitting just above the text.
     const headingEl = document.querySelector(".hero-content h1");
     const headingRect = (headingEl || heroHighlight).getBoundingClientRect();
     const sampleCircle = archBubbles[Math.round(centerIndex)].querySelector(".bubble-circle");
     const bubbleRadius = (sampleCircle ? sampleCircle.getBoundingClientRect().height : 70) / 2;
     const archClearance = 20;
-    const baseViewportY = headingRect.top - bubbleRadius - archClearance;
+    const peakViewportY = headingRect.top - bubbleRadius - archClearance;
 
     return archBubbles.map((el, i) => {
       const container = el.parentElement;
       const containerRect = container.getBoundingClientRect();
       const anchorX = anchorViewportX - containerRect.left;
       const anchorY = anchorViewportY - containerRect.top;
-      const baseY = baseViewportY - containerRect.top;
-      const distance = Math.round(Math.abs(i - centerIndex));
+      const t = Math.abs(i - centerIndex) / maxDistance; // 0 at center, 1 at the ends
+      const eased = t * t; // stays near the peak, then swoops down toward the ends
       const finalX = spanLeft + (spanWidth * i) / gapCount - containerRect.left;
-      const finalY = baseY - vOffsetByDistance[distance];
+      const finalYViewport = peakViewportY + (wordSpanMidY - peakViewportY) * eased;
+      const finalY = finalYViewport - containerRect.top;
       return { el, anchorX, anchorY, finalX, finalY };
     });
   };
