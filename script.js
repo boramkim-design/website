@@ -63,12 +63,35 @@ if (heroSection && heroHighlight && archBubbles.length) {
   const vOffsetByDistance = [24, 12, 4, 0];
   let hasPlayed = false;
 
+  // Measures the span from the left edge of "designer" to the right edge
+  // of "few" in the headline's first line — the arch is stretched to fit
+  // exactly across that width instead of a fixed px spacing.
+  const getWordSpanRect = () => {
+    const headingEl = document.querySelector(".hero-content h1");
+    if (!headingEl) return null;
+    const textNode = [...headingEl.childNodes].find(
+      (n) => n.nodeType === Node.TEXT_NODE && n.textContent.includes("designer")
+    );
+    if (!textNode) return null;
+    const text = textNode.textContent;
+    const startIdx = text.indexOf("designer");
+    const fewIdx = text.indexOf("few");
+    if (startIdx === -1 || fewIdx === -1) return null;
+    const range = document.createRange();
+    range.setStart(textNode, startIdx);
+    range.setEnd(textNode, fewIdx + "few".length);
+    return range.getBoundingClientRect();
+  };
+
   const computeArchTargets = () => {
     const anchorRect = heroHighlight.getBoundingClientRect();
     const anchorViewportX = anchorRect.left + anchorRect.width / 2;
     const anchorViewportY = anchorRect.top + anchorRect.height / 2;
-    const heroWidth = heroSection.getBoundingClientRect().width;
-    const spacing = Math.max(48, Math.min(80, heroWidth * 0.06));
+
+    const wordSpanRect = getWordSpanRect();
+    const gapCount = archBubbles.length - 1;
+    const spanLeft = wordSpanRect ? wordSpanRect.left : anchorViewportX - 240;
+    const spanWidth = wordSpanRect ? wordSpanRect.width : 480;
 
     // The arch itself rests well above the headline paragraph (not just
     // barely above the "side quests." baseline) — otherwise the bubbles,
@@ -87,7 +110,7 @@ if (heroSection && heroHighlight && archBubbles.length) {
       const anchorY = anchorViewportY - containerRect.top;
       const baseY = baseViewportY - containerRect.top;
       const distance = Math.round(Math.abs(i - centerIndex));
-      const finalX = anchorX + (i - centerIndex) * spacing;
+      const finalX = spanLeft + (spanWidth * i) / gapCount - containerRect.left;
       const finalY = baseY - vOffsetByDistance[distance];
       return { el, anchorX, anchorY, finalX, finalY };
     });
