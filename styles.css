@@ -1102,6 +1102,11 @@ h1, h2, h3, h4 {
   transition: border-color 0.15s ease;
 }
 
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--w-muted);
+}
+
 .field textarea { resize: vertical; line-height: 1.6; }
 
 .field input:focus,
