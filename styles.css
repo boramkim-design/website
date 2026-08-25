@@ -988,6 +988,7 @@ h1, h2, h3, h4 {
 
 .case h3 {
   margin: 0 0 0.625rem;
+  padding-left: 0.6875rem;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: var(--text-lead);
@@ -998,6 +999,7 @@ h1, h2, h3, h4 {
 
 .case p {
   margin: 0;
+  padding-left: 0.6875rem;
   font-size: var(--text-body-sm);
   line-height: var(--leading-body);
   color: var(--color-ink-secondary);
