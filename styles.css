@@ -742,6 +742,18 @@ h1, h2, h3, h4 {
   z-index: 11;
 }
 
+/* Hero icon-bubble entrance: burst out from the "side quests." anchor point
+   and settle into a computed arch (script.js). Once JS takes over placement
+   for a bubble it gets this class instead of the ambient float loop above. */
+.icon-bubble.is-positioned {
+  animation: none;
+  transition: left 0.5s ease-out,
+              top 0.5s ease-out,
+              opacity 0.5s ease-out,
+              transform 0.5s ease-out;
+  transition-delay: var(--arch-delay, 0s);
+}
+
 @keyframes float {
   0%, 100% { transform: translate(-50%, -50%) translateY(0); }
   50% { transform: translate(-50%, -50%) translateY(-14px); }

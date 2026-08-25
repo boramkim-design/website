@@ -46,6 +46,134 @@ document.addEventListener("click", () => {
   bubbles.forEach((b) => b.classList.remove("active"));
 });
 
+// Hero icon-bubble entrance: burst out of the "side quests." anchor point
+// and settle into an arch above the headline. Runs once on load, desktop/
+// tablet only — under the 768px breakpoint the existing static flex-wrap
+// layout (styles.css) already does the job, so this leaves those alone.
+const heroSection = document.querySelector(".hero");
+const heroHighlight = document.querySelector(".hero-content .highlight");
+const archBubbles = [...bubbles];
+
+if (heroSection && heroHighlight && archBubbles.length) {
+  const isMobileHero = () => window.matchMedia("(max-width: 768px)").matches;
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const centerIndex = (archBubbles.length - 1) / 2;
+  const vOffsetByDistance = [0, 4, 12, 24];
+  let hasPlayed = false;
+
+  const computeArchTargets = () => {
+    const anchorRect = heroHighlight.getBoundingClientRect();
+    const anchorViewportX = anchorRect.left + anchorRect.width / 2;
+    const anchorViewportY = anchorRect.top + anchorRect.height / 2;
+    const heroWidth = heroSection.getBoundingClientRect().width;
+    const spacing = Math.max(48, Math.min(80, heroWidth * 0.06));
+
+    // The arch itself rests well above the headline paragraph (not just
+    // barely above the "side quests." baseline) — otherwise the bubbles,
+    // being much taller than the 0/4/12/24px curve, sit on top of the text.
+    const headingEl = document.querySelector(".hero-content h1");
+    const headingRect = (headingEl || heroHighlight).getBoundingClientRect();
+    const sampleCircle = archBubbles[Math.round(centerIndex)].querySelector(".bubble-circle");
+    const bubbleRadius = (sampleCircle ? sampleCircle.getBoundingClientRect().height : 70) / 2;
+    const archClearance = 20;
+    const baseViewportY = headingRect.top - bubbleRadius - archClearance;
+
+    return archBubbles.map((el, i) => {
+      const container = el.parentElement;
+      const containerRect = container.getBoundingClientRect();
+      const anchorX = anchorViewportX - containerRect.left;
+      const anchorY = anchorViewportY - containerRect.top;
+      const baseY = baseViewportY - containerRect.top;
+      const distance = Math.round(Math.abs(i - centerIndex));
+      const finalX = anchorX + (i - centerIndex) * spacing;
+      const finalY = baseY - vOffsetByDistance[distance];
+      return { el, anchorX, anchorY, finalX, finalY };
+    });
+  };
+
+  const playArchEntrance = () => {
+    const targets = computeArchTargets();
+
+    targets.forEach(({ el, anchorX, anchorY, finalX, finalY }, i) => {
+      el.classList.add("is-positioned");
+      el.style.setProperty("--arch-delay", `${i * 70}ms`);
+
+      if (prefersReducedMotion) {
+        el.style.transition = "none";
+        el.style.left = `${finalX}px`;
+        el.style.top = `${finalY}px`;
+        el.style.opacity = "1";
+        el.style.transform = "translate(-50%, -50%) scale(1)";
+        return;
+      }
+
+      el.style.transition = "none";
+      el.style.left = `${anchorX}px`;
+      el.style.top = `${anchorY}px`;
+      el.style.opacity = "0";
+      el.style.transform = "translate(-50%, -50%) scale(0.3)";
+
+      void el.offsetWidth; // force reflow so the start state actually paints
+
+      el.style.transition = "";
+      el.style.left = `${finalX}px`;
+      el.style.top = `${finalY}px`;
+      el.style.opacity = "1";
+      el.style.transform = "translate(-50%, -50%) scale(1)";
+    });
+
+    hasPlayed = true;
+  };
+
+  const snapToArch = () => {
+    computeArchTargets().forEach(({ el, finalX, finalY }) => {
+      el.style.transition = "none";
+      el.style.left = `${finalX}px`;
+      el.style.top = `${finalY}px`;
+    });
+  };
+
+  const clearArchOverrides = () => {
+    archBubbles.forEach((el) => {
+      el.classList.remove("is-positioned");
+      el.style.left = "";
+      el.style.top = "";
+      el.style.opacity = "";
+      el.style.transform = "";
+      el.style.transition = "";
+      el.style.removeProperty("--arch-delay");
+    });
+    hasPlayed = false;
+  };
+
+  const startArch = () => {
+    if (hasPlayed || isMobileHero()) return;
+    playArchEntrance();
+  };
+
+  const runWhenReady = () => {
+    const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    fontsReady.then(startArch);
+  };
+
+  if (document.readyState === "complete") runWhenReady();
+  else window.addEventListener("load", runWhenReady);
+
+  let archResizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(archResizeTimer);
+    archResizeTimer = setTimeout(() => {
+      if (isMobileHero()) {
+        if (hasPlayed) clearArchOverrides();
+      } else if (hasPlayed) {
+        snapToArch();
+      } else {
+        startArch();
+      }
+    }, 150);
+  });
+}
+
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") bubbles.forEach((b) => b.classList.remove("active"));
 });
