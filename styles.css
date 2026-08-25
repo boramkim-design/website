@@ -385,9 +385,12 @@ h1, h2, h3, h4 {
 }
 
 .photo-stack {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: clamp(1rem, 2.5vw, 1.75rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 24rem;
+  margin-inline: auto;
 }
 
 .photo-stack-item {
@@ -405,12 +408,14 @@ h1, h2, h3, h4 {
   place-items: center;
   rotate: var(--rot);
   cursor: pointer;
+  margin-top: -2.75rem;
   transition: rotate 220ms cubic-bezier(.22,.61,.36,1),
               translate 220ms cubic-bezier(.22,.61,.36,1),
+              scale 220ms cubic-bezier(.22,.61,.36,1),
               box-shadow 220ms ease;
 }
 
-.photo-stack-item svg { width: 28%; height: 28%; }
+.photo-stack-item:first-child { margin-top: 0; }
 
 .photo-stack-item img {
   width: 100%;
@@ -421,6 +426,7 @@ h1, h2, h3, h4 {
 
 .photo-stack-item.is-front {
   rotate: 0deg;
+  scale: 1.06;
   translate: 0 -0.625rem;
   box-shadow: var(--shadow-card-hover);
 }
@@ -2174,11 +2180,7 @@ h2.cs-sec {
   /* photo stack stays on top, intro card below */
   .about-top { grid-template-columns: 1fr; }
 
-  /* .photo-stack was still 2 columns here, so each photo took half of the
-     now-full-width row instead of half of .about-top's ~40% column — one
-     row of 4 (keeping each item's own --rot tilt for a bit of zigzag)
-     instead of blowing them up to nearly double size. */
-  .photo-stack { grid-template-columns: repeat(4, 1fr); gap: 0.625rem; }
+  .photo-stack { max-width: 18rem; }
 
   /* Reorder so both icon groups sit together as one row directly under the headline. */
   .hero-content { order: 1; }
