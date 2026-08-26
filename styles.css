@@ -317,12 +317,12 @@ h1, h2, h3, h4 {
   align-content: center; /* without this, the two auto rows stretch to fill
     the hero and each child centers inside its own oversized row instead of
     the headline+copy centering together as one compact block */
-  /* top clears the header, plus the shallow icon arch above the headline
-     (24px min clearance from the headline itself, computed in script.js) —
-     6.5rem base header clearance + ~124px for the arch's own depth (~80px)
-     and badge size (~44px), plus another 4rem so the centered content sits
-     lower rather than leaving most of the slack as empty space below it. */
-  padding: 18.25rem 0 5.75rem;
+  /* top clears the header, plus room for the icon arch above the headline
+     (computed in script.js) — scaled by viewport width because the arch
+     itself does (computeArchTargets shrinks its radius on narrow screens),
+     so a fixed value sized for the desktop-scale arch left mobile with a
+     mostly-empty gap between the nav and the (now much shallower) arch. */
+  padding: clamp(11rem, 1.9rem + 29vw, 18.25rem) 0 5.75rem;
   overflow: hidden;
   color: var(--landing-ink);
 
@@ -1500,6 +1500,7 @@ h2.cs-sec {
 .cs-block > p { margin-top: 1.5rem; }
 
 .cs-insightbox-standalone { margin-top: 1.5rem; }
+.cs-insightbox-standalone p { font-weight: 600; }
 
 .cs-sub { margin-top: clamp(2.25rem, 4vw, 3.5rem); }
 
@@ -1926,7 +1927,10 @@ h2.cs-sec {
   overflow: hidden;
   background: var(--color-paper-sunken);
   cursor: grab;
-  touch-action: pan-y;
+  /* Claims all single/multi-finger gestures for our own pan/pinch-zoom
+     handlers — pan-y left vertical drags to the browser's native scroll,
+     which hijacked one-finger panning and left pinch-zoom dead on touch. */
+  touch-action: none;
 }
 
 .cs-vstage.is-dragging { cursor: grabbing; }
@@ -2232,15 +2236,19 @@ h2.cs-sec {
 
   .nav-inner { grid-template-columns: 1fr; }
 
+  /* Otherwise still renders in normal flow at the same top-right corner
+     the now-fixed .nav-burger occupies, peeking out from behind it. */
+  .btn-linkedin { display: none; }
+
   /* Fixed (not absolute, like the rest of .navbar) so the burger and its
      menu — unlike the LinkedIn button — stay on screen while scrolling,
-     the same way .nav-pill does on desktop. Pinned to the left since
-     .nav-brand is hidden here and would otherwise leave that side empty. */
+     the same way .nav-pill does on desktop. Pinned to the right so it
+     doesn't sit on top of the hero headline/icons underneath it. */
   .nav-burger {
     display: flex;
     position: fixed;
     top: 16px;
-    left: var(--page-gutter);
+    right: var(--page-gutter);
     z-index: 50;
   }
 
@@ -2248,7 +2256,7 @@ h2.cs-sec {
     display: flex;
     position: fixed;
     top: calc(16px + var(--nav-h) + 8px);
-    left: var(--page-gutter);
+    right: var(--page-gutter);
     z-index: 50;
   }
 

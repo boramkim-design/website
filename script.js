@@ -678,20 +678,69 @@ document.querySelectorAll(".cs-viewer").forEach((viewer) => {
 
   stage.addEventListener("dblclick", (e) => zoomAt(scale > fit * 1.05 ? fit / scale : 2.2, e.clientX, e.clientY));
 
+  // Single finger/pointer pans; a second finger switches to pinch-zoom
+  // (tracked by pointer id so it also works with an actual mouse+touch mix).
   let drag = null;
+  let pinch = null;
+  const points = new Map();
+
+  const pinchDist = () => {
+    const [a, b] = [...points.values()];
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  };
+  const pinchMid = () => {
+    const [a, b] = [...points.values()];
+    return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+  };
+
   stage.addEventListener("pointerdown", (e) => {
-    drag = { x: e.clientX, y: e.clientY, tx, ty };
-    stage.classList.add("is-dragging");
     stage.setPointerCapture(e.pointerId);
+    points.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (points.size === 2) {
+      drag = null;
+      stage.classList.remove("is-dragging");
+      pinch = { dist: pinchDist() };
+    } else if (points.size === 1) {
+      drag = { x: e.clientX, y: e.clientY, tx, ty };
+      stage.classList.add("is-dragging");
+    }
   });
   stage.addEventListener("pointermove", (e) => {
-    if (!drag) return;
+    if (!points.has(e.pointerId)) return;
+    points.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (pinch && points.size === 2) {
+      const dist = pinchDist();
+      const mid = pinchMid();
+      zoomAt(dist / pinch.dist, mid.x, mid.y);
+      pinch.dist = dist;
+      return;
+    }
+    if (!drag || points.size !== 1) return;
     tx = drag.tx + (e.clientX - drag.x);
     ty = drag.ty + (e.clientY - drag.y);
     clamp();
     apply();
   });
-  const endDrag = () => { drag = null; stage.classList.remove("is-dragging"); };
+  const endDrag = (e) => {
+    points.delete(e.pointerId);
+    if (points.size < 2) pinch = null;
+    if (points.size === 1) {
+      const [[, p]] = points;
+      drag = { x: p.x, y: p.y, tx, ty };
+      stage.classList.add("is-dragging");
+    } else {
+      drag = null;
+      stage.classList.remove("is-dragging");
+    }
+  };
   stage.addEventListener("pointerup", endDrag);
   stage.addEventListener("pointercancel", endDrag);
+});
+
+// Case study solution videos play back sped up — reapply on loadedmetadata
+// since some browsers reset playbackRate once the source is actually ready.
+document.querySelectorAll(".cs-video-el").forEach((video) => {
+  video.playbackRate = 1.3;
+  video.addEventListener("loadedmetadata", () => { video.playbackRate = 1.3; });
 });
