@@ -741,6 +741,6 @@ document.querySelectorAll(".cs-viewer").forEach((viewer) => {
 // Case study solution videos play back sped up — reapply on loadedmetadata
 // since some browsers reset playbackRate once the source is actually ready.
 document.querySelectorAll(".cs-video-el").forEach((video) => {
-  video.playbackRate = 1.3;
-  video.addEventListener("loadedmetadata", () => { video.playbackRate = 1.3; });
+  video.playbackRate = 1.5;
+  video.addEventListener("loadedmetadata", () => { video.playbackRate = 1.5; });
 });
