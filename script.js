@@ -33,15 +33,14 @@ mobileMenu.querySelectorAll(".mobile-link").forEach((link) => {
 const bubbles = document.querySelectorAll(".icon-bubble");
 
 // Hero icon-bubble entrance: burst out of the "side quests." anchor point
-// and settle into an arch above the headline. Runs once on load, desktop/
-// tablet only — under the 768px breakpoint the existing static flex-wrap
-// layout (styles.css) already does the job, so this leaves those alone.
+// and settle into an arch above the headline, at every viewport width — the
+// arch's own scale-to-fit math (see computeArchTargets) keeps it on-screen
+// even on narrow phones, so there's no separate mobile layout to fall back to.
 const heroSection = document.querySelector(".hero");
 const heroHighlight = document.querySelector(".hero-content .highlight");
 const archBubbles = [...bubbles];
 
 if (heroSection && heroHighlight && archBubbles.length) {
-  const isMobileHero = () => window.matchMedia("(max-width: 768px)").matches;
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const centerIndex = (archBubbles.length - 1) / 2;
   let hasPlayed = false;
@@ -49,15 +48,12 @@ if (heroSection && heroHighlight && archBubbles.length) {
   // Circular arch: badge i's angle is (i - center) * (42.5 / (n-1)) degrees,
   // spread across -21.25deg..+21.25deg regardless of badge count. x/y offsets
   // from the apex follow the standard parametric-circle formulas at radius
-  // 1306px — ~900px total width, ~80px height difference between the apex
-  // and the two ends. Below ARCH_REFERENCE_WIDTH the whole arch scales down
-  // (radius only) so it still fits a narrower viewport.
+  // 1306px at full scale (~900px total width, ~80px depth) — computeArchTargets
+  // scales that radius down on narrower viewports so it still fits.
   const ARCH_RADIUS = 1306;
   const ARCH_SPAN_DEGREES = 42.5;
-  const ARCH_REFERENCE_WIDTH = 900;
   const ARCH_STEP_DEGREES = ARCH_SPAN_DEGREES / (archBubbles.length - 1);
   const toRad = (deg) => (deg * Math.PI) / 180;
-  const getArchScale = () => Math.min(1, window.innerWidth / ARCH_REFERENCE_WIDTH);
 
   const getSampleBubbleRadius = () => {
     const sampleCircle = archBubbles[Math.round(centerIndex)].querySelector(".bubble-circle");
@@ -92,8 +88,28 @@ if (heroSection && heroHighlight && archBubbles.length) {
     const apexViewportX = getApexViewportX();
     const bubbleRadius = getSampleBubbleRadius();
     const archClearance = 24; // min gap between the arch's lowest point and the headline's top
-    const radius = ARCH_RADIUS * getArchScale();
-    const edgeDrop = radius * (1 - Math.cos(toRad(ARCH_STEP_DEGREES * centerIndex)));
+
+    // Scale the arch down so it actually fits around the apex on this
+    // viewport, instead of just shrinking proportionally with viewport width
+    // (a flat viewport/900 ratio still overflowed narrower screens, since the
+    // arch's own unscaled width is wider than 900px to begin with). Measured
+    // against how much room really exists between the apex and each edge of
+    // .hero-content, not just the raw viewport width.
+    // bubbleRadius itself isn't scaled (only the arch's own geometry is), so
+    // it has to come off the available budget *before* dividing to get the
+    // scale — folding it into the same ratio as the geometric half-width
+    // undercorrected: the badge's un-scaled radius still got added back on
+    // top at the edge, overshooting the fit by bubbleRadius * (1 - scale).
+    const halfSpanRad = toRad(ARCH_STEP_DEGREES * centerIndex);
+    const naturalArcHalfWidth = ARCH_RADIUS * Math.sin(halfSpanRad);
+    const heroContentEl = document.querySelector(".hero-content");
+    const gutter = heroContentEl ? parseFloat(getComputedStyle(heroContentEl).paddingLeft) || 0 : 0;
+    const availableHalfWidth = Math.min(apexViewportX, window.innerWidth - apexViewportX) - gutter - bubbleRadius;
+    const archScale = naturalArcHalfWidth > 0
+      ? Math.max(0.15, Math.min(1, availableHalfWidth / naturalArcHalfWidth))
+      : 1;
+    const radius = ARCH_RADIUS * archScale;
+    const edgeDrop = radius * (1 - Math.cos(halfSpanRad));
     const headingEl = document.querySelector(".hero-content h1");
     const headingRect = (headingEl || heroHighlight).getBoundingClientRect();
     const apexViewportY = headingRect.top - archClearance - bubbleRadius - edgeDrop;
@@ -111,6 +127,52 @@ if (heroSection && heroHighlight && archBubbles.length) {
       const finalY = apexViewportY + yOffset - containerRect.top;
       return { el, anchorX, anchorY, finalX, finalY };
     });
+  };
+
+  // Post-entrance "click me" wave: a left-to-right sweep of pulses across
+  // the settled badges, repeated a few times then stopped for good — a
+  // one-off nudge, not an ongoing distraction next to the headline.
+  // Gap between each badge's pulse start, left to right. Needs to be a large
+  // enough fraction of the pulse's own 0.4s duration that only 2-3 adjacent
+  // badges are ever mid-pulse at once — at 90ms, 4-5 of the 6 were active
+  // simultaneously and it read as one synchronized swell instead of a sweep.
+  const WAVE_STAGGER_MS = 150;
+  const WAVE_ENTRANCE_DELAY_MS = (archBubbles.length - 1) * 80 + 600; // matches the arch entrance's own total run time
+  const WAVE_REPEATS = 3;
+  const WAVE_INTERVAL_MS = 1500;
+  let waveTimers = [];
+  // Separate from waveTimers.length: a click before the sequence has even
+  // been scheduled (still mid-entrance) must permanently suppress it too,
+  // not just clear whatever timers happen to exist at that moment.
+  let waveCancelled = false;
+
+  const stopWave = () => {
+    waveCancelled = true;
+    waveTimers.forEach(clearTimeout);
+    waveTimers = [];
+    archBubbles.forEach((el) => el.querySelector(".bubble-circle").classList.remove("wave-pulse"));
+  };
+
+  const playWaveSweep = () => {
+    if (waveCancelled) return;
+    archBubbles.forEach((el, i) => {
+      waveTimers.push(
+        setTimeout(() => {
+          const circle = el.querySelector(".bubble-circle");
+          circle.classList.remove("wave-pulse");
+          void circle.offsetWidth; // restart the animation if it's still mid-pulse from a prior sweep
+          circle.classList.add("wave-pulse");
+          circle.addEventListener("animationend", () => circle.classList.remove("wave-pulse"), { once: true });
+        }, i * WAVE_STAGGER_MS)
+      );
+    });
+  };
+
+  const startWaveSequence = () => {
+    if (prefersReducedMotion || waveCancelled) return;
+    for (let w = 0; w < WAVE_REPEATS; w++) {
+      waveTimers.push(setTimeout(playWaveSweep, WAVE_ENTRANCE_DELAY_MS + w * WAVE_INTERVAL_MS));
+    }
   };
 
   const playArchEntrance = () => {
@@ -135,6 +197,7 @@ if (heroSection && heroHighlight && archBubbles.length) {
     });
 
     hasPlayed = true;
+    startWaveSequence();
   };
 
   const snapToArch = () => {
@@ -146,25 +209,8 @@ if (heroSection && heroHighlight && archBubbles.length) {
     });
   };
 
-  const clearArchOverrides = () => {
-    archBubbles.forEach((el) => {
-      el.classList.remove("is-positioned");
-      el.style.removeProperty("--anchor-x");
-      el.style.removeProperty("--anchor-y");
-      el.style.removeProperty("--final-x");
-      el.style.removeProperty("--final-y");
-      el.style.removeProperty("--arch-delay");
-      el.style.left = "";
-      el.style.top = "";
-      el.style.opacity = "";
-      el.style.transform = "";
-      el.style.animation = "";
-    });
-    hasPlayed = false;
-  };
-
   const startArch = () => {
-    if (hasPlayed || isMobileHero()) return;
+    if (hasPlayed) return;
     playArchEntrance();
   };
 
@@ -180,9 +226,7 @@ if (heroSection && heroHighlight && archBubbles.length) {
   window.addEventListener("resize", () => {
     clearTimeout(archResizeTimer);
     archResizeTimer = setTimeout(() => {
-      if (isMobileHero()) {
-        if (hasPlayed) clearArchOverrides();
-      } else if (hasPlayed) {
+      if (hasPlayed) {
         snapToArch();
       } else {
         startArch();
@@ -200,7 +244,6 @@ if (heroSection && heroHighlight && archBubbles.length) {
   const heroCardIcon = document.getElementById("iconStoryIcon");
   const heroCardTitle = document.getElementById("iconStoryTitle");
   const heroCardDesc = document.getElementById("iconStoryDesc");
-  const CARD_WIDTH = 290;
   const CARD_EDGE_MARGIN = 8;
   const CARD_GAP_ABOVE_BADGE = 8;
   let activeBubble = null;
@@ -224,7 +267,10 @@ if (heroSection && heroHighlight && archBubbles.length) {
 
     const heroRect = heroSection.getBoundingClientRect();
     const clickedRect = circle.getBoundingClientRect();
-    const halfCard = CARD_WIDTH / 2;
+    // Measured live, not a hardcoded constant — the card's CSS width is
+    // itself responsive (narrower on small phones), so a fixed number here
+    // would drift out of sync with what's actually rendered.
+    const halfCard = heroCard.getBoundingClientRect().width / 2;
     const minX = heroRect.left + CARD_EDGE_MARGIN + halfCard;
     const maxX = heroRect.right - CARD_EDGE_MARGIN - halfCard;
     const rawX = clickedRect.left + clickedRect.width / 2;
@@ -245,6 +291,7 @@ if (heroSection && heroHighlight && archBubbles.length) {
     const circle = bubble.querySelector(".bubble-circle");
     circle.addEventListener("click", (e) => {
       e.stopPropagation();
+      stopWave();
       const wasActive = bubble === activeBubble;
       closeIconCard();
       if (!wasActive) openIconCard(bubble);

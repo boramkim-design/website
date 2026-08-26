@@ -740,13 +740,11 @@ h1, h2, h3, h4 {
   animation: float var(--duration, 5s) ease-in-out infinite;
   animation-delay: var(--delay, 0s);
   z-index: 3;
-}
-
-@media (min-width: 769px) {
   /* Hidden until script.js measures the headline and adds .is-positioned —
      without this, badges flash in their scattered ambient-float layout
-     first, then jump to the arch's anchor point once JS runs. */
-  .icon-bubble { opacity: 0; }
+     first, then jump to the arch's anchor point once JS runs. Applies at
+     every width now — the arch runs on phones too, not just desktop/tablet. */
+  opacity: 0;
 }
 
 .icon-bubble.active {
@@ -815,6 +813,35 @@ h1, h2, h3, h4 {
 .bubble-circle:hover {
   transform: scale(1.1);
   filter: drop-shadow(0 8px 12px rgba(17, 18, 20, 0.18));
+}
+
+/* Post-entrance "look, click me" wave (script.js): a left-to-right sweep of
+   pulses, timed and cancelled entirely from JS. Lives on .bubble-circle
+   rather than .icon-bubble so it doesn't fight the arch position/idle-bob
+   transform on the parent. */
+.bubble-circle.wave-pulse {
+  /* A peak is a local max — velocity is mathematically zero there no matter
+     how this is built, in one eased segment or two. What actually reads as
+     "smooth" is a rounded sine-shaped curve through that zero point rather
+     than two independently-eased ramps meeting at it. `linear` plus many
+     close keyframe stops traces that curve directly (a piecewise-linear
+     approximation of scale(t) = 1 + 0.18*sin(πt)) instead of asking one or
+     two cubic-bezier segments to approximate it and creating a seam. */
+  animation: badgeWavePulse 0.4s linear;
+}
+
+@keyframes badgeWavePulse {
+  0%   { transform: scale(1);     filter: none; }
+  10%  { transform: scale(1.056); filter: drop-shadow(0 1.9px 3.1px rgba(17, 18, 20, 0.05)); }
+  20%  { transform: scale(1.106); filter: drop-shadow(0 3.5px 5.9px rgba(17, 18, 20, 0.094)); }
+  30%  { transform: scale(1.146); filter: drop-shadow(0 4.6px 7.7px rgba(17, 18, 20, 0.122)); }
+  40%  { transform: scale(1.171); filter: drop-shadow(0 5.6px 9.3px rgba(17, 18, 20, 0.148)); }
+  50%  { transform: scale(1.18);  filter: drop-shadow(0 6px 10px rgba(17, 18, 20, 0.16)); }
+  60%  { transform: scale(1.171); filter: drop-shadow(0 5.6px 9.3px rgba(17, 18, 20, 0.148)); }
+  70%  { transform: scale(1.146); filter: drop-shadow(0 4.6px 7.7px rgba(17, 18, 20, 0.122)); }
+  80%  { transform: scale(1.106); filter: drop-shadow(0 3.5px 5.9px rgba(17, 18, 20, 0.094)); }
+  90%  { transform: scale(1.056); filter: drop-shadow(0 1.9px 3.1px rgba(17, 18, 20, 0.05)); }
+  100% { transform: scale(1);     filter: none; }
 }
 
 .bubble-icon-img {
@@ -1354,7 +1381,7 @@ body.case-page {
 .cs-frame-embed { padding: 0; }
 .cs-frame-embed iframe { display: block; width: 100%; height: min(70vh, 640px); border: 0; }
 
-.cs-video { position: relative; overflow: hidden; border: 1px solid var(--color-line); }
+.cs-video { position: relative; overflow: hidden; box-shadow: var(--shadow-card); }
 
 /* Source export has a hairline dark column baked into its right edge —
    scale past the frame by a hair and let the wrapper's overflow clip it,
@@ -1695,10 +1722,11 @@ h2.cs-sec {
 .cs-tocard.is-drop .cs-tocard-lbl,
 .cs-tocard.is-drop .cs-tocard-val { color: var(--color-ink-muted); }
 
-/* One of the three "dropped" labels runs to two lines while the other two
-   fit on one — reserve two lines' height on all of them so the "kept"
-   card below starts at the same row across all three columns. */
-.cs-tocard.is-drop .cs-tocard-val {
+/* Some of the three "dropped"/"kept" values run to two lines while their
+   siblings fit on one (varies by viewport width, not just which of the two
+   this is) — reserve two lines' height on both so the row below always
+   starts at the same point across all three columns. */
+.cs-tocard-val {
   min-height: calc(2 * var(--text-h4) * var(--leading-snug));
 }
 
@@ -2224,46 +2252,19 @@ h2.cs-sec {
     z-index: 50;
   }
 
-  /* top padding clears .navbar, which is position:absolute and overlaps the
-     hero here too (~84px: 18px*2 padding + 48px burger) — 24px left the
-     headline starting underneath it */
-  .hero { min-height: auto; padding: 96px var(--page-gutter) 40px; align-items: stretch; }
   .page-intro { padding: 96px var(--page-gutter) 40px; }
 
-  /* Case study page (urcareer.html) — clear the burger nav, then stack the
-     components that assume desktop-width columns. */
+  /* Case study page (urcareer.html) — clear the burger nav. cs-stats,
+     cs-tradeoffs and cs-solrow keep their desktop-width column counts through
+     this whole tablet range on purpose (see the 46rem block below) — they
+     only actually need to stack once the viewport gets phone-narrow. */
   .cs-hero { padding-top: 96px; padding-bottom: 40px; }
   .cs-meta-strip { grid-template-columns: repeat(2, 1fr); }
-  .cs-tradeoffs { grid-template-columns: repeat(2, 1fr); }
-  .cs-stats { grid-template-columns: 1fr; }
-  .cs-stat { border-right: none; border-bottom: 1px solid var(--color-line); }
-  .cs-stat:last-child { border-bottom: none; }
-  .cs-solrow { grid-template-columns: 1fr; }
-  .cs-solrow.is-reverse { grid-template-columns: 1fr; }
 
   /* photo stack stays on top, intro card below */
   .about-top { grid-template-columns: 1fr; }
 
   .photo-stack { max-width: 15rem; }
-
-  /* Reorder so both icon groups sit together as one row directly under the headline. */
-  .hero-content { order: 1; }
-  .hero-icons-top { order: 2; }
-  .hero-icons-bottom { order: 3; }
-  .hero-copy { order: 4; }
-
-  /* was absolutely positioned from .hero's bottom edge, which overlapped the
-     buttons once .hero collapses to its content height on mobile */
-  .scroll-cue {
-    position: static;
-    /* left:50% no longer applies once static, but translate is a transform
-       and still runs — without resetting it, it shifts the already-centered
-       item another 50% of its own width to the left */
-    left: auto;
-    translate: none;
-    order: 5;
-    margin-top: 24px;
-  }
 
   .hero-content,
   .hero-copy {
@@ -2271,46 +2272,6 @@ h2.cs-sec {
   }
 
   .mobile-break { display: block; }
-
-  .hero-copy {
-    margin: 0 0 8px;
-  }
-
-  .hero-actions {
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .btn-primary, .btn-secondary {
-    padding: 10px 16px;
-    font-size: 13px;
-    white-space: nowrap;
-  }
-
-  /* Icon rows sit together as one wrapped row below the headline —
-     static (not floating) so they never sit on top of the text. */
-  .hero-icons {
-    position: static;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-  }
-  .hero-icons-top { margin: 28px 0 0; }
-  .hero-icons-bottom { margin: 0 0 28px; }
-
-  .icon-bubble {
-    position: relative;
-    top: auto;
-    left: auto;
-    opacity: 1;
-    transform: none !important;
-    animation: none;
-  }
-  .bubble-circle { width: 60px; height: 60px; font-size: 40px; }
-  .bubble-icon-img { height: 43px; }
-  .icon-story-card { width: min(290px, 70vw); }
 
   .contact {
     padding: 48px var(--page-gutter) 56px;
@@ -2320,6 +2281,43 @@ h2.cs-sec {
   .contact-form {
     grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 480px) {
+  /* Everything else about the hero (the icon arch included — see
+     computeArchTargets in script.js, which scales the whole arch to fit
+     around the headline at any width) holds at every viewport size now.
+     Only the click card's fixed 290px width still needs a narrower-phone
+     concession, so it doesn't crowd the hero's own edges. */
+  .icon-story-card { width: min(290px, 82vw); }
+}
+
+@media (max-width: 900px) and (min-width: 46.01rem) {
+  /* Tablet only, above the 46rem mobile cutoff below. The vertical
+     overlapping stack was built to sit narrow beside the intro text on
+     desktop — once .about-top drops to one column here, that same stack
+     reads as an oddly tall, disproportionate column with all that width
+     going unused beside it. Lay the same three photos out as a row instead. */
+  .photo-stack {
+    flex-direction: row;
+    max-width: 40rem;
+  }
+
+  /* .about-top's own 0.5rem top padding was tuned for sitting *beside* the
+     heading's row on desktop, not stacked directly under it — give the
+     now-wide photo row real breathing room from "About Me" above it. */
+  .about-top {
+    padding-block-start: 3rem;
+  }
+
+  .photo-stack-item {
+    width: 34%;
+    margin-top: 0;
+    margin-left: -2rem;
+    translate: 0 var(--shift, 0);
+  }
+
+  .photo-stack-item:first-child { margin-left: 0; }
 }
 
 @media (max-width: 46rem) {
@@ -2335,13 +2333,68 @@ h2.cs-sec {
     gap: 1.25rem;
   }
 
-  /* Case study page — 2-up tradeoff cards get cramped below this width */
-  .cs-tradeoffs { grid-template-columns: 1fr; }
+  /* Case study page — cs-solrow's fixed 17rem video track holds its
+     desktop-style side-by-side layout through tablet widths (see the 900px
+     block) and only stacks once the viewport is genuinely phone-narrow. */
+  .cs-solrow { grid-template-columns: 1fr; }
+  .cs-solrow.is-reverse { grid-template-columns: 1fr; }
+
+  /* Stacked, the screen must stay at its own native size instead of
+     stretching to fill the now-full-width column, and sit centered. */
+  .cs-solrow .cs-figure {
+    max-width: 17rem;
+    margin-inline: auto;
+  }
+
+  /* Text always reads before the screen once stacked — is-reverse (Cudagra)
+     is already DOM-order text-first so this only changes the default
+     (video-left) variant, but both are set explicitly here for clarity. */
+  .cs-solrow > .cs-figure,
+  .cs-solrow.is-reverse > .cs-figure {
+    order: 2;
+  }
+  .cs-solrow > div:first-child,
+  .cs-solrow.is-reverse > div:first-child {
+    order: 1;
+  }
 
   /* Education cards stay 3-across through tablet widths (stacking them
      there just leaves each short card floating in a lot of empty space) —
      only stack once truly cramped. */
   .education-grid { grid-template-columns: 1fr; }
+}
+
+/* Case study page — cs-tradeoffs' three dropped/kept columns get cramped
+   below this width (measured: three-across still reads fine at 750px, but
+   is tight by 650px) — switch to two-up (2 then 1) before it's forced to
+   full single-column. */
+@media (max-width: 43.75rem) {
+  .cs-tradeoffs { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ...and two-up itself gets cramped below this width. */
+@media (max-width: 30rem) {
+  .cs-tradeoffs { grid-template-columns: 1fr; }
+}
+
+/* cs-stats' three EQUAL columns hold up until "11-19%" (the widest value) no
+   longer fits without wrapping or spilling past the card's rounded corner —
+   measured to happen right around 500px. Below that, give column 3 a bigger
+   share (label/context text in columns 1-2 have their own unbreakable-word
+   floor, so the ratio can't be pushed indefinitely) plus tighter padding —
+   measured to hold three-up down to ~400px before the same overflow returns. */
+@media (max-width: 32.5rem) {
+  .cs-stats { grid-template-columns: 0.75fr 0.75fr 1.5fr; }
+  .cs-stat { padding: 0.75rem 0.5rem; }
+}
+
+/* Below the narrowed-ratio floor above, stack for good. Measured floor for
+   the ratio above was ~400px; a 10px margin is kept here for scrollbar-width
+   and font-rendering variance across browsers/platforms. */
+@media (max-width: 410px) {
+  .cs-stats { grid-template-columns: 1fr; }
+  .cs-stat { padding: 1.5rem; border-right: none; border-bottom: 1px solid var(--color-line); }
+  .cs-stat:last-child { border-bottom: none; }
 }
 
 /* ---------- Reveal motion (docs/landing-structure-update.md §6) ---------- */
@@ -2361,6 +2414,7 @@ h2.cs-sec {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .icon-bubble, .icon-bubble.is-positioned { animation: none; }
+  .bubble-circle.wave-pulse { animation: none; }
   .scroll-cue svg { animation: none; }
   .cs-maps-hint svg { animation: none; }
 }
