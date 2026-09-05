@@ -30,287 +30,117 @@ mobileMenu.querySelectorAll(".mobile-link").forEach((link) => {
   });
 });
 
-const bubbles = document.querySelectorAll(".icon-bubble");
+/* ---------- Hero headline: "learnable" untangles ---------- */
+// The knot under the word pulls itself straight while the letters unwind from
+// crooked to level. Driven by a rAF loop that recomputes the path's points and
+// writes `d` every frame, rather than by a CSS transition, keyframe or
+// stroke-dashoffset — those hand the interpolation to the browser, and the
+// motion is the whole point of the word, so it should not depend on that.
 
-// Hero icon-bubble entrance: burst out of the "side quests." anchor point
-// and settle into an arch above the headline, at every viewport width — the
-// arch's own scale-to-fit math (see computeArchTargets) keeps it on-screen
-// even on narrow phones, so there's no separate mobile layout to fall back to.
-const heroSection = document.querySelector(".hero");
-const heroHighlight = document.querySelector(".hero-content .highlight");
-const archBubbles = [...bubbles];
+const untangleWord = document.querySelector(".untangle");
 
-if (heroSection && heroHighlight && archBubbles.length) {
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const centerIndex = (archBubbles.length - 1) / 2;
-  let hasPlayed = false;
+if (untangleWord) {
+  const messy = untangleWord.querySelector(".knot-messy");
+  const tidy = untangleWord.querySelector(".knot-tidy");
 
-  // Circular arch: badge i's angle is (i - center) * (42.5 / (n-1)) degrees,
-  // spread across -21.25deg..+21.25deg regardless of badge count. x/y offsets
-  // from the apex follow the standard parametric-circle formulas at radius
-  // 1306px at full scale (~900px total width, ~80px depth) — computeArchTargets
-  // scales that radius down on narrower viewports so it still fits.
-  const ARCH_RADIUS = 1306;
-  const ARCH_SPAN_DEGREES = 42.5;
-  const ARCH_STEP_DEGREES = ARCH_SPAN_DEGREES / (archBubbles.length - 1);
-  const toRad = (deg) => (deg * Math.PI) / 180;
+  const PTS = 46;  // point count shared by both shapes, so they interpolate 1:1
+  const MID = 30;  // baseline y inside the 0 0 200 48 viewBox
+  const DURATION_MS = 1500;
 
-  const getSampleBubbleRadius = () => {
-    const sampleCircle = archBubbles[Math.round(centerIndex)].querySelector(".bubble-circle");
-    return (sampleCircle ? sampleCircle.getBoundingClientRect().height : 70) / 2;
+  // The tangle doubles back on itself in x — that backtracking is what makes
+  // it read as a knot with real crossings instead of a tidy wave. Both ends
+  // are damped by the sine envelope so the knot resolves onto the line.
+  const knotPoint = (i) => {
+    const p = i / (PTS - 1);
+    const envelope = Math.sin(p * Math.PI);
+    return [
+      4 + p * 192 + Math.sin(p * Math.PI * 8.5) * 26 * envelope,
+      MID + Math.sin(p * Math.PI * 12.5 + 1.1) * 17 * envelope,
+    ];
   };
 
-  // Apex sits on the horizontal midpoint between "designer" and "few" in
-  // the headline's first line.
-  const getApexViewportX = () => {
-    const headingEl = document.querySelector(".hero-content h1");
-    if (!headingEl) return heroHighlight.getBoundingClientRect().left;
-    const textNode = [...headingEl.childNodes].find(
-      (n) => n.nodeType === Node.TEXT_NODE && n.textContent.includes("designer")
-    );
-    if (!textNode) return heroHighlight.getBoundingClientRect().left;
-    const text = textNode.textContent;
-    const startIdx = text.indexOf("designer");
-    const fewIdx = text.indexOf("few");
-    if (startIdx === -1 || fewIdx === -1) return heroHighlight.getBoundingClientRect().left;
-    const range = document.createRange();
-    range.setStart(textNode, startIdx);
-    range.setEnd(textNode, fewIdx + "few".length);
-    const rect = range.getBoundingClientRect();
-    return rect.left + rect.width / 2;
+  const linePoint = (i) => {
+    const p = i / (PTS - 1);
+    return [4 + p * 192, MID - Math.sin(p * Math.PI) * 4];
   };
 
-  const computeArchTargets = () => {
-    const anchorRect = heroHighlight.getBoundingClientRect();
-    const anchorViewportX = anchorRect.left + anchorRect.width / 2;
-    const anchorViewportY = anchorRect.top + anchorRect.height / 2;
+  const KNOT = Array.from({ length: PTS }, (_, i) => knotPoint(i));
+  const LINE = Array.from({ length: PTS }, (_, i) => linePoint(i));
 
-    const apexViewportX = getApexViewportX();
-    const bubbleRadius = getSampleBubbleRadius();
-    const archClearance = 24; // min gap between the arch's lowest point and the headline's top
+  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+  const clamp01 = (v) => Math.min(1, Math.max(0, v));
 
-    // Scale the arch down so it actually fits around the apex on this
-    // viewport, instead of just shrinking proportionally with viewport width
-    // (a flat viewport/900 ratio still overflowed narrower screens, since the
-    // arch's own unscaled width is wider than 900px to begin with). Measured
-    // against how much room really exists between the apex and each edge of
-    // .hero-content, not just the raw viewport width.
-    // bubbleRadius itself isn't scaled (only the arch's own geometry is), so
-    // it has to come off the available budget *before* dividing to get the
-    // scale — folding it into the same ratio as the geometric half-width
-    // undercorrected: the badge's un-scaled radius still got added back on
-    // top at the edge, overshooting the fit by bubbleRadius * (1 - scale).
-    const halfSpanRad = toRad(ARCH_STEP_DEGREES * centerIndex);
-    const naturalArcHalfWidth = ARCH_RADIUS * Math.sin(halfSpanRad);
-    const heroContentEl = document.querySelector(".hero-content");
-    const gutter = heroContentEl ? parseFloat(getComputedStyle(heroContentEl).paddingLeft) || 0 : 0;
-    const availableHalfWidth = Math.min(apexViewportX, window.innerWidth - apexViewportX) - gutter - bubbleRadius;
-    const archScale = naturalArcHalfWidth > 0
-      ? Math.max(0.15, Math.min(1, availableHalfWidth / naturalArcHalfWidth))
-      : 1;
-    const radius = ARCH_RADIUS * archScale;
-    const edgeDrop = radius * (1 - Math.cos(halfSpanRad));
-    const headingEl = document.querySelector(".hero-content h1");
-    const headingRect = (headingEl || heroHighlight).getBoundingClientRect();
-    const apexViewportY = headingRect.top - archClearance - bubbleRadius - edgeDrop;
-
-    return archBubbles.map((el, i) => {
-      const container = el.parentElement;
-      const containerRect = container.getBoundingClientRect();
-      const anchorX = anchorViewportX - containerRect.left;
-      const anchorY = anchorViewportY - containerRect.top;
-      const thetaDeg = (i - centerIndex) * ARCH_STEP_DEGREES;
-      const thetaRad = toRad(thetaDeg);
-      const xOffset = radius * Math.sin(thetaRad);
-      const yOffset = radius * (1 - Math.cos(thetaRad));
-      const finalX = apexViewportX + xOffset - containerRect.left;
-      const finalY = apexViewportY + yOffset - containerRect.top;
-      return { el, anchorX, anchorY, finalX, finalY };
-    });
-  };
-
-  // Post-entrance "click me" wave: a left-to-right sweep of pulses across
-  // the settled badges, repeated a few times then stopped for good — a
-  // one-off nudge, not an ongoing distraction next to the headline.
-  // Gap between each badge's pulse start, left to right. Needs to be a large
-  // enough fraction of the pulse's own 0.4s duration that only 2-3 adjacent
-  // badges are ever mid-pulse at once — at 90ms, 4-5 of the 6 were active
-  // simultaneously and it read as one synchronized swell instead of a sweep.
-  const WAVE_STAGGER_MS = 150;
-  const WAVE_ENTRANCE_DELAY_MS = (archBubbles.length - 1) * 80 + 600; // matches the arch entrance's own total run time
-  const WAVE_REPEATS = 3;
-  const WAVE_INTERVAL_MS = 1500;
-  let waveTimers = [];
-  // Separate from waveTimers.length: a click before the sequence has even
-  // been scheduled (still mid-entrance) must permanently suppress it too,
-  // not just clear whatever timers happen to exist at that moment.
-  let waveCancelled = false;
-
-  const stopWave = () => {
-    waveCancelled = true;
-    waveTimers.forEach(clearTimeout);
-    waveTimers = [];
-    archBubbles.forEach((el) => el.querySelector(".bubble-circle").classList.remove("wave-pulse"));
-  };
-
-  const playWaveSweep = () => {
-    if (waveCancelled) return;
-    archBubbles.forEach((el, i) => {
-      waveTimers.push(
-        setTimeout(() => {
-          const circle = el.querySelector(".bubble-circle");
-          circle.classList.remove("wave-pulse");
-          void circle.offsetWidth; // restart the animation if it's still mid-pulse from a prior sweep
-          circle.classList.add("wave-pulse");
-          circle.addEventListener("animationend", () => circle.classList.remove("wave-pulse"), { once: true });
-        }, i * WAVE_STAGGER_MS)
-      );
-    });
-  };
-
-  const startWaveSequence = () => {
-    if (prefersReducedMotion || waveCancelled) return;
-    for (let w = 0; w < WAVE_REPEATS; w++) {
-      waveTimers.push(setTimeout(playWaveSweep, WAVE_ENTRANCE_DELAY_MS + w * WAVE_INTERVAL_MS));
+  const pathAt = (t) => {
+    let d = "";
+    for (let i = 0; i < PTS; i++) {
+      // trailing points resolve slightly after leading ones, so the knot pulls
+      // straight left-to-right instead of everywhere at once
+      const e = easeOut(clamp01((t - (i / PTS) * 0.35) / 0.65));
+      const x = KNOT[i][0] + (LINE[i][0] - KNOT[i][0]) * e;
+      const y = KNOT[i][1] + (LINE[i][1] - KNOT[i][1]) * e;
+      d += (i ? "L" : "M") + x.toFixed(2) + "," + y.toFixed(2);
     }
+    return d;
   };
 
-  const playArchEntrance = () => {
-    const targets = computeArchTargets();
+  // The per-letter spans are in the markup, not built here: injecting the word
+  // meant the headline rendered as "I make complex systems ." until the script
+  // ran, then reflowed once the letters landed. In the markup it also survives
+  // the script failing outright.
+  const letters = [...untangleWord.querySelectorAll(".ch")];
 
-    targets.forEach(({ el, anchorX, anchorY, finalX, finalY }, i) => {
-      el.style.setProperty("--anchor-x", `${anchorX}px`);
-      el.style.setProperty("--anchor-y", `${anchorY}px`);
-      el.style.setProperty("--final-x", `${finalX}px`);
-      el.style.setProperty("--final-y", `${finalY}px`);
-      el.style.setProperty("--arch-delay", `${i * 80}ms`);
-
-      if (prefersReducedMotion) {
-        el.style.animation = "none";
-        el.style.left = `${finalX}px`;
-        el.style.top = `${finalY}px`;
-        el.style.opacity = "1";
-        el.style.transform = "translate(-50%, -50%) scale(1)";
-      }
-
-      el.classList.add("is-positioned");
-    });
-
-    hasPlayed = true;
-    startWaveSequence();
-  };
-
-  const snapToArch = () => {
-    computeArchTargets().forEach(({ el, finalX, finalY }) => {
-      el.style.setProperty("--final-x", `${finalX}px`);
-      el.style.setProperty("--final-y", `${finalY}px`);
-      el.style.left = `${finalX}px`;
-      el.style.top = `${finalY}px`;
+  const draw = (t) => {
+    const d = pathAt(t);
+    messy.setAttribute("d", d);
+    tidy.setAttribute("d", d);
+    // the gray knot hands off to the accent line as it resolves
+    messy.style.opacity = String(Math.max(0, 1 - t * 1.6));
+    tidy.style.opacity = String(clamp01((t - 0.35) / 0.5));
+    // The letters hold their exact position — earlier they rotated and rose
+    // into place, and even though the h1 box never actually changed size
+    // (measured: 832x53 throughout), the splaying read as the whole sentence
+    // resizing. Colour is the one property that can resolve left-to-right
+    // without moving anything.
+    letters.forEach((span, i) => {
+      const e = easeOut(clamp01((t - i * 0.035) / 0.6));
+      span.style.color =
+        "color-mix(in srgb, var(--yellow) " + (e * 100).toFixed(1) + "%, var(--gray))";
     });
   };
 
-  const startArch = () => {
-    if (hasPlayed) return;
-    playArchEntrance();
+  const knot = untangleWord.querySelector(".untangle-knot");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (reduced) {
+    draw(1);
+  } else {
+  // Nothing is drawn until the display face has settled. The headline is
+  // centred, so when the fallback face swaps out the whole sentence shifts
+  // sideways (measured: 19.5px) — landing on top of the knot animation, which
+  // made the entire line look like it was part of the motion. The page now
+  // loads the face with font-display: block, so the text simply appears at its
+  // final metrics, and the knot waits for that moment before it starts.
+  knot.style.visibility = "hidden";
+  draw(0);
+
+  const start = () => {
+    knot.style.visibility = "";
+    const step = (ts) => {
+      if (step.begin === undefined) step.begin = ts;
+      const t = Math.min(1, (ts - step.begin) / DURATION_MS);
+      draw(t);
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
   };
 
-  const runWhenReady = () => {
-    const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-    fontsReady.then(startArch);
-  };
-
-  if (document.readyState === "complete") runWhenReady();
-  else window.addEventListener("load", runWhenReady);
-
-  let archResizeTimer;
-  window.addEventListener("resize", () => {
-    clearTimeout(archResizeTimer);
-    archResizeTimer = setTimeout(() => {
-      if (hasPlayed) {
-        snapToArch();
-      } else {
-        startArch();
-      }
-      if (heroCard.classList.contains("is-open")) closeIconCard();
-    }, 150);
-  });
-
-  // Shared story card: one instance, repositioned and repopulated per
-  // click rather than a separate speech-bubble tooltip per badge. Reuses
-  // the clicked badge's own icon (no separate emoji) and always opens
-  // directly above the clicked badge, clamped horizontally so it never
-  // runs off the hero's edges.
-  const heroCard = document.getElementById("iconStoryCard");
-  const heroCardIcon = document.getElementById("iconStoryIcon");
-  const heroCardTitle = document.getElementById("iconStoryTitle");
-  const heroCardDesc = document.getElementById("iconStoryDesc");
-  const CARD_EDGE_MARGIN = 8;
-  const CARD_GAP_ABOVE_BADGE = 8;
-  let activeBubble = null;
-
-  const closeIconCard = () => {
-    if (!activeBubble) return;
-    activeBubble.classList.remove("active");
-    activeBubble = null;
-    heroCard.classList.remove("is-open");
-    heroCard.setAttribute("aria-hidden", "true");
-  };
-
-  const openIconCard = (bubble) => {
-    const circle = bubble.querySelector(".bubble-circle");
-    const svg = circle.querySelector("svg");
-
-    heroCardIcon.innerHTML = "";
-    if (svg) heroCardIcon.appendChild(svg.cloneNode(true));
-    heroCardTitle.textContent = bubble.dataset.title || "";
-    heroCardDesc.textContent = bubble.dataset.desc || "";
-
-    const heroRect = heroSection.getBoundingClientRect();
-    const clickedRect = circle.getBoundingClientRect();
-    // Measured live, not a hardcoded constant — the card's CSS width is
-    // itself responsive (narrower on small phones), so a fixed number here
-    // would drift out of sync with what's actually rendered.
-    const halfCard = heroCard.getBoundingClientRect().width / 2;
-    const minX = heroRect.left + CARD_EDGE_MARGIN + halfCard;
-    const maxX = heroRect.right - CARD_EDGE_MARGIN - halfCard;
-    const rawX = clickedRect.left + clickedRect.width / 2;
-    const targetX = Math.max(minX, Math.min(maxX, rawX));
-    const targetY = clickedRect.top - CARD_GAP_ABOVE_BADGE;
-
-    heroCard.style.left = `${targetX - heroRect.left}px`;
-    heroCard.style.top = `${targetY - heroRect.top}px`;
-
-    archBubbles.forEach((b) => b.classList.remove("active"));
-    bubble.classList.add("active");
-    activeBubble = bubble;
-    heroCard.classList.add("is-open");
-    heroCard.setAttribute("aria-hidden", "false");
-  };
-
-  archBubbles.forEach((bubble) => {
-    const circle = bubble.querySelector(".bubble-circle");
-    circle.addEventListener("click", (e) => {
-      e.stopPropagation();
-      stopWave();
-      const wasActive = bubble === activeBubble;
-      closeIconCard();
-      if (!wasActive) openIconCard(bubble);
-    });
-  });
-
-  document.addEventListener("click", closeIconCard);
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeIconCard();
-  });
-
-  // Close the card once the hero has scrolled fully out of view — otherwise
-  // it stays pinned mid-screen over whatever section comes next.
-  const heroExitObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) closeIconCard();
-    });
-  });
-  heroExitObserver.observe(heroSection);
+  // never leave the knot hidden if font loading stalls or rejects
+  const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
+  let started = false;
+  const startOnce = () => { if (!started) { started = true; start(); } };
+  fontsReady.then(startOnce, startOnce);
+  setTimeout(startOnce, 3000);
+  }
 }
 
 const contactForm = document.getElementById("contactForm");

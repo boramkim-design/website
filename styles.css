@@ -28,9 +28,14 @@
   --text-metric: clamp(2.5rem, 1.8rem + 3.0vw, 3.75rem);
   --text-num-lg: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem); /* case-study row numbering */
 
-  /* Sized to the sentence rather than to a step on the scale: keeps the about
-     page's title on two lines, with enough slack on the longer line that it
-     can't tip to three. */
+  /* Sized to the sentence, not to a step on the scale — both headlines below
+     are fixed copy that has to land on a set number of lines.
+     --text-hero keeps "I make complex systems learnable." on ONE line from
+     ~736px up (measured: the string is 16.21x its font-size, against the
+     832px --measure column), and lets it fall to two lines on phones.
+     --text-statement keeps the about page's title on TWO lines, with ~40px
+     of slack on the longer line so it can't tip to three. */
+  --text-hero: clamp(1.5rem, 0.73rem + 3.85vw, 3rem);
   --text-statement: clamp(1.75rem, 1.1rem + 1.9vw, 2.25rem);
 
   --leading-display: 1.0;
@@ -322,12 +327,11 @@ h1, h2, h3, h4 {
   align-content: center; /* without this, the two auto rows stretch to fill
     the hero and each child centers inside its own oversized row instead of
     the headline+copy centering together as one compact block */
-  /* top clears the header, plus room for the icon arch above the headline
-     (computed in script.js) — scaled by viewport width because the arch
-     itself does (computeArchTargets shrinks its radius on narrow screens),
-     so a fixed value sized for the desktop-scale arch left mobile with a
-     mostly-empty gap between the nav and the (now much shallower) arch. */
-  padding: clamp(11rem, 1.9rem + 29vw, 18.25rem) 0 5.75rem;
+  /* Top padding only has to clear the absolutely-positioned navbar now that
+     the icon arch is gone — 7.75rem is the same clearance .cs-hero and the
+     about page's .page-intro use, so the headline lands at a consistent
+     height across the site. */
+  padding: 7.75rem 0 5.75rem;
   overflow: hidden;
   color: var(--landing-ink);
 
@@ -351,10 +355,10 @@ h1, h2, h3, h4 {
 }
 
 .hero h1 {
-  /* --text-display is documented as hero-only at 44→80px (design-system.md §3.2);
-     using --text-h1 (36→56px) instead — still an existing design-system token,
-     just the next size down, no new value introduced */
-  font-size: var(--text-h1);
+  /* --text-h1 topped out at 56px, where this headline needs 908px against an
+     832px column and so always broke to two lines. --text-hero is the same
+     shape of token, capped where the line actually fits. */
+  font-size: var(--text-hero);
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
 }
@@ -363,9 +367,10 @@ h1, h2, h3, h4 {
 /* Top padding matches .hero's so content clears the absolutely-positioned navbar. */
 
 .page-intro {
-  /* padding-block only — the inline gutter comes from the .measure class
-     alongside it. The old `padding: 6.5rem 0 4rem` shorthand won on source
-     order and zeroed that gutter. */
+  /* padding-block only — the inline gutter comes from the .measure/.measure-wide
+     class alongside it. The old `padding: 6.5rem 0 4rem` shorthand won on source
+     order and zeroed that gutter, which left the heading hanging a full gutter
+     to the left of the content it sits above. */
   padding-block: 6.5rem 4rem;
   text-align: center;
 }
@@ -376,9 +381,12 @@ h1, h2, h3, h4 {
   letter-spacing: var(--tracking-tight);
 }
 
-/* Broken at the comma in the markup rather than left to wrap — a punctuation
-   break reads better than an even one. The <br> is dropped below the mobile
-   breakpoint, where the second line no longer fits on its own. */
+/* The about page's h1 is a full sentence rather than a label, so it needs the
+   size that lets it sit on two lines (see --text-statement). */
+/* Broken at the comma rather than left to text-wrap: balance — balancing put
+   the break inside "now designing", and a punctuation break reads better than
+   an even one. The <br> is dropped below the mobile breakpoint, where the
+   second line no longer fits on its own and natural wrapping is tidier. */
 body.about-page .page-intro h1 { font-size: var(--text-statement); }
 
 /* ---------- About page: hero gradient (mirrors .hero's cream-to-white fade) ---------- */
@@ -634,25 +642,43 @@ body.about-page .page-intro h1 { font-size: var(--text-statement); }
   margin-block: 44px 64px;
 }
 
-.highlight {
+/* Hero headline: the knot under "learnable" pulls itself straight.
+   Every animated value is written frame-by-frame by script.js, so there is no
+   transition or keyframe to declare here — which is also why the resting state
+   below is the *finished* state. If the script never runs, the word still
+   reads correctly with its clean underline already in place. */
+
+.untangle {
   position: relative;
   display: inline-block;
   color: var(--yellow);
+  white-space: nowrap;
 }
 
-.highlight .wavy {
+/* The .ch spans are plain inline text and carry no styling of their own: they
+   exist only as handles for the colour resolve, which script.js writes inline.
+   Leaving them unstyled means the resting state is the finished one — the word
+   inherits the accent colour from .untangle whether or not the script runs. */
+
+.untangle-knot {
   position: absolute;
   left: 0;
-  bottom: -8px;
+  bottom: -0.52em;
   width: 100%;
-  height: 10px;
+  height: 0.62em;
+  overflow: visible;
 }
 
-.highlight .wavy path {
-  stroke: var(--yellow);
-  stroke-width: 3;
+.untangle-knot path {
+  fill: none;
+  stroke-width: 2.5;
   stroke-linecap: round;
+  stroke-linejoin: round;
 }
+
+/* the tangled state is gray and starts hidden; the resolved line is the accent */
+.untangle-knot .knot-messy { stroke: var(--gray); opacity: 0; }
+.untangle-knot .knot-tidy  { stroke: var(--yellow); }
 
 .subtitle {
   color: var(--gray-dark);
@@ -662,7 +688,7 @@ body.about-page .page-intro h1 { font-size: var(--text-statement); }
   margin: 0 0 44px;
 }
 
-.mobile-break { display: none; }
+.subtitle-break { display: inline; }
 .statement-break { display: inline; }
 
 .hero-actions {
@@ -725,202 +751,6 @@ body.about-page .page-intro h1 { font-size: var(--text-statement); }
   0%, 100% { transform: translateY(0);        opacity: .4; }
   50%      { transform: translateY(.375rem);  opacity: 1; }
 }
-
-/* ---------- Floating icon bubbles ---------- */
-
-.hero-icons {
-  position: absolute;
-  /* matches .hero's own padding, so top:%/bottom:% on bubbles clears the
-     header/scroll-cue instead of measuring against the full hero box */
-  top: 16.25rem;
-  right: 0;
-  bottom: 5.75rem;
-  left: 0;
-}
-
-.icon-bubble {
-  position: absolute;
-  top: var(--top);
-  left: var(--left);
-  transform: translate(-50%, -50%);
-  animation: float var(--duration, 5s) ease-in-out infinite;
-  animation-delay: var(--delay, 0s);
-  z-index: 3;
-  /* Hidden until script.js measures the headline and adds .is-positioned —
-     without this, badges flash in their scattered ambient-float layout
-     first, then jump to the arch's anchor point once JS runs. Applies at
-     every width now — the arch runs on phones too, not just desktop/tablet. */
-  opacity: 0;
-}
-
-.icon-bubble.active {
-  animation-play-state: paused;
-  z-index: 11;
-}
-
-/* Hero icon-bubble entrance: burst out from the "side quests." anchor point
-   (--anchor-x/--anchor-y) and settle into the computed arch position
-   (--final-x/--final-y, both set by script.js) once JS takes over placement
-   for a bubble. animation-fill-mode: both (in the shorthand below) holds
-   the keyframe's 0% state for the badge's own delay slice instead of
-   showing the animation-free base state, which is what caused each badge
-   to flash at its resting position before snapping back to the anchor. */
-.icon-bubble.is-positioned {
-  left: var(--final-x);
-  top: var(--final-y);
-  /* back-out easing (overshoots past scale 1 before settling) reads as a
-     clear "pop" out of the anchor point, rather than a gentle fade-and-glide.
-     idleBob picks up right where badgeIn ends (its own delay + duration) so
-     each badge keeps a small resting bob afterwards — a hint that it's
-     interactive, not just decoration. */
-  animation: badgeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) var(--arch-delay, 0s) both,
-             idleBob var(--duration, 4s) ease-in-out calc(var(--arch-delay, 0s) + 0.6s) infinite;
-}
-
-@keyframes badgeIn {
-  from {
-    left: var(--anchor-x);
-    top: var(--anchor-y);
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.1);
-  }
-  to {
-    left: var(--final-x);
-    top: var(--final-y);
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-@keyframes idleBob {
-  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-  50% { transform: translate(-50%, -50%) translateY(-6px); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-  50% { transform: translate(-50%, -50%) translateY(-14px); }
-}
-
-.bubble-circle {
-  width: clamp(3.25rem, 5.1vw, 4.6875rem);   /* docs/landing-structure-update.md §2 size */
-  height: clamp(3.25rem, 5.1vw, 4.6875rem);
-  border-radius: 50%;
-  background: transparent;
-  box-shadow: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: clamp(2.125rem, 3.4vw, 3.125rem);   /* 34 → 50px, docs/landing-structure-update.md §2 */
-  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
-  transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-.bubble-circle:hover {
-  transform: scale(1.1);
-  filter: drop-shadow(0 8px 12px rgba(17, 18, 20, 0.18));
-}
-
-/* Post-entrance "look, click me" wave (script.js): a left-to-right sweep of
-   pulses, timed and cancelled entirely from JS. Lives on .bubble-circle
-   rather than .icon-bubble so it doesn't fight the arch position/idle-bob
-   transform on the parent. */
-.bubble-circle.wave-pulse {
-  /* A peak is a local max — velocity is mathematically zero there no matter
-     how this is built, in one eased segment or two. What actually reads as
-     "smooth" is a rounded sine-shaped curve through that zero point rather
-     than two independently-eased ramps meeting at it. `linear` plus many
-     close keyframe stops traces that curve directly (a piecewise-linear
-     approximation of scale(t) = 1 + 0.18*sin(πt)) instead of asking one or
-     two cubic-bezier segments to approximate it and creating a seam. */
-  animation: badgeWavePulse 0.4s linear;
-}
-
-@keyframes badgeWavePulse {
-  0%   { transform: scale(1);     filter: none; }
-  10%  { transform: scale(1.056); filter: drop-shadow(0 1.9px 3.1px rgba(17, 18, 20, 0.05)); }
-  20%  { transform: scale(1.106); filter: drop-shadow(0 3.5px 5.9px rgba(17, 18, 20, 0.094)); }
-  30%  { transform: scale(1.146); filter: drop-shadow(0 4.6px 7.7px rgba(17, 18, 20, 0.122)); }
-  40%  { transform: scale(1.171); filter: drop-shadow(0 5.6px 9.3px rgba(17, 18, 20, 0.148)); }
-  50%  { transform: scale(1.18);  filter: drop-shadow(0 6px 10px rgba(17, 18, 20, 0.16)); }
-  60%  { transform: scale(1.171); filter: drop-shadow(0 5.6px 9.3px rgba(17, 18, 20, 0.148)); }
-  70%  { transform: scale(1.146); filter: drop-shadow(0 4.6px 7.7px rgba(17, 18, 20, 0.122)); }
-  80%  { transform: scale(1.106); filter: drop-shadow(0 3.5px 5.9px rgba(17, 18, 20, 0.094)); }
-  90%  { transform: scale(1.056); filter: drop-shadow(0 1.9px 3.1px rgba(17, 18, 20, 0.05)); }
-  100% { transform: scale(1);     filter: none; }
-}
-
-.bubble-icon-img {
-  /* Color emoji glyphs (piano, etc.) render with much more visual ink than
-     their nominal font-size box, so this is sized up from .bubble-circle's
-     font-size to read as the same size on screen. */
-  height: clamp(2.3rem, 3.68vw, 3.4rem);
-  width: auto;
-  display: block;
-}
-
-.bubble-icon-svg {
-  height: clamp(1.75rem, 2.7vw, 2.5rem);
-  width: auto;
-  display: block;
-  color: var(--landing-accent);
-}
-
-.icon-bubble.active .bubble-circle {
-  transform: scale(1.1);
-  filter: drop-shadow(0 8px 12px rgba(17, 18, 20, 0.18));
-}
-
-/* Icon story card — one shared instance (script.js), repositioned and
-   repopulated per click instead of a per-bubble speech-bubble tooltip. */
-
-.icon-story-card {
-  position: absolute;
-  width: 290px;
-  background: var(--white);
-  color: var(--ink);
-  padding: 14px 16px;
-  border-radius: 14px;
-  box-shadow: 0 12px 30px rgba(17, 18, 20, 0.14);
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  text-align: left;
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, -100%) scale(0.92);
-  transform-origin: bottom center;
-  transition: opacity 0.18s ease, transform 0.18s ease;
-  z-index: 20;
-}
-
-.icon-story-card.is-open {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translate(-50%, -100%) scale(1);
-}
-
-.icon-story-icon {
-  flex: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--color-brand-soft);
-  color: var(--landing-accent);
-  display: grid;
-  place-items: center;
-}
-
-.icon-story-icon svg { width: 26px; height: 26px; }
-
-.icon-story-title {
-  display: block;
-  font-size: 13px;
-  margin-bottom: 3px;
-  color: var(--ink);
-}
-
-.icon-story-desc { margin: 0; font-size: 13px; line-height: 1.5; color: var(--gray); }
 
 /* ---------- Work (Case Studies + Contact) ---------- */
 
@@ -2285,7 +2115,7 @@ h2.cs-sec {
     text-align: center;
   }
 
-  .mobile-break { display: block; }
+  .subtitle-break { display: none; }
   .statement-break { display: none; }
 
   .contact {
@@ -2296,15 +2126,6 @@ h2.cs-sec {
   .contact-form {
     grid-template-columns: 1fr;
   }
-}
-
-@media (max-width: 480px) {
-  /* Everything else about the hero (the icon arch included — see
-     computeArchTargets in script.js, which scales the whole arch to fit
-     around the headline at any width) holds at every viewport size now.
-     Only the click card's fixed 290px width still needs a narrower-phone
-     concession, so it doesn't crowd the hero's own edges. */
-  .icon-story-card { width: min(290px, 82vw); }
 }
 
 @media (max-width: 900px) and (min-width: 46.01rem) {
@@ -2428,8 +2249,6 @@ h2.cs-sec {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .icon-bubble, .icon-bubble.is-positioned { animation: none; }
-  .bubble-circle.wave-pulse { animation: none; }
   .scroll-cue svg { animation: none; }
   .cs-maps-hint svg { animation: none; }
 }
