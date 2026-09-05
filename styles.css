@@ -28,6 +28,11 @@
   --text-metric: clamp(2.5rem, 1.8rem + 3.0vw, 3.75rem);
   --text-num-lg: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem); /* case-study row numbering */
 
+  /* Sized to the sentence rather than to a step on the scale: keeps the about
+     page's title on two lines, with enough slack on the longer line that it
+     can't tip to three. */
+  --text-statement: clamp(1.75rem, 1.1rem + 1.9vw, 2.25rem);
+
   --leading-display: 1.0;
   --leading-tight: 1.10;
   --leading-snug: 1.35;
@@ -358,7 +363,10 @@ h1, h2, h3, h4 {
 /* Top padding matches .hero's so content clears the absolutely-positioned navbar. */
 
 .page-intro {
-  padding: 6.5rem 0 4rem;
+  /* padding-block only — the inline gutter comes from the .measure class
+     alongside it. The old `padding: 6.5rem 0 4rem` shorthand won on source
+     order and zeroed that gutter. */
+  padding-block: 6.5rem 4rem;
   text-align: center;
 }
 
@@ -367,6 +375,11 @@ h1, h2, h3, h4 {
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
 }
+
+/* Broken at the comma in the markup rather than left to wrap — a punctuation
+   break reads better than an even one. The <br> is dropped below the mobile
+   breakpoint, where the second line no longer fits on its own. */
+body.about-page .page-intro h1 { font-size: var(--text-statement); }
 
 /* ---------- About page: hero gradient (mirrors .hero's cream-to-white fade) ---------- */
 
@@ -456,14 +469,6 @@ h1, h2, h3, h4 {
   margin-bottom: 1.25rem;
 }
 
-.intro-card h2 {
-  font-size: var(--text-h2);
-  line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-tight);
-  color: var(--color-ink);
-  margin-bottom: 1.125rem;
-}
-
 .intro-card p {
   font-size: var(--text-body);
   line-height: var(--leading-body);
@@ -475,8 +480,8 @@ h1, h2, h3, h4 {
 
 /* ---------- About page: education + career ---------- */
 
-.education-wrap { padding-block: 1rem 3rem; }
-.timeline-wrap { padding-block: 1rem 4rem; }
+.education-wrap { padding-block: 1rem 7rem; }
+.timeline-wrap { padding-block: 1rem 5.5rem; }
 
 .section-head { margin-bottom: clamp(1.5rem, 4vw, 2.25rem); }
 
@@ -658,6 +663,7 @@ h1, h2, h3, h4 {
 }
 
 .mobile-break { display: none; }
+.statement-break { display: inline; }
 
 .hero-actions {
   display: flex;
@@ -2280,6 +2286,7 @@ h2.cs-sec {
   }
 
   .mobile-break { display: block; }
+  .statement-break { display: none; }
 
   .contact {
     padding: 48px var(--page-gutter) 56px;
