@@ -2266,9 +2266,14 @@ h2.cs-sec {
   .cs-shiprow:not(.cs-shiprow-mixed) { grid-template-columns: 1fr; max-width: 16rem; margin-inline: auto; }
   .cs-shiprow:not(.cs-shiprow-mixed) img { width: 100%; }
 
+  /* Text first, screenshot below. The image gets the same fixed 16rem width
+     the row above is capped to (rather than a percentage of this row, which
+     stays full-width for the text and let the screenshot balloon past the
+     other three on narrow viewports). */
   .cs-shiprow-mixed { grid-template-columns: 1fr; }
-  .cs-shiprow-mixed img { width: 60%; }
-  .cs-shipnote { grid-column: span 1; }
+  .cs-shiprow-mixed figure { order: 2; }
+  .cs-shiprow-mixed img { width: 16rem; max-width: 100%; margin-inline: auto; }
+  .cs-shipnote { grid-column: span 1; order: 1; }
 }
 
 .cs-well {
