@@ -45,7 +45,7 @@ if (untangleWord) {
 
   const PTS = 46;  // point count shared by both shapes, so they interpolate 1:1
   const MID = 30;  // baseline y inside the 0 0 200 48 viewBox
-  const DURATION_MS = 1500;
+  const DURATION_MS = 2100;
 
   // The tangle doubles back on itself in x — that backtracking is what makes
   // it read as a knot with real crossings instead of a tidy wave. Both ends
