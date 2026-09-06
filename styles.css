@@ -1186,6 +1186,114 @@ body.case-page {
 
 .cs-figure { margin: 0; }
 
+/* ---------- Sketching layout (cudagra.html) ---------- */
+/* One full wireframe photo on the left, in the existing .cs-viewer pan/zoom
+   component (see script.js) rather than a lightbox — the wireframe is a tall
+   phone screen with small handwritten notes, exactly what that component
+   already exists to make legible. The five callouts run down the right,
+   ordered to match the regions they describe top-to-bottom in the image. */
+
+.cs-sketchlayout {
+  margin-top: clamp(2rem, 4vw, 2.75rem);
+  display: grid;
+  grid-template-columns: minmax(0, 48%) 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: stretch;
+}
+
+/* The right column runs slightly taller than the image at 48% width, and
+   align-items: stretch on the grid only stretches this item's box — the
+   image itself stayed flush at the top with dead space below it. Centering
+   it in that box puts the leftover space evenly above and below instead. */
+.cs-sketchlayout-fig { margin: 0; align-self: center; }
+
+/* gap sets a firm minimum between callouts; justify-content: space-between
+   then spreads any extra height the wireframe image contributes on top of
+   that, so the list keeps growing to roughly track the image's regions
+   top-to-bottom without ever squeezing closer than the minimum. */
+.cs-sketchlayout-tags {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.cs-sketchtag {
+  display: flex;
+  gap: 0.875rem;
+}
+
+/* Numbered to match the callout pins on the wireframe (see .cs-vpin) —
+   the shared number is the connection, not proximity or color alone. */
+.cs-sketchtag-num {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.0625rem;
+  border-radius: 50%;
+  background: var(--color-brand);
+  color: var(--color-paper);
+  font-family: var(--font-accent);
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: grid;
+  place-items: center;
+}
+
+.cs-sketchtag .tag { display: inline-block; }
+
+.cs-sketchtag p {
+  margin: 0.5rem 0 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--color-ink-secondary);
+}
+
+/* The wireframe is a plain static image (large enough to read without
+   zooming), so pins are just absolutely positioned within .cs-sketchframe —
+   no transform-syncing needed since nothing here pans or scales. */
+.cs-sketchframe {
+  position: relative;
+  border: 1px solid var(--color-line);
+  border-radius: 1.125rem;
+  overflow: hidden;
+  background: var(--color-paper-sunken);
+}
+
+.cs-sketchframe img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cs-vpin {
+  position: absolute;
+  left: 1.4%;
+  width: 2.2%;
+  min-width: 1.375rem;
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: var(--color-brand);
+  color: var(--color-paper);
+  font-family: var(--font-accent);
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 46rem) {
+  .cs-sketchlayout { grid-template-columns: 1fr; }
+  .cs-sketchlayout-tags { gap: 1.5rem; }
+}
+
+@media (max-width: 46rem) {
+  .cs-sketchgrid { grid-template-columns: 1fr; }
+}
+
+
 .cs-frame {
   border: 1px solid var(--color-line);
   border-radius: 1.125rem;
@@ -1218,6 +1326,30 @@ body.case-page {
 .cs-frame-embed iframe { display: block; width: 100%; height: min(70vh, 640px); border: 0; }
 
 .cs-video { position: relative; overflow: hidden; box-shadow: var(--shadow-card); }
+
+/* Final-presentation video. Deliberately not .cs-video: those are short, muted
+   product loops that autoplay on scroll and pause off-screen (see script.js).
+   This one is narrated and six minutes long, so it carries native controls,
+   never autoplays, and has no .cs-video-pp button — which is also what makes
+   that script skip it. */
+.cs-videoframe {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: 1.125rem;
+  box-shadow: var(--shadow-card);
+  background: var(--color-ink);
+}
+
+/* contain, not cover: a recorded presentation must not be cropped if the
+   source's aspect ratio turns out not to be exactly 16:9 */
+.cs-videoframe-el {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
 /* Source export has a hairline dark column baked into its right edge —
    scale past the frame by a hair and let the wrapper's overflow clip it,
@@ -1474,6 +1606,16 @@ h2.cs-sec {
   font-size: var(--text-caption);
   color: var(--color-ink-muted);
 }
+
+/* Same left-rule treatment as .cs-pull, sized for a longer first-person
+   passage rather than a single pulled quote. */
+.cs-vrule {
+  margin-top: 2rem;
+  padding-left: 1.5rem;
+  border-left: 2px solid var(--color-line-strong);
+}
+
+.cs-vrule p + p { margin-top: 1.25rem; }
 
 .cs-stats {
   margin-top: 2.5rem;
@@ -1932,6 +2074,104 @@ h2.cs-sec {
   text-transform: uppercase;
   letter-spacing: var(--tracking-accent);
   color: var(--color-ink-muted);
+}
+
+.cs-link {
+  color: var(--color-brand-ink);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.cs-link:hover { color: var(--color-ink); }
+
+/* Competitor analysis (cudagra.html): three example screens, each with the
+   app's logo above it and the observation note pinned on top of the shot
+   itself rather than beside it — a deliberate scrapbook/board feel, and the
+   note only ever falls over empty space in the source screenshots. */
+.cs-ca-row {
+  margin-top: clamp(2rem, 4vw, 2.75rem);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* Fixed (not vw-scaled): a vw-based gap shrinks on narrow viewports
+     faster than the note's overhang does, which is what let it collide with
+     the next card. This also reads as the visible separation between one
+     screenshot+note set and the next, so it's generous on purpose. */
+  column-gap: 3rem;
+  row-gap: 3.5rem;
+}
+
+/* <figure> carries a 40px left/right user-agent margin by default — unset
+   here (cs-figure resets it the same way elsewhere), or the card renders far
+   narrower than its own grid column. */
+.cs-ca-card { margin: 0; }
+
+.cs-ca-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+  font-family: var(--font-accent);
+  font-weight: 600;
+  font-size: var(--text-body);
+  color: var(--color-ink);
+}
+
+.cs-ca-head img {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.375rem;
+  flex: none;
+}
+
+/* overflow stays visible (no clipping) here — the note deliberately hangs
+   off the shot's bottom-right corner rather than being confined inside it */
+/* The screenshot is deliberately narrower than the card (70%): that spare
+   30% is where the note lives, so it sits beside the screen rather than on
+   top of it — only its left sliver touches the screenshot's edge. */
+.cs-ca-shot {
+  position: relative;
+}
+
+.cs-ca-shot > img:first-child {
+  display: block;
+  width: 70%;
+  height: auto;
+  border: 1px solid var(--color-line);
+  border-radius: 1.125rem;
+  background: var(--color-paper-sunken);
+}
+
+/* Sized and positioned in a fixed rem amount rather than a percentage of the
+   card, so the overhang is the same absolute distance the row's column-gap
+   was built to clear — a percentage-based offset grows and shrinks with the
+   column, which is what kept eating into the next card. Only a small corner
+   rests on the screenshot; the rest hangs into the gutter beside it. */
+/* Beside the screenshot in the 30% it leaves spare, overlapping only a
+   sliver of its right edge — not a caption sitting on top of it. */
+/* Anchored near the screenshot's bottom edge rather than floating mid-height
+   — it should read as sitting next to the screen, not hovering beside it. */
+.cs-ca-note {
+  position: absolute;
+  left: 52%;
+  bottom: 2%;
+  width: 58%;
+  z-index: 2;
+  transform: rotate(var(--rot, -2deg));
+  border-radius: 0.625rem;
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 46rem) {
+  /* Capped narrower than the desktop grid math would otherwise let it grow
+     to — one full-width card at 20rem was rendering the screenshot far
+     bigger than its desktop size. The screenshot+note pair keeps the exact
+     same side-by-side arrangement as desktop (see .cs-ca-shot / .cs-ca-note
+     above); only the note's own hangout shrinks below, since a 320px-wide
+     card would otherwise push its overhang past the page's own edge. */
+  .cs-ca-row { grid-template-columns: 1fr; max-width: 14.5rem; margin-inline: auto; }
+
+  .cs-ca-note { left: 56%; width: 50%; }
 }
 
 .cs-well {

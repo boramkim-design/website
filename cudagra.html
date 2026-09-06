@@ -52,9 +52,11 @@
     <li><a href="#context">Context</a></li>
     <li><a href="#research">Research</a></li>
     <li><a href="#reframe">Reframe</a></li>
+    <li><a href="#sketching">Sketching</a></li>
     <li><a href="#redesign">Redesign</a></li>
     <li><a href="#solution">Solution</a></li>
     <li><a href="#flow">Flow</a></li>
+    <li><a href="#presentation">Presentation</a></li>
     <li><a href="#learnings">Learnings</a></li>
   </ol>
 </nav>
@@ -127,7 +129,7 @@
     <div class="cs-sub">
       <div class="cs-sublabel">User interviews</div>
       <h3>Everyone wanted to use it more than they did</h3>
-      <p>The Cudagra team recruited seven active users, and the project manager and I ran each session online for 20 to 30 minutes. The focus was never on anything from our list. What filled the sessions instead were the needs and pain points standing in the way.</p>
+      <p>The Cudagra team recruited 7 users, and the project manager and I ran each session online for 20 to 30 minutes. The focus was never on anything from our list. What filled the sessions instead were the needs and pain points standing in the way.</p>
 
       <figure class="cs-figure" style="margin-top:2rem">
         <div class="cs-well">
@@ -186,6 +188,60 @@
 
       <p style="margin-top:2rem">The bottom line was that nobody cared how many games or players were on there. They were closing the app before they ever got as far as searching for a game or sending an invite, because they couldn't tell whether these people would give them a game worth showing up for.</p>
     </div>
+
+    <div class="cs-sub">
+      <div class="cs-sublabel">On-site survey</div>
+      <h3>Not the data we wanted, but an idea worth keeping</h3>
+      <p>Two hours at the Genesis Centre with a QR code got seventeen responses, mostly from people who already play on a fixed schedule with a group of their own. They weren't who our question was about. One thing stayed with me: nearly all of them said they would still try Cudagra, and thought it would beat organising through social media. The appetite was there.</p>
+
+      <figure class="cs-figure" style="margin-top:2rem">
+        <div class="cs-frame"><img src="images/cudagra-onsite-photo.jpg" alt="Sitting at a table in the Genesis Centre lobby with a laptop, snacks, a QR code sign-up on a tablet, and Cudagra posters, faces of passersby blurred"></div>
+        <figcaption>Two hours at the Genesis Centre. The building turned out to be more useful than the survey.</figcaption>
+      </figure>
+    </div>
+
+    <div class="cs-sub">
+      <div class="cs-sublabel">Competitor analysis</div>
+      <h3>Every app in the space showed the players first</h3>
+      <p>I mapped four apps against Cudagra, screen by screen, looking at how much you know about the other players before you commit to a game. The notes I left on that board are what carried into the design.</p>
+
+      <div class="cs-ca-row">
+        <figure class="cs-ca-card">
+          <figcaption class="cs-ca-head">
+            <img src="images/cudagra-ca-logo-goodrec.png" alt="">
+            GoodRec
+          </figcaption>
+          <div class="cs-ca-shot">
+            <img src="images/cudagra-ca1-shot.jpg" alt="Screen from GoodRec showing a player's profile with games played by week, month and year">
+            <img class="cs-ca-note" src="images/cudagra-ca1-comment.png" alt="It's easy to see who is participating, and each player's profile shows their history of past game participation." style="--rot:-3deg">
+          </div>
+        </figure>
+
+        <figure class="cs-ca-card">
+          <figcaption class="cs-ca-head">
+            <img src="images/cudagra-ca-logo-plei.png" alt="">
+            Plei
+          </figcaption>
+          <div class="cs-ca-shot">
+            <img src="images/cudagra-ca2-shot.png" alt="Screen from Plei asking new users to select their skill level as the last onboarding step">
+            <img class="cs-ca-note" src="images/cudagra-ca2-comment.png" alt="Users are prompted to select their skill level right away, which helps with better matching and game balance." style="--rot:2deg">
+          </div>
+        </figure>
+
+        <figure class="cs-ca-card">
+          <figcaption class="cs-ca-head">
+            <img src="images/cudagra-ca-logo-plei.png" alt="">
+            Plei
+          </figcaption>
+          <div class="cs-ca-shot">
+            <img src="images/cudagra-ca3-shot.png" alt="Screen from Plei's Friends tab with a create-group action under a Groups heading">
+            <img class="cs-ca-note" src="images/cudagra-ca3-comment.png" alt="It's easy to create groups in the friends section, a feature one user specifically wished Cudagra had." style="--rot:-2deg">
+          </div>
+        </figure>
+      </div>
+
+      <p style="margin-top:1.5rem"><a class="cs-link" href="https://www.figma.com/design/kS2GvwR1NMuYOO3Uu4TBvK/Competitor-Analysis?node-id=2002-2&t=hn5g2cbQjHos7hqE-1" target="_blank" rel="noopener">View the full board &rarr;</a></p>
+    </div>
   </section>
 
   <section class="cs-block measure" id="reframe">
@@ -194,6 +250,62 @@
     <p>There was a critical gap in the information people needed to connect with others through sports. A game can be just as fun or just as boring as the people you're playing with, and no one wants to risk wasting precious playing time on the wrong match. Once we saw it that way, the question we were designing for changed:</p>
     <div class="cs-insightbox cs-insightbox-standalone">
       <p style="font-weight:600">How might we build enough trust for someone to play beyond their own social circle?</p>
+    </div>
+  </section>
+
+  <section class="cs-block measure" id="sketching">
+    <div class="cs-eyebrow">Sketching</div>
+    <h2 class="cs-sec">Deciding what goes on a profile, on paper first</h2>
+
+    <div class="cs-sketchlayout">
+      <figure class="cs-figure cs-sketchlayout-fig">
+        <div class="cs-sketchframe">
+          <img src="images/cudagra-wireframe.jpg" alt="Full lo-fi wireframe of the Cudagra profile with handwritten annotations covering sports information, player-quality tags, frequent playmates and groups, asking to join, and the highlights feed">
+          <span class="cs-vpin" style="top:14%">1</span>
+          <span class="cs-vpin" style="top:26%">2</span>
+          <span class="cs-vpin" style="top:43%">3</span>
+          <span class="cs-vpin" style="top:63%">4</span>
+          <span class="cs-vpin" style="top:86%">5</span>
+        </div>
+      </figure>
+
+      <div class="cs-sketchlayout-tags">
+        <div class="cs-sketchtag">
+          <span class="cs-sketchtag-num">1</span>
+          <div>
+            <span class="tag">Sports information</span>
+            <p>Location, pronoun, level and intent per sport. Everything a stranger needs before deciding, listed before any of it was designed.</p>
+          </div>
+        </div>
+        <div class="cs-sketchtag">
+          <span class="cs-sketchtag-num">2</span>
+          <div>
+            <span class="tag">Player qualities</span>
+            <p>Comments for their quality rather than rating. The decision not to score anyone was made here.</p>
+          </div>
+        </div>
+        <div class="cs-sketchtag">
+          <span class="cs-sketchtag-num">3</span>
+          <div>
+            <span class="tag">Frequent playmates and Groups</span>
+            <p>Show connections and motivate users to participate in more games, and the groups they belong to.</p>
+          </div>
+        </div>
+        <div class="cs-sketchtag">
+          <span class="cs-sketchtag-num">4</span>
+          <div>
+            <span class="tag">Ask to join</span>
+            <p>Shows interest for certain games, promotes hosts to include users outside of their social circle.</p>
+          </div>
+        </div>
+        <div class="cs-sketchtag">
+          <span class="cs-sketchtag-num">5</span>
+          <div>
+            <span class="tag">Highlights</span>
+            <p>A dated post, not a stat. The idea of a feed for what people are up to, rather than another number to compare, started here.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -319,6 +431,23 @@
         <figcaption>Interest recorded now, acted on later.</figcaption>
       </figure>
     </div>
+  </section>
+
+  <section class="cs-block measure" id="presentation">
+    <div class="cs-eyebrow">Final presentation</div>
+    <h2 class="cs-sec">What we presented at the end of the project</h2>
+    <p>The full process, from the first four theories to the prototype, as the project manager and I presented it to the Cudagra team.</p>
+
+    <figure class="cs-figure" style="margin-top:clamp(3rem, 6vw, 4.5rem)">
+      <div class="cs-videoframe">
+        <video class="cs-videoframe-el" controls preload="metadata" playsinline
+               poster="videos/final-presentation.jpg">
+          <source src="videos/final-presentation.mp4" type="video/mp4">
+          <p>Your browser can&rsquo;t play this video. <a href="videos/final-presentation.mp4">Download the walkthrough</a> instead.</p>
+        </video>
+      </div>
+      <figcaption>6 minute walkthrough. Re-recorded solo for this portfolio; the original was presented with the project manager.</figcaption>
+    </figure>
   </section>
 
   <section class="cs-block measure" id="learnings">
