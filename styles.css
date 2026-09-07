@@ -1580,6 +1580,77 @@ h2.cs-sec {
 
 .cs-vrule p + p { margin-top: 1.25rem; }
 
+/* Three interview pull-quotes as a row of square post-it notes: faint sunken
+   tint (barely off-white, keeps the brand-ink quote text at near-white
+   contrast) on top, attribution set below the square rather than inside it,
+   slight per-card rotation (alternating so no two neighbours lean the same
+   way) that straightens on hover/focus to read as a physical note being
+   picked up. Flex-wrap (not a 3-column grid) so each note keeps a fixed
+   size at every viewport — narrowing the row down to 2-up then 1-up, rather
+   than a grid track stretching the note itself larger or smaller. */
+.cs-postit-grid {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.75rem;
+}
+
+.cs-postit-item {
+  flex: 0 0 14rem;
+  width: 14rem;
+}
+
+.cs-postit {
+  /* Blockquote's UA-default margin (1em 40px) shrinks it below the item's
+     fixed width if left in place — zero it so the square fills it exactly. */
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  background: var(--color-paper-sunken);
+  border: 1px solid var(--color-line);
+  border-radius: 0.625rem;
+  box-shadow: var(--shadow-card);
+  transition: transform 180ms cubic-bezier(.22,.61,.36,1),
+              box-shadow 180ms cubic-bezier(.22,.61,.36,1);
+}
+
+.cs-postit-item:nth-child(1) .cs-postit { transform: rotate(-2deg); }
+.cs-postit-item:nth-child(2) .cs-postit { transform: rotate(1.5deg); }
+.cs-postit-item:nth-child(3) .cs-postit { transform: rotate(-1.5deg); }
+
+.cs-postit-item:hover .cs-postit,
+.cs-postit-item:focus-within .cs-postit {
+  transform: rotate(0deg);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.cs-postit p {
+  font-family: var(--font-display);
+  font-size: var(--text-body);
+  line-height: var(--leading-snug);
+  color: var(--color-brand-ink);
+  margin: 0;
+}
+
+/* Hanging indent: the "— " lead-in sits in the text-indent's negative space,
+   so a wrapped second line lines up under the attribution's first word
+   instead of the dash. */
+.cs-postit-cite {
+  display: block;
+  margin-top: 0.75rem;
+  padding-left: 1em;
+  text-indent: -1em;
+  font-style: normal;
+  font-family: var(--font-accent);
+  font-size: var(--text-caption);
+  color: var(--color-ink-muted);
+}
+
+
 .cs-stats {
   margin-top: 2.5rem;
   display: grid;
@@ -1815,6 +1886,17 @@ h2.cs-sec {
    card number is accented, at the shared, smaller .cs-card-num size). */
 #problems .cs-card h4 { font-size: var(--text-lead); color: var(--color-brand-ink); }
 #problems .cs-card-num { color: var(--color-ink-muted); }
+
+/* Problems section: card numbering swapped for an icon per card (still
+   .cs-card-num, so it inherits the same color/spacing as the numeral
+   version elsewhere) — the icon draws in currentColor so it just picks up
+   the color rule above. */
+#problems .cs-card-num svg {
+  display: block;
+  width: 2.75rem;
+  height: 2.75rem;
+  stroke-width: 1.25px;
+}
 
 .cs-card-thumb {
   display: block;
