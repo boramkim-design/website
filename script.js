@@ -574,3 +574,37 @@ document.querySelectorAll(".cs-video-el").forEach((video) => {
   video.playbackRate = 1.5;
   video.addEventListener("loadedmetadata", () => { video.playbackRate = 1.5; });
 });
+
+// Case study pages: click-to-enlarge wireframe images (.cs-wireframe-item).
+// One overlay is built lazily and reused for every trigger on the page,
+// rather than a lightbox per figure.
+const wireframeItems = document.querySelectorAll(".cs-wireframe-item");
+if (wireframeItems.length) {
+  const overlay = document.createElement("div");
+  overlay.className = "cs-lightbox";
+  overlay.innerHTML = `
+    <button class="cs-lightbox-close" type="button" aria-label="Close enlarged image">&times;</button>
+    <img class="cs-lightbox-img" src="" alt="" draggable="false">
+  `;
+  document.body.appendChild(overlay);
+  const overlayImg = overlay.querySelector(".cs-lightbox-img");
+
+  function openLightbox(item) {
+    const img = item.querySelector("img");
+    overlayImg.src = img.src;
+    overlayImg.alt = img.alt;
+    overlay.classList.add("is-open");
+    document.body.classList.add("cs-lightbox-lock");
+  }
+  function closeLightbox() {
+    overlay.classList.remove("is-open");
+    document.body.classList.remove("cs-lightbox-lock");
+  }
+
+  wireframeItems.forEach((item) => item.addEventListener("click", () => openLightbox(item)));
+  overlay.querySelector(".cs-lightbox-close").addEventListener("click", closeLightbox);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) closeLightbox(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && overlay.classList.contains("is-open")) closeLightbox();
+  });
+}
