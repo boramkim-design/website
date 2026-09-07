@@ -357,7 +357,7 @@ h1, h2, h3, h4 {
   width: 100%;
   max-width: var(--measure-wide);
   margin-inline: auto;
-  margin-top: 20px;
+  margin-top: 56px;
   padding-inline: var(--page-gutter);
   text-align: left;
 }
