@@ -575,11 +575,11 @@ document.querySelectorAll(".cs-video-el").forEach((video) => {
   video.addEventListener("loadedmetadata", () => { video.playbackRate = 1.5; });
 });
 
-// Case study pages: click-to-enlarge wireframe images (.cs-wireframe-item).
-// One overlay is built lazily and reused for every trigger on the page,
-// rather than a lightbox per figure.
-const wireframeItems = document.querySelectorAll(".cs-wireframe-item");
-if (wireframeItems.length) {
+// Case study pages: click-to-enlarge images (.cs-zoomable) — wireframes,
+// shipped screenshots, etc. One overlay is built lazily and reused for every
+// trigger on the page, rather than a lightbox per figure.
+const zoomableItems = document.querySelectorAll(".cs-zoomable");
+if (zoomableItems.length) {
   const overlay = document.createElement("div");
   overlay.className = "cs-lightbox";
   overlay.innerHTML = `
@@ -601,7 +601,7 @@ if (wireframeItems.length) {
     document.body.classList.remove("cs-lightbox-lock");
   }
 
-  wireframeItems.forEach((item) => item.addEventListener("click", () => openLightbox(item)));
+  zoomableItems.forEach((item) => item.addEventListener("click", () => openLightbox(item)));
   overlay.querySelector(".cs-lightbox-close").addEventListener("click", closeLightbox);
   overlay.addEventListener("click", (e) => { if (e.target === overlay) closeLightbox(); });
   document.addEventListener("keydown", (e) => {

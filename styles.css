@@ -1256,21 +1256,14 @@ body.case-page {
   .cs-sketchgrid { grid-template-columns: 1fr; }
 }
 
-/* Wireframes gallery (urcareer.html): three sketches side by side, click to
-   enlarge in a full-image overlay (.cs-lightbox, see script.js). Plain
-   click-to-enlarge rather than the .cs-viewer pan/zoom component — these are
-   flat sketch sheets that just need a bigger look, not panning around a tall
-   image. */
-.cs-wireframe-grid {
-  margin-top: 2.5rem;
-  margin-bottom: 2.5rem;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  align-items: start;
-  gap: 1rem;
-}
-
-.cs-wireframe-item {
+/* Generic click-to-enlarge trigger: wrap any <img> in a <button
+   class="cs-zoomable"> to open it in the shared full-image overlay
+   (.cs-lightbox, see script.js). Used for the wireframes gallery
+   (urcareer.html) and the What-shipped screenshots (cudagra.html) — plain
+   click-to-enlarge rather than the .cs-viewer pan/zoom component, since
+   these are flat images that just need a bigger look, not panning around a
+   tall one. */
+.cs-zoomable {
   display: block;
   padding: 0;
   border: 0;
@@ -1282,26 +1275,36 @@ body.case-page {
    pixel or two of movement) from being interpreted as a native image-drag
    gesture — that swallows the click event before it reaches the button, so
    the enlarge action silently does nothing despite the zoom-in cursor. */
-.cs-wireframe-item img {
+.cs-zoomable img {
   display: block;
-  width: 100%;
-  height: auto;
   -webkit-user-drag: none;
   user-select: none;
   transition: opacity 0.2s ease;
 }
 
-.cs-wireframe-item:hover img,
-.cs-wireframe-item:focus-visible img {
+.cs-zoomable:hover img,
+.cs-zoomable:focus-visible img {
   opacity: 0.82;
 }
+
+/* Wireframes gallery (urcareer.html): three sketches side by side. */
+.cs-wireframe-grid {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: start;
+  gap: 1rem;
+}
+
+.cs-wireframe-grid img { width: 100%; height: auto; }
 
 @media (max-width: 46rem) {
   .cs-wireframe-grid { grid-template-columns: 1fr; }
 }
 
-/* Lightbox overlay shared by any .cs-wireframe-item trigger — one instance
-   is created lazily in script.js and reused, rather than one per figure. */
+/* Lightbox overlay shared by any .cs-zoomable trigger — one instance is
+   created lazily in script.js and reused, rather than one per figure. */
 .cs-lightbox {
   position: fixed;
   inset: 0;
