@@ -331,15 +331,13 @@ h1, h2, h3, h4 {
   overflow: hidden;
   color: var(--landing-ink);
 
-  /* Cream holds almost the full height now, turning white only in the last
-     sliver right at the hero's own bottom edge — the opposite of fading
-     early, which left a long, contentless white stretch between the
-     subtitle and the work section that read as a gap rather than a
-     transition. */
+  /* Cream holds through most of the content, then fades out over a wider
+     band than before — a gradual wash into the work section below,
+     rather than a hard edge right at the hero's boundary. */
   background: linear-gradient(
     to bottom,
     var(--landing-bg) 0%,
-    var(--landing-bg) 90%,
+    var(--landing-bg) 78%,
     var(--color-paper) 100%
   );
 }
