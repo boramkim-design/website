@@ -16,6 +16,10 @@
 
   --text-display: clamp(2.75rem, 1.5rem + 5.2vw, 5rem);
   --text-h1: clamp(2.25rem, 1.5rem + 3.0vw, 3.5rem);
+  /* eatt's hero title only — same slope as --text-h1, ceiling nudged down
+     just enough (56px to 52px) to keep "Setting a table everyone can
+     join" on one line at wide viewports; other case studies keep --text-h1. */
+  --text-h1-eatt: clamp(2.25rem, 1.5rem + 3.0vw, 3.25rem);
   --text-h2: clamp(1.75rem, 1.35rem + 1.7vw, 2.375rem);
   --text-h3: clamp(1.375rem, 1.18rem + 0.8vw, 1.6875rem);
   --text-h4: 1.0625rem;
@@ -1139,6 +1143,7 @@ body.case-page {
   letter-spacing: var(--tracking-tight);
   color: var(--color-ink);
 }
+.cs-hero-title.is-eatt { font-size: var(--text-h1-eatt); }
 
 .cs-lead {
   margin-top: 1.5rem;
@@ -1303,6 +1308,94 @@ body.case-page {
   .cs-wireframe-grid { grid-template-columns: 1fr; }
 }
 
+/* Captioned variant (eatt.html): each sketch carries its own caption
+   instead of one paragraph under the whole grid. Every sketch sits in an
+   equal fixed-ratio frame (object-fit: contain) so the row reads at one
+   consistent size regardless of how tall or wide the source sketch is —
+   the four source wireframes range from 0.42 to 0.73 in aspect ratio, and
+   without this they rendered at wildly different heights. */
+.cs-wireframe-refined { margin-top: 2.5rem; }
+.cs-wireframe-refined .cs-wireframe-grid.is-trio { margin-top: 0.75rem; margin-bottom: 0; }
+
+.cs-wireframe-grid.is-trio { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+
+/* <figure> carries a UA-default margin of 1em 40px (same gotcha as
+   .cs-ca-card) — unreset, it shrank every grid item and shifted the whole
+   row 40px right of the section's left edge. */
+.cs-wireframe-item { margin: 0; display: flex; flex-direction: column; width: 100%; min-width: 0; }
+
+.cs-wireframe-grid.is-trio .cs-zoomable {
+  aspect-ratio: 4 / 7;
+  background: var(--color-paper-sunken);
+  border: 1px solid var(--color-line);
+  border-radius: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow: hidden;
+}
+.cs-wireframe-grid.is-trio img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Early sketches (eatt.html): two photographed paper sketches at very
+   different aspect ratios (0.72 and 1.51) — a plain 2-col grid put them at
+   mismatched heights, and forcing both into one fixed frame (like .is-trio)
+   would crop a photo with content close to its edges. Instead this is a
+   "justified row": each button's flex-grow is set to its own image's
+   aspect ratio (via --grow, inline per button) with flex-basis: 0, which is
+   the standard trick for a flex row where every item lands at the exact
+   same height with zero cropping — the math: at width w_i = grow_i and
+   height h (common to both, since basis is 0), w_i/h must equal grow_i for
+   every item, which is only true when h is the same for all of them. */
+.cs-wireframe-early { margin-top: 2.5rem; }
+
+/* One shared card (matching the .is-trio frame look — sunken bg, line
+   border, same radius) rather than two separate frames, since the ask was
+   both photos together in one box. */
+.cs-wireframe-early-box {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  background: var(--color-paper-sunken);
+  border: 1px solid var(--color-line);
+  border-radius: 0.875rem;
+}
+.cs-wireframe-early-box .cs-wireframe-grid.is-duo { margin: 0; }
+
+/* Two classes to outrank .cs-block p's margin:0 reset, which sits later in
+   this file and would otherwise win on source order at equal specificity. */
+.cs-block .cs-wireframe-early p { margin-top: 1rem; }
+
+/* Stays a 2-up row at every width, phones included — each sketch is
+   click-to-enlarge already, so reading small on a narrow screen is fine
+   and not worth breaking the matched-height row for. */
+.cs-wireframe-grid.is-duo { display: flex; align-items: flex-start; gap: 1.5rem; }
+.cs-wireframe-grid.is-duo .cs-zoomable { flex-grow: var(--grow, 1); flex-shrink: 1; flex-basis: 0; min-width: 0; }
+
+.cs-wireframe-item figcaption { margin-top: 0.875rem; padding-inline: 0.375rem; }
+.cs-wireframe-name {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-body-sm);
+  color: var(--color-ink);
+  margin-bottom: 0.25rem;
+}
+.cs-wireframe-item p {
+  margin: 0;
+  font-size: var(--text-caption);
+  line-height: 1.5;
+  color: var(--color-ink-secondary);
+}
+
+@media (max-width: 40rem) {
+  .cs-wireframe-grid.is-trio { grid-template-columns: 1fr; }
+}
+
 /* Lightbox overlay shared by any .cs-zoomable trigger — one instance is
    created lazily in script.js and reused, rather than one per figure. */
 .cs-lightbox {
@@ -1430,12 +1523,145 @@ body.cs-lightbox-lock { overflow: hidden; }
 .cs-video-pp:hover { background: var(--color-paper); transform: scale(1.06); }
 .cs-video-pp svg { display: block; width: 14px; height: 14px; }
 
-.cs-figure figcaption {
+.cs-figure figcaption,
+.cs-scene figcaption {
   margin-top: 0.75rem;
   font-family: var(--font-accent);
   font-size: var(--text-caption);
   line-height: var(--leading-snug);
   color: var(--color-ink-muted);
+}
+
+/* Two-tone insight card: tinted header carries the theme label, plain
+   body carries the finding. Local to the eatt interview section — not the
+   shared .cs-insightbox (left-border callout) used on other case studies. */
+.cs-insightcard {
+  border: 1px solid var(--color-line);
+  border-radius: 0.875rem;
+  overflow: hidden;
+  background: var(--color-paper);
+}
+
+.cs-insightcard-head {
+  padding: 0.875rem 1.25rem;
+  background: var(--color-brand-soft);
+  border-bottom: 1px solid var(--color-line);
+  font-family: var(--font-accent);
+  font-weight: 700;
+  font-size: var(--text-caption);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-accent);
+  color: var(--color-brand-ink);
+}
+
+.cs-insightcard-body {
+  padding: 1.25rem;
+  color: var(--color-ink);
+}
+
+.cs-insightcard-body p { margin: 0; }
+
+/* The photo lives inside the card, below the finding text, shrunk down to
+   the card's own content width rather than sitting in its own column. */
+.cs-insightcard-body .cs-scene { margin-top: 1.25rem; }
+
+.cs-scene { margin: 0; }
+
+/* Insight cards, two columns across (wrapping to a 2x2 arrangement for
+   four items). */
+.cs-insightcols {
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem 1.25rem;
+}
+
+@media (max-width: 640px) { .cs-insightcols { grid-template-columns: 1fr; } }
+
+/* Quiet aside noting which steps used AI — collapsed by default (native
+   <details>/<summary>, no JS) so it doesn't add to the case study's
+   length unless someone actually wants to read it. The summary is a
+   full-width bar (not a small pill) with a chevron on the far end, so it
+   reads as an obviously-pressable control rather than a static label. */
+.cs-aibox { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
+
+.cs-aibox-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid var(--color-line);
+  border-radius: 0.875rem;
+  background: var(--color-paper-sunken);
+  cursor: pointer;
+  list-style: none;
+}
+.cs-aibox-summary::-webkit-details-marker { display: none; }
+
+.cs-aibox-label-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--text-body-sm);
+  color: var(--color-ink-secondary);
+}
+
+.cs-aibox-icon { flex: none; width: 1em; height: 1em; color: var(--color-brand-ink); }
+
+.cs-aibox-label {
+  font-family: var(--font-accent);
+  font-weight: 600;
+  font-size: var(--text-body-sm);
+  color: var(--color-brand-ink);
+}
+
+.cs-aibox-chevron {
+  flex: none;
+  color: var(--color-brand-ink);
+  transition: transform 200ms ease;
+}
+.cs-aibox[open] .cs-aibox-chevron { transform: rotate(180deg); }
+
+/* Bar and panel share a straight edge when open, so they read as one
+   continuous control rather than two separate boxes. */
+.cs-aibox[open] .cs-aibox-summary { border-radius: 0.875rem 0.875rem 0 0; }
+
+.cs-aibox-list {
+  margin: 0;
+  padding: 1.5rem;
+  border: 1px solid var(--color-line);
+  border-top: none;
+  border-radius: 0 0 0.875rem 0.875rem;
+  background: var(--color-paper);
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.cs-aibox-list > div {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 1rem;
+}
+
+.cs-aibox-list dt {
+  margin: 0;
+  font-family: var(--font-accent);
+  font-weight: 600;
+  font-size: var(--text-body-sm);
+  color: var(--color-ink-secondary);
+}
+
+.cs-aibox-list dd {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-ink-muted);
+}
+
+@media (max-width: 560px) {
+  .cs-aibox-list > div { grid-template-columns: 1fr; gap: 0.25rem; }
 }
 
 .cs-meta-strip {
@@ -1450,6 +1676,10 @@ body.cs-lightbox-lock { overflow: hidden; }
 
 .cs-meta-strip.is-tri { grid-template-columns: 1.4fr 1.1fr 0.8fr; }
 @media (max-width: 640px) { .cs-meta-strip.is-tri { grid-template-columns: 1fr; } }
+
+/* Label and value share one line instead of stacking. */
+.cs-meta-strip.is-inline > div { display: flex; align-items: baseline; gap: 0.5rem; }
+.cs-meta-strip.is-inline dt { margin-bottom: 0; }
 
 .cs-meta-strip dt {
   margin-bottom: 0.5rem;
@@ -1517,6 +1747,11 @@ h2.cs-sec {
 }
 
 .cs-block > p { margin-top: 1.5rem; }
+
+/* Title immediately followed by an image (no intro paragraph between) —
+   same 1.5rem rhythm as .cs-block > p, so the gap above and below the
+   figure matches. */
+h2.cs-sec + .cs-figure { margin-top: 1.5rem; }
 
 .cs-insightbox-standalone { margin-top: 1.5rem; }
 .cs-insightbox-standalone p { font-weight: 600; }
@@ -1738,15 +1973,140 @@ h2.cs-sec {
   color: var(--color-ink-muted);
 }
 
+/* Personas (eatt.html) — reuses the .cs-postit rotated sticky-note motif
+   (same tint, radius, shadow, hover un-rotate) so "who we heard from" here
+   reads as a continuation of the interview quotes in Research, not a new
+   card language. */
+.cs-personas {
+  margin-top: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.5rem;
+  justify-items: center;
+}
+
+.cs-persona {
+  width: 100%;
+  max-width: 22rem;
+  padding: 2rem;
+  background: var(--color-paper-sunken);
+  border: 1px solid var(--color-line);
+  border-radius: 0.875rem;
+  box-shadow: var(--shadow-card);
+  transition: transform 180ms cubic-bezier(.22,.61,.36,1),
+              box-shadow 180ms cubic-bezier(.22,.61,.36,1);
+}
+.cs-persona:nth-child(1) { transform: rotate(-1.5deg); }
+.cs-persona:nth-child(2) { transform: rotate(1.5deg); }
+.cs-persona:hover,
+.cs-persona:focus-within {
+  transform: rotate(0deg);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.cs-persona-head { display: flex; align-items: center; gap: 0.875rem; }
+.cs-persona-avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: 0 0 auto;
+  border: 2px solid var(--color-paper);
+  box-shadow: 0 0 0 1px var(--color-line);
+}
+.cs-persona-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.cs-persona-tag {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-accent);
+  color: var(--color-brand-ink);
+}
+.cs-persona-name {
+  margin-top: 0.1875rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-h4);
+  color: var(--color-ink);
+}
+
+/* Two classes outrank .cs-block p's margin:0 reset (which otherwise wins
+   on specificity over a single-class selector regardless of source order). */
+.cs-persona .cs-persona-quote {
+  margin: 2.5rem 0 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-lead);
+  line-height: var(--leading-snug);
+  color: var(--color-brand-ink);
+}
+.cs-persona .cs-persona-desc {
+  margin: 2rem 0 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body);
+  color: var(--color-ink-secondary);
+}
+
+.cs-persona-goals-lbl {
+  margin-top: 1.375rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-accent);
+  color: var(--color-ink-muted);
+}
+.cs-persona-goals {
+  margin: 0.625rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5625rem;
+}
+.cs-persona-goals li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-snug);
+  color: var(--color-ink-secondary);
+}
+.cs-persona-goals svg {
+  flex: 0 0 auto;
+  margin-top: 0.125rem;
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-brand-ink);
+}
+
+@media (max-width: 43.75rem) {
+  .cs-personas { grid-template-columns: 1fr; }
+}
+
 
 .cs-stats {
   margin-top: 2.5rem;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* minmax(0, 1fr), not bare 1fr — bare 1fr carries an implicit auto
+     minimum equal to the column's own content min-content, so columns
+     with longer unbreakable words (or a wider value) claim more track
+     than columns with shorter ones even though all three say "1fr". Only
+     shows up once the row gets narrow enough that content minimums
+     actually bind — i.e. exactly the "looks fine on desktop, uneven on
+     mobile" symptom. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   border: 1px solid var(--color-line);
   border-radius: 0.875rem;
   overflow: hidden;
 }
+
+/* Two-stat variant (eatt.html desk research) — two equal columns instead
+   of three. */
+.cs-stats.is-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 .cs-stat { padding: 1.5rem; border-right: 1px solid var(--color-line); }
 .cs-stat:last-child { border-right: none; }
@@ -1778,9 +2138,107 @@ h2.cs-sec {
 }
 
 .cs-stat-context {
-  font-size: var(--text-caption);
-  line-height: var(--leading-snug);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-ink-secondary);
+}
+
+/* Competitor analysis table (eatt.html) — product/strength/shortcoming
+   rows. First real <table> in the shared stylesheet (the only other
+   table on the site, urcareer-precedents-matrix.html, is a self-contained
+   standalone page with its own scoped styles) — genuinely tabular,
+   comparable data across a fixed set of columns, unlike the card-based
+   .cs-stats. */
+.cs-catable-wrap {
+  margin-top: 2.5rem;
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+  border-radius: 0.875rem;
+}
+
+.cs-catable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cs-catable th,
+.cs-catable td {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--color-line);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-relaxed);
+}
+
+.cs-catable thead th {
+  background: var(--color-paper-sunken);
+  font-family: var(--font-accent);
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-accent);
   color: var(--color-ink-muted);
+  white-space: nowrap;
+}
+
+/* display:flex directly on the <th> used to opt it out of table-cell
+   layout, so its border-bottom no longer lined up with the row's other
+   cells when a Strength/Shortcoming column wrapped to two lines — the
+   divider between rows looked cut off partway across. Keeping the <th>
+   itself a plain table-cell and putting the flex row on an inner span
+   fixes that. */
+.cs-catable tbody th {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+.cs-catable-name {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+}
+
+.cs-catable-name img {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.5rem;
+  flex: none;
+}
+
+.cs-catable td { color: var(--color-ink-secondary); }
+
+.cs-catable td strong { font-weight: 600; color: var(--color-ink); }
+
+.cs-catable tbody tr:last-child th,
+.cs-catable tbody tr:last-child td { border-bottom: none; }
+
+@media (max-width: 640px) {
+  .cs-catable th, .cs-catable td { padding: 0.75rem; }
+
+  /* table-layout: fixed + explicit widths on the header row (fixed layout
+     sizes every column from the FIRST row, so this is where it has to be
+     set — td widths on the body rows are ignored) is what actually forces
+     deterministic columns instead of auto layout's content-driven sizing,
+     which let the name column's own min-content win extra width and
+     overlap the next column's text. The name column gets a smaller,
+     fixed share since most names are short — Strength and Shortcoming,
+     the columns actually being compared, split the rest evenly. */
+  .cs-catable { table-layout: fixed; }
+  .cs-catable thead th:first-child { width: 31%; }
+  .cs-catable thead th:not(:first-child) { width: 34.5%; }
+  .cs-catable tbody th { white-space: normal; }
+
+  /* Logo stays beside the name (matches desktop) but shrinks a step —
+     freeing that much width is what let the name column narrow at all
+     without "FODMAP" (the single widest word in this data) overflowing
+     its line. min-width: 0 lets the text wrap within its own flex item
+     instead of forcing the row wider than the column — only the longer
+     names ("Find Me Gluten Free", "Monash FODMAP Diet") actually wrap. */
+  .cs-catable-name img { width: 1.375rem; height: 1.375rem; }
+  .cs-catable-name { gap: 0.4rem; min-width: 0; }
 }
 
 .cs-tradeoffs {
@@ -1849,6 +2307,86 @@ h2.cs-sec {
   color: var(--color-ink-secondary);
 }
 
+/* Decision cards (eatt.html problem definition) — standalone dropped/kept
+   cards, unlike .cs-tocard/.cs-tocol which pair one dropped + one kept card
+   under a shared description. Here each feature is its own card with its
+   own reasoning, since the dropped/kept counts don't match 1:1. */
+.cs-decisions { margin-top: 2.5rem; }
+
+/* Dropped and kept each get their own row, so counts that don't match
+   (2 dropped vs. 3 kept here) don't interleave across the grid. */
+.cs-decisions-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.cs-decisions-row + .cs-decisions-row { margin-top: 1.25rem; }
+.cs-decisions-row.is-two-up { grid-template-columns: repeat(2, 1fr); }
+
+.cs-decision {
+  padding: 1.25rem;
+  border: 1px solid var(--color-line);
+  border-radius: 0.875rem;
+}
+
+/* Plain tint, not the left-stripe treatment .cs-insightbox uses right below
+   this — same accent language repeated back to back would blur together. */
+.cs-decision.is-drop { background: var(--color-paper-sunken); }
+.cs-decision.is-keep { background: var(--color-brand-soft); }
+
+/* Kept cards only, mirroring urcareer's #problems card icons at the same
+   size/weight (2.75rem, 1.25px stroke) — dropped cards stay icon-less so the
+   icon reads as "what we kept moving forward with," not decoration. */
+.cs-decision-icon {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--color-brand-ink);
+}
+.cs-decision-icon svg {
+  display: block;
+  width: 2.75rem;
+  height: 2.75rem;
+  stroke-width: 1.25px;
+}
+
+.cs-decision-lbl {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-family: var(--font-accent);
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-accent);
+}
+.cs-decision.is-drop .cs-decision-lbl { color: var(--color-ink-muted); }
+.cs-decision.is-keep .cs-decision-lbl { color: var(--color-brand-ink); }
+
+.cs-decision-name {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-family: var(--font-display);
+  font-size: var(--text-h4);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.cs-decision p {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body);
+}
+.cs-decision.is-drop p { color: var(--color-ink-muted); }
+.cs-decision.is-keep p { color: var(--color-ink-secondary); }
+
+@media (max-width: 43.75rem) {
+  .cs-decisions-row { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 30rem) {
+  .cs-decisions-row, .cs-decisions-row.is-two-up { grid-template-columns: 1fr; }
+}
+
 .cs-solrow {
   display: grid;
   grid-template-columns: 17rem 1fr;
@@ -1884,6 +2422,50 @@ h2.cs-sec {
    room between eyebrow / heading / body. */
 .cs-solrow .cs-claim { margin-top: 1.25rem; color: var(--color-brand-ink); }
 .cs-solrow p { margin-top: 1.5rem; max-width: 32rem; }
+
+/* ---------- Solution rows (eatt) — four-screen guest-list narrative ----------
+   Reuses .cs-solrow (see cudagra.html: text on the wide left track, screen
+   fixed-width on the right) instead of a card grid — every row is plain
+   text-left/screen-right, always the same side, so there's no zigzag or
+   card-height matching to reason about. The three single-screen steps use
+   .cs-solrow's shared 17rem track. Step 02 (Profile/Dietary) needs both
+   screens at that same 17rem width, but two full-width screens side by
+   side ran too wide — so Dietary (DOM first, left, behind) sits mostly
+   under Profile (DOM last, right, in front — the shorter of the two, and
+   the one the invitation is actually about) with only ~35% of each showing
+   past the other. Each frame is still its own .cs-zoomable button, so
+   clicking either visible part enlarges that screen on its own. Bottom
+   alignment reads as one continuous flow from Liam's profile into the
+   dietary form beneath it. */
+.cs-solrow-duo {
+  display: flex;
+  align-items: flex-end;
+}
+.cs-solrow-duo .cs-frame { flex: none; width: 17rem; }
+.cs-solrow-duo .cs-frame + .cs-frame { margin-left: -11rem; }
+
+/* Profile (last, right) sits in front of Dietary — .cs-frame is already
+   position: relative, so a z-index is enough to make that explicit rather
+   than relying on DOM order alone. */
+.cs-solrow-duo .cs-frame:last-child {
+  z-index: 1;
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Step 02 only — screen track sized for the overlapped pair (one 17rem
+   frame plus the other's visible, non-overlapped sliver). Text column gets
+   whatever's left of the row (no separate cap) — the overlap already
+   frees up more room here than the single-screen steps get. */
+.cs-solrow.is-duo { grid-template-columns: 1fr 23rem; }
+
+/* eatt only — screen aligns to the heading's top edge rather than the
+   eyebrow above it. .cs-solrow's align-items: start aligns every grid item
+   to the row's own top, which is the eyebrow; this pushes the screen down
+   by the eyebrow's rendered line box plus the heading's own margin-top, so
+   it tracks correctly if either token changes. */
+.cs-solrow.is-heading-align > .cs-figure {
+  margin-top: calc(var(--text-eyebrow) * var(--leading-body) + 1.25rem);
+}
 
 .cs-grid-2 {
   margin-top: 1.25rem;
@@ -1997,6 +2579,20 @@ h2.cs-sec {
 }
 
 .cs-card p { font-size: var(--text-body-sm); line-height: var(--leading-snug); }
+
+/* What's next section only — the card IS the content (no separate title),
+   so the number steps back to a plain small label and the sentence itself
+   carries the weight, reversing the usual accented-number/muted-body split. */
+#whats-next .cs-card-num {
+  font-size: var(--text-eyebrow);
+  margin-bottom: 0.75rem;
+  color: var(--color-ink-muted);
+}
+#whats-next .cs-card p {
+  font-size: var(--text-body);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+}
 
 .cs-more-grid {
   margin-top: 2rem;
@@ -2664,6 +3260,17 @@ h2.cs-sec {
     order: 1;
   }
 
+  /* Solution rows (eatt) — .cs-solrow's own mobile rules above already
+     stack these. The duo pair's frames shrink to fit a phone screen (the
+     desktop 17rem each would overflow), and the figure's max-width is set
+     to match their overlapped total exactly, so the inherited
+     margin-inline: auto (.cs-solrow .cs-figure, general rule above) has
+     no slack to center against and no overflow to clip. */
+  .cs-solrow.is-duo { grid-template-columns: 1fr; }
+  .cs-solrow-duo .cs-frame { width: 11rem; }
+  .cs-solrow-duo .cs-frame + .cs-frame { margin-left: -7rem; }
+  .cs-solrow.is-duo .cs-figure { max-width: 15rem; }
+
   /* Education cards stay 3-across through tablet widths (stacking them
      there just leaves each short card floating in a lot of empty space) —
      only stack once truly cramped. */
@@ -2683,22 +3290,19 @@ h2.cs-sec {
   .cs-tradeoffs { grid-template-columns: 1fr; }
 }
 
-/* cs-stats' three EQUAL columns hold up until "11-19%" (the widest value) no
-   longer fits without wrapping or spilling past the card's rounded corner —
-   measured to happen right around 500px. Below that, give column 3 a bigger
-   share (label/context text in columns 1-2 have their own unbreakable-word
-   floor, so the ratio can't be pushed indefinitely) plus tighter padding —
-   measured to hold three-up down to ~400px before the same overflow returns. */
-@media (max-width: 32.5rem) {
-  .cs-stats { grid-template-columns: 0.75fr 0.75fr 1.5fr; }
-  .cs-stat { padding: 0.75rem 0.5rem; }
-}
+/* Equal columns actually hold fine with the current stat copy all the way
+   down to the stack breakpoint below (checked at 419-500px) — a skewed
+   ratio used to live here for an earlier, longer set of values, but it
+   widened column 3 (the shortest content) at column 1's expense, leaving
+   column 1's longer context text wrapping tall and columns visibly
+   mismatched in height. Equal columns keep all three reading the same
+   height instead. */
 
-/* Below the narrowed-ratio floor above, stack for good. Measured floor for
-   the ratio above was ~400px; a 10px margin is kept here for scrollbar-width
-   and font-rendering variance across browsers/platforms. */
+/* Stack for good below this. Equal three-up held down to ~410px in
+   testing; a small margin is kept here for scrollbar-width and
+   font-rendering variance across browsers/platforms. */
 @media (max-width: 410px) {
-  .cs-stats { grid-template-columns: 1fr; }
+  .cs-stats, .cs-stats.is-duo { grid-template-columns: 1fr; }
   .cs-stat { padding: 1.5rem; border-right: none; border-bottom: 1px solid var(--color-line); }
   .cs-stat:last-child { border-bottom: none; }
 }

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boram Kim | eatt</title>
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+<link rel="icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Sofia+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="case-page">
+
+<header class="navbar">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html#home">
+      <img class="nav-logo" src="images/logo-bk.png" alt="Boram Kim logo">
+      <span class="brand-name">Boram Kim</span>
+    </a>
+
+    <nav class="nav-pill" aria-label="Main navigation">
+      <a href="index.html#home" class="nav-link">Home</a>
+      <a href="index.html#work" class="nav-link active">Work</a>
+      <a href="about.html" class="nav-link">About</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a class="btn-linkedin" href="https://www.linkedin.com/in/boramkim/" aria-label="LinkedIn" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6.5 0h3.8v1.64h.05c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21h-4V9Z"/>
+        </svg>
+      </a>
+      <button class="nav-burger" id="navBurger" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+    <a href="index.html#home" class="mobile-link">Home</a>
+    <a href="index.html#work" class="mobile-link active">Work</a>
+    <a href="about.html" class="mobile-link">About</a>
+  </nav>
+</header>
+
+<nav class="cs-casenav" aria-label="Case study sections">
+  <ol>
+    <li><a href="#why">Why</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#problem-definition">Problem definition</a></li>
+    <li><a href="#personas">Personas</a></li>
+    <li><a href="#wireframes">Wireframes</a></li>
+    <li><a href="#solution">Solution</a></li>
+    <li><a href="#learnings">Learnings</a></li>
+  </ol>
+</nav>
+
+<main id="main">
+
+  <header class="cs-hero measure">
+    <div class="tags">
+      <span class="tag">Design with AI</span>
+      <span class="tag">Product Design</span>
+    </div>
+    <h1 class="cs-hero-title is-eatt">Setting a table everyone can join</h1>
+    <p class="cs-lead">Hosts planning group meals were chasing allergy info through scattered texts, where one missed reply could put someone at real risk. We built a way to collect it from every guest and recommend menus that work for the whole group.</p>
+  </header>
+
+  <div class="measure">
+    <figure class="cs-figure">
+      <img class="cs-hero-img" src="images/eatt-hero.png" alt="eatt product screens">
+    </figure>
+  </div>
+
+  <div class="measure">
+    <dl class="cs-meta-strip">
+      <div><dt>Role</dt><dd>Product Designer, team of 2</dd></div>
+      <div><dt>Timeline</dt><dd>5 months</dd></div>
+      <div><dt>Skills</dt><dd>User Research<br>Designing with AI</dd></div>
+      <div><dt>Tools</dt><dd>Figma<br>Google Stitch<br>Mobbin<br>Claude</dd></div>
+    </dl>
+  </div>
+
+  <section class="cs-block measure" id="why">
+    <div class="cs-eyebrow">Why this project</div>
+    <h2 class="cs-sec">The calculation before the RSVP</h2>
+    <figure class="cs-figure">
+      <div class="cs-frame"><img src="images/eatt-why-invitation.jpg" alt="Two hands holding a potluck dinner invitation over a table, the kind of gathering that quietly puts allergy conversations on the guest"></div>
+    </figure>
+    <p style="margin-top:1.5rem">When a potluck invitation arrives, I run the same calculation: is there anything I can actually eat, and if not, how do I bring it up without making the host feel bad? I've been doing this for over a decade, since gluten and dairy stopped working for me.</p>
+    <p style="margin-top:1.25rem">Most people with food sensitivities would rather risk it or skip it than have that conversation. And every time we stay quiet, the host loses too: they never get the chance to host us well. That's the version of the problem I wanted to solve, and it isn't the guest's to fix alone. It also turned out not to be a small one.</p>
+  </section>
+
+  <section class="cs-block measure" id="research">
+    <div class="cs-eyebrow">Research</div>
+    <h2 class="cs-sec">A social problem with solo tools</h2>
+
+    <div class="cs-sub">
+      <div class="cs-sublabel">Desk research</div>
+      <h3>It shows up socially</h3>
+      <p>We started with the literature, first to understand the scale.</p>
+
+      <div class="cs-stats">
+        <div class="cs-stat">
+          <span class="cs-stat-label">Global prevalence</span>
+          <span class="cs-stat-value">10-25%</span>
+          <span class="cs-stat-context">of the global population has a food allergy or sensitivity (Nutrients, 2025)</span>
+        </div>
+        <div class="cs-stat">
+          <span class="cs-stat-label">Canadians affected</span>
+          <span class="cs-stat-value">3M+</span>
+          <span class="cs-stat-context">Canadians self-report at least one food allergy (Food Allergy Canada)</span>
+        </div>
+        <div class="cs-stat">
+          <span class="cs-stat-label">Documented allergens</span>
+          <span class="cs-stat-value">170+</span>
+          <span class="cs-stat-context">foods documented to cause an allergic reaction (FARE)</span>
+        </div>
+      </div>
+
+      <p style="margin-top:2rem">A large group, and a wide range of things that can trigger a reaction. The scale is clear. The shape of the problem is less so.</p>
+
+      <p style="margin-top:1.5rem">So we looked at how it plays out in social settings. There's a name for what we found: <em>intrapersonal leisure constraint</em>, where the fear of a reaction limits social participation.</p>
+
+      <div class="cs-stats is-duo">
+        <div class="cs-stat">
+          <span class="cs-stat-value">21%</span>
+          <span class="cs-stat-context">breach their diet at social functions to avoid shame or isolation (Wang et al., 2021)</span>
+        </div>
+        <div class="cs-stat">
+          <span class="cs-stat-value">35%</span>
+          <span class="cs-stat-context">of teens with food allergies are afraid to eat with adults other than their parents (Healio, 2025)</span>
+        </div>
+      </div>
+
+      <p style="margin-top:2rem">The pattern is anticipatory. Risk gets assessed long before the meal, and the social cost of speaking up gets weighed against the physical cost of staying quiet. Often, staying quiet wins.</p>
+
+      <p style="margin-top:1.5rem">What the literature had far less of was the other side of that table. So we went to find it.</p>
+
+      <details class="cs-aibox">
+        <summary class="cs-aibox-summary">
+          <span class="cs-aibox-label-group">
+            <svg class="cs-aibox-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6"/></svg>
+            <span class="cs-aibox-label">AI in the process</span>
+          </span>
+          <svg class="cs-aibox-chevron" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <dl class="cs-aibox-list">
+          <div>
+            <dt>Manual + Gemini in parallel</dt>
+            <dd>We searched the web ourselves while Gemini ran its own search, asking it to work only from credible, citable sources.</dd>
+          </div>
+          <div>
+            <dt>Verification by hand</dt>
+            <dd>Every paper, study, and site it surfaced was opened and read directly before anything made it into the research.</dd>
+          </div>
+          <div>
+            <dt>Mind map</dt>
+            <dd>The verified findings were structured into a map with source links attached to each branch.</dd>
+          </div>
+        </dl>
+      </details>
+    </div>
+
+    <div class="cs-sub" style="margin-top:clamp(4rem, 8vw, 6rem)">
+      <div class="cs-sublabel">User interviews</div>
+      <h3>We interviewed both sides of the same table.</h3>
+      <dl class="cs-meta-strip is-inline">
+        <div><dt>Participants</dt><dd>8</dd></div>
+        <div><dt>Sessions</dt><dd>7</dd></div>
+        <div><dt>Questions</dt><dd>15</dd></div>
+        <div><dt>Duration</dt><dd>30-50 min</dd></div>
+      </dl>
+
+      <figure class="cs-figure" style="margin-top:2rem">
+        <div class="cs-viewer">
+          <div class="cs-vstage" style="height:auto; aspect-ratio:6000/3024" data-zoom>
+            <img src="images/eatt-affinity-mapping.jpg" alt="Affinity mapping board clustering interview notes from guests and hosts into themes">
+            <div class="cs-vhint">Drag to pan · &#8984;/Ctrl + scroll to zoom</div>
+            <div class="cs-vctrl">
+              <button class="cs-vctrl-btn" type="button" data-z="out" aria-label="Zoom out">&minus;</button>
+              <input class="cs-vctrl-slider" type="range" min="0" max="1000" value="0" aria-label="Zoom">
+              <button class="cs-vctrl-btn" type="button" data-z="in" aria-label="Zoom in">+</button>
+              <span class="cs-vctrl-pct">100%</span>
+              <button class="cs-vctrl-btn cs-vctrl-fit" type="button" data-z="reset">Fit</button>
+            </div>
+          </div>
+        </div>
+        <figcaption>Interview notes clustered into the four themes below.</figcaption>
+      </figure>
+
+      <div class="cs-insightcols">
+        <div class="cs-insightcard">
+          <div class="cs-insightcard-head">Psychological load &amp; fear</div>
+          <div class="cs-insightcard-body">
+            <p>Uncertainty spikes when you're not the one cooking, and trust in outside food sources stays low.</p>
+            <figure class="cs-scene">
+              <div class="cs-frame"><img src="images/eatt-scene-guest-before.jpg" alt="Guest anxiously texting about a party's ingredients before heading over"></div>
+              <figcaption>The guest has just gotten the invitation, and is weighing whether to go and how to even bring up their allergy.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="cs-insightcard">
+          <div class="cs-insightcard-head">Social friction</div>
+          <div class="cs-insightcard-body">
+            <p>Speaking up feels costly, and guests and hosts are working from different assumptions.</p>
+            <figure class="cs-scene">
+              <div class="cs-frame"><img src="images/eatt-scene-guest-during.jpg" alt="Guest sitting uneasily at a crowded dinner table"></div>
+              <figcaption>At the table, the guest realizes there's nothing they can eat, but stays quiet rather than make things awkward.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="cs-insightcard">
+          <div class="cs-insightcard-head">Information gaps</div>
+          <div class="cs-insightcard-body">
+            <p>Existing tools are built for the person with the allergy, not for the host trying to understand it.</p>
+            <figure class="cs-scene">
+              <div class="cs-frame"><img src="images/eatt-scene-host-before.jpg" alt="Host checking allergen labels at the grocery store while shopping for guests"></div>
+              <figcaption>The host is shopping for several guests' allergies at once, and isn't sure which ingredients are actually safe.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="cs-insightcard">
+          <div class="cs-insightcard-head">Workarounds</div>
+          <div class="cs-insightcard-body">
+            <p>People lean on memory and ingredient-by-ingredient interpretation, which is expensive.</p>
+            <figure class="cs-scene">
+              <div class="cs-frame"><img src="images/eatt-scene-host-during.jpg" alt="Host offering a plate of appetizers to a guest at the party"></div>
+              <figcaption>The guest asks whether a specific ingredient is safe, but the host isn't confident in the answer either.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <details class="cs-aibox">
+        <summary class="cs-aibox-summary">
+          <span class="cs-aibox-label-group">
+            <svg class="cs-aibox-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6"/></svg>
+            <span class="cs-aibox-label">AI in the process</span>
+          </span>
+          <svg class="cs-aibox-chevron" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <dl class="cs-aibox-list">
+          <div>
+            <dt>Manual first</dt>
+            <dd>Color-coded the transcripts by hand into four categories.</dd>
+          </div>
+          <div>
+            <dt>Gemini</dt>
+            <dd>Consolidated the quotes within each category and merged duplicates, working from our hand-coded notes.</dd>
+          </div>
+          <div>
+            <dt>Figma plugin</dt>
+            <dd>Turned the consolidated quotes into a sticky-note affinity map.</dd>
+          </div>
+          <div>
+            <dt>Nano Banana</dt>
+            <dd>Visualized the four scenes above from the user needs we pulled out of each category.</dd>
+          </div>
+        </dl>
+      </details>
+    </div>
+
+    <div class="cs-sub" style="margin-top:clamp(4rem, 8vw, 6rem)">
+      <div class="cs-sublabel">Competitor analysis</div>
+      <h3>Everyone solves it for one person</h3>
+      <p>We screened ten apps in the food allergy and sensitivity space, then downloaded the five with the most overlap with our problem and used them ourselves, mapping each against unique value, advantages, and shortcomings.</p>
+
+      <div class="cs-catable-wrap">
+        <table class="cs-catable">
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Strength</th>
+              <th scope="col">Shortcoming</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><span class="cs-catable-name"><img src="images/eatt-ca-fmgf.png" alt="Find Me Gluten Free logo">Find Me Gluten Free</span></th>
+              <td>Verified, high-trust listings</td>
+              <td><strong>No host or social layer</strong></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="cs-catable-name"><img src="images/eatt-ca-fig.png" alt="Fig logo">Fig</span></th>
+              <td>Strong IA, conversational interaction</td>
+              <td><strong>Individual-focused</strong> experience</td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="cs-catable-name"><img src="images/eatt-ca-olive.png" alt="Olive logo">Olive</span></th>
+              <td>Gamified scoring creates engagement loops</td>
+              <td><strong>Individual-focused</strong>, unclear sourcing weakens trust</td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="cs-catable-name"><img src="images/eatt-ca-yuka.png" alt="Yuka logo">Yuka</span></th>
+              <td>Intuitive scoring system</td>
+              <td><strong>Individual-focused</strong>, oversimplifies high-stakes decisions</td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="cs-catable-name"><img src="images/eatt-ca-monash.png" alt="Monash FODMAP Diet logo">Monash FODMAP Diet</span></th>
+              <td>Clinical credibility, consistent taxonomy</td>
+              <td><strong>Disconnected from social use</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top:2rem">They solve the problem in genuinely different ways: barcode scanning, personal scoring, clinical trigger data, verified restaurant listings. But the shortcomings column kept saying the same thing: every one is designed around a single user, which is what our interviews had already told us.</p>
+
+      <details class="cs-aibox">
+        <summary class="cs-aibox-summary">
+          <span class="cs-aibox-label-group">
+            <svg class="cs-aibox-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6"/></svg>
+            <span class="cs-aibox-label">AI in the process</span>
+          </span>
+          <svg class="cs-aibox-chevron" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <dl class="cs-aibox-list">
+          <div>
+            <dt>Manual + Gemini in parallel</dt>
+            <dd>We searched the App Store ourselves while Gemini ran its own search.</dd>
+          </div>
+          <div>
+            <dt>Where the lists diverged</dt>
+            <dd>Some of Gemini's suggestions had little real overlap with our problem, and some apps it never mentioned turned out to be closer. We reviewed candidates on the web first, then downloaded them.</dd>
+          </div>
+          <div>
+            <dt>Hands-on verification</dt>
+            <dd>We used Gemini's read on each app's strengths and shortcomings as a starting point, then tested every claim ourselves before it went into the matrix.</dd>
+          </div>
+        </dl>
+      </details>
+    </div>
+  </section>
+
+  <section class="cs-block measure" id="problem-definition">
+    <div class="cs-eyebrow">Problem definition</div>
+    <h2 class="cs-sec">From personalization to aggregation</h2>
+    <p>Safety checks for one person are a solved problem. What no one was building for was the harder version: one meal that works for several people with different restrictions at once. That isn't personalization. It's aggregation, and it only exists when someone is coordinating for a group.</p>
+    <p style="margin-top:1.5rem">When we started, we explored features serving both the host and guest sides. Once we knew what the market already did well and what it left out, the priorities became obvious.</p>
+
+    <div class="cs-decisions">
+      <div class="cs-decisions-row is-two-up">
+        <div class="cs-decision is-drop">
+          <span class="cs-decision-lbl">Dropped</span>
+          <span class="cs-decision-name">Guest-only personalization</span>
+          <p>Indistinguishable from what's already on the market.</p>
+        </div>
+        <div class="cs-decision is-drop">
+          <span class="cs-decision-lbl">Dropped</span>
+          <span class="cs-decision-name">Restaurant finder</span>
+          <p>A single-user lookup, which our advantage can't reach.</p>
+        </div>
+      </div>
+      <div class="cs-decisions-row">
+        <div class="cs-decision is-keep">
+          <span class="cs-decision-lbl">Kept</span>
+          <span class="cs-decision-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 9a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M8 16a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2" /><path d="M3 7v-2a2 2 0 0 1 2 -2h2" /><path d="M3 17v2a2 2 0 0 0 2 2h2" /><path d="M17 3h2a2 2 0 0 1 2 2v2" /><path d="M17 21h2a2 2 0 0 0 2 -2v-2" /></svg></span>
+          <span class="cs-decision-name">Guest profile</span>
+          <p>The input that makes group aggregation possible.</p>
+        </div>
+        <div class="cs-decision is-keep">
+          <span class="cs-decision-lbl">Kept</span>
+          <span class="cs-decision-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3c1.918 0 3.52 1.35 3.91 3.151a4 4 0 0 1 2.09 7.723l0 7.126h-12v-7.126a4 4 0 1 1 2.092 -7.723a4 4 0 0 1 3.908 -3.151" /><path d="M6.161 17.009l11.839 -.009" /></svg></span>
+          <span class="cs-decision-name">Recipe recommendations</span>
+          <p>The core: every guest's restrictions solved in one menu.</p>
+        </div>
+        <div class="cs-decision is-keep">
+          <span class="cs-decision-lbl">Kept</span>
+          <span class="cs-decision-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3.5 5.5l1.5 1.5l2.5 -2.5" /><path d="M3.5 11.5l1.5 1.5l2.5 -2.5" /><path d="M3.5 17.5l1.5 1.5l2.5 -2.5" /><path d="M11 6l9 0" /><path d="M11 12l9 0" /><path d="M11 18l9 0" /></svg></span>
+          <span class="cs-decision-name">Scanner</span>
+          <p>Extends the same group check into grocery shopping.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-insightbox cs-insightbox-standalone" style="margin-top:2.5rem">
+      <p style="font-weight:600">How might we help a host plan one meal that works for everyone at the table, without putting the burden of asking on either side?</p>
+    </div>
+  </section>
+
+  <section class="cs-block measure" id="personas">
+    <div class="cs-eyebrow">Personas</div>
+    <h2 class="cs-sec">Who we're designing for</h2>
+
+    <div class="cs-personas">
+      <div class="cs-persona">
+        <div class="cs-persona-head">
+          <div class="cs-persona-avatar"><img src="images/eatt-persona-host.jpg" alt="Marcus"></div>
+          <div>
+            <span class="cs-persona-tag">Host</span>
+            <div class="cs-persona-name">Marcus, 34</div>
+          </div>
+        </div>
+        <p class="cs-persona-quote">"I want everyone to feel welcome and safe"</p>
+        <p class="cs-persona-desc">Loves having people over. Asking everyone about restrictions each time is awkward, and he rarely gets a full picture back before he has to shop.</p>
+        <div class="cs-persona-goals-lbl">Goals</div>
+        <ul class="cs-persona-goals">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4l10 -10"/></svg>Know who has which restrictions before shopping or cooking</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4l10 -10"/></svg>Plan one menu that works for everyone</li>
+        </ul>
+      </div>
+
+      <div class="cs-persona">
+        <div class="cs-persona-head">
+          <div class="cs-persona-avatar"><img src="images/eatt-persona-guest.jpg" alt="Mina"></div>
+          <div>
+            <span class="cs-persona-tag">Guest</span>
+            <div class="cs-persona-name">Mina, 29</div>
+          </div>
+        </div>
+        <p class="cs-persona-quote">"I just want to feel safe and not be a burden"</p>
+        <p class="cs-persona-desc">Celiac for six years. Cooks at home most nights and eats before parties just in case, since asking about ingredients feels like making a scene.</p>
+        <div class="cs-persona-goals-lbl">Goals</div>
+        <ul class="cs-persona-goals">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4l10 -10"/></svg>Get dietary needs to the host without an awkward conversation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4l10 -10"/></svg>Feel included rather than singled out</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-block measure" id="wireframes">
+    <div class="cs-eyebrow">Wireframes</div>
+    <h2 class="cs-sec">From sketches to three screens</h2>
+    <p>We sketched loosely first, then reworked the screens around the narrowed scope.</p>
+
+    <div class="cs-wireframe-early">
+      <div class="cs-sublabel">Early sketches</div>
+      <div class="cs-wireframe-early-box">
+        <div class="cs-wireframe-grid is-duo">
+          <button class="cs-zoomable" type="button" aria-label="Enlarge wireframe: early sketch 1" style="--grow:0.72">
+            <img src="images/eatt-wireframe-early-1.jpg" alt="Early hand-drawn sketch of the profile screen, with an allergy list, favorites, and an add-allergy flow" draggable="false">
+          </button>
+          <button class="cs-zoomable" type="button" aria-label="Enlarge wireframe: early sketch 2" style="--grow:1.51">
+            <img src="images/eatt-wireframe-early-2.jpg" alt="Early hand-drawn sketch of the onboarding, scanner, event, and recommendations flow, annotated with notes on the Stitch-generated layout" draggable="false">
+          </button>
+        </div>
+      </div>
+      <p>Working out what belonged on each screen, and which of Stitch's generated layouts were worth keeping.</p>
+    </div>
+
+    <div class="cs-wireframe-refined">
+      <div class="cs-sublabel">Refined wireframes</div>
+      <div class="cs-wireframe-grid is-trio">
+        <figure class="cs-wireframe-item">
+          <button class="cs-zoomable" type="button" aria-label="Enlarge wireframe: guest profile">
+            <img src="images/eatt-wireframe-profile.png" alt="Wireframe of a guest profile screen showing dietary needs and invitation response status" draggable="false">
+          </button>
+          <figcaption>
+            <span class="cs-wireframe-name">Guest profile</span>
+            <p>Responding to an invitation shares dietary information with it, so nothing has to be brought up separately.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="cs-wireframe-item">
+          <button class="cs-zoomable" type="button" aria-label="Enlarge wireframe: event details">
+            <img src="images/eatt-wireframe-event-details.png" alt="Wireframe of an event details screen showing restriction counts across the guest list and recipes grouped by course" draggable="false">
+          </button>
+          <figcaption>
+            <span class="cs-wireframe-name">Event details</span>
+            <p>Restrictions are counted across the guest list rather than listed per person, with recipes grouped by course underneath.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="cs-wireframe-item">
+          <button class="cs-zoomable" type="button" aria-label="Enlarge wireframe: scanner">
+            <img src="images/eatt-wireframe-scan.png" alt="Wireframe of a scanner screen with event selection and safe/avoid scan results" draggable="false">
+          </button>
+          <figcaption>
+            <span class="cs-wireframe-name">Scanner</span>
+            <p>The host picks which event to check against before scanning, so results reflect that guest list.</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <details class="cs-aibox">
+      <summary class="cs-aibox-summary">
+        <span class="cs-aibox-label-group">
+            <svg class="cs-aibox-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6"/></svg>
+            <span class="cs-aibox-label">AI in the process</span>
+          </span>
+        <svg class="cs-aibox-chevron" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+      <dl class="cs-aibox-list">
+        <div>
+          <dt>Input</dt>
+          <dd>We wrote out the features that mattered most and fed them in alongside references pulled from Mobbin and Dribbble.</dd>
+        </div>
+        <div>
+          <dt>Google Stitch and Claude Design</dt>
+          <dd>Generated prototypes in several different directions.</dd>
+        </div>
+        <div>
+          <dt>Selection, not acceptance</dt>
+          <dd>We picked the ones closest to our thinking and talked through what specifically worked about each.</dd>
+        </div>
+        <div>
+          <dt>Back to paper</dt>
+          <dd>We redrew the wireframes ourselves, keeping what fit and adding what the generated versions had missed.</dd>
+        </div>
+      </dl>
+    </details>
+  </section>
+
+  <section class="cs-block measure" id="solution">
+    <div class="cs-eyebrow">Solution</div>
+    <h2 class="cs-sec">From invitation to the table, one guest list carries it.</h2>
+    <p>The screens follow a single dinner: Maya sends the invitations, Liam accepts, and the guest list turns into a menu she can cook from.</p>
+    <p>There's no message to send and no reply to write. The information moves with the invitation, and both sides get to spend the evening on something other than managing it.</p>
+
+    <div class="cs-solrow is-reverse is-heading-align" style="margin-top:2.5rem">
+      <div>
+        <div class="cs-eyebrow is-plain">01</div>
+        <h3 class="cs-claim">Events</h3>
+        <p>Maya plans a BBQ and invites who she wants. What she sees first isn't a menu, it's how many guests have replied.</p>
+      </div>
+      <figure class="cs-figure">
+        <div class="cs-frame" style="aspect-ratio:800/1641"><button class="cs-zoomable" type="button" aria-label="Enlarge screenshot: Events"><img src="images/eatt-sol-events.png" alt="Events home screen listing Maya's planned dinners with guest RSVP counts" draggable="false"></button></div>
+      </figure>
+    </div>
+
+    <div class="cs-solrow is-reverse is-duo is-heading-align">
+      <div>
+        <div class="cs-eyebrow is-plain">02</div>
+        <h3 class="cs-claim">Profile / Dietary Profile</h3>
+        <p>One invitation lands with Liam, who set his profile once. Accepting sends it.</p>
+      </div>
+      <figure class="cs-figure cs-solrow-duo">
+        <div class="cs-frame" style="aspect-ratio:800/1868"><button class="cs-zoomable" type="button" aria-label="Enlarge screenshot: Dietary Profile"><img src="images/eatt-sol-dietary.png" alt="Dietary profile screen where Liam selects allergens and diets once, ahead of any invitation" draggable="false"></button></div>
+        <div class="cs-frame" style="aspect-ratio:800/1354"><button class="cs-zoomable" type="button" aria-label="Enlarge screenshot: Profile"><img src="images/eatt-sol-profile.png" alt="Liam's profile screen showing his active dietary tags and invitation responses" draggable="false"></button></div>
+      </figure>
+    </div>
+
+    <div class="cs-solrow is-reverse is-heading-align">
+      <div>
+        <div class="cs-eyebrow is-plain">03</div>
+        <h3 class="cs-claim">Event details</h3>
+        <p>The replies come back as one set of constraints: gluten-free (3), dairy-free (2), tree nut-free (1). The menu below is already filtered against all of them.</p>
+      </div>
+      <figure class="cs-figure">
+        <div class="cs-frame" style="aspect-ratio:1206/3615"><button class="cs-zoomable" type="button" aria-label="Enlarge screenshot: Event details"><img src="images/eatt-sol-eventdetails.png" alt="Event details screen showing guest dietary need counts and a menu already filtered against them" draggable="false"></button></div>
+      </figure>
+    </div>
+
+    <div class="cs-solrow is-reverse is-heading-align">
+      <div>
+        <div class="cs-eyebrow is-plain">04</div>
+        <h3 class="cs-claim">Scan</h3>
+        <p>At the store, Maya scans against that event's guest list. Results name the reason, not just the verdict, so safe and avoid never rest on colour alone. An AI chat stays available throughout, for the small questions that come up along the way.</p>
+      </div>
+      <figure class="cs-figure">
+        <div class="cs-frame" style="aspect-ratio:800/2185"><button class="cs-zoomable" type="button" aria-label="Enlarge screenshot: Scan"><img src="images/eatt-sol-scan.png" alt="Scan screen checking a grocery item against the event's guest list, with a Safe or Avoid result and reason" draggable="false"></button></div>
+      </figure>
+    </div>
+
+    <details class="cs-aibox" style="margin-top:2.5rem">
+      <summary class="cs-aibox-summary">
+        <span class="cs-aibox-label-group">
+          <svg class="cs-aibox-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6"/></svg>
+          <span class="cs-aibox-label">AI in the process</span>
+        </span>
+        <svg class="cs-aibox-chevron" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+      <dl class="cs-aibox-list">
+        <div>
+          <dt>Google Stitch and Claude Design</dt>
+          <dd>We fed the reworked wireframes back in, this time with much more detailed specs, and generated prototypes from them.</dd>
+        </div>
+        <div>
+          <dt>Review before building</dt>
+          <dd>We went through how our ideas had actually come through, and decided screen by screen what to keep and what to change.</dd>
+        </div>
+        <div>
+          <dt>Figma</dt>
+          <dd>We built the final screens ourselves from those decisions.</dd>
+        </div>
+      </dl>
+    </details>
+  </section>
+
+  <section class="cs-block measure" id="learnings">
+    <div class="cs-eyebrow">Learnings</div>
+    <h2 class="cs-sec">What I'm taking with me</h2>
+    <div class="cs-grid-3" style="margin-top:2.5rem">
+      <div class="cs-card">
+        <span class="cs-card-num">01</span>
+        <h4>Seeing it beats knowing it</h4>
+        <p>The competitive analysis had already told us the market was full of tools built for one person, and we still tried to keep that flow. It wasn't until we were drawing screens that we could see how much it blurred the app's focus. Some decisions only become obvious once they're in front of you.</p>
+      </div>
+      <div class="cs-card">
+        <span class="cs-card-num">02</span>
+        <h4>More AI input, more judgment required</h4>
+        <p>It consistently gave us more angles than we would have found on our own, which meant more material to sort through. The skill I want to keep building is judgment: knowing what to keep, what to verify, and what to set aside.</p>
+      </div>
+      <div class="cs-card">
+        <span class="cs-card-num">03</span>
+        <h4>An open question about how much detail helps</h4>
+        <p>Allergies vary widely, and so do the ways they're triggered. Severity, cross-contamination, how someone reacts: each of these could make the recommendations more accurate, or just make the app harder to use. Where that line sits is something we still need to test.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-block measure">
+    <div class="cs-eyebrow">More case studies</div>
+    <div class="cs-more-grid">
+      <a class="case" href="cudagra.html">
+        <div class="thumb is-contain" style="--thumb-zoom:1.1" aria-hidden="true">
+          <img src="images/cudagra-hero.png" alt="">
+        </div>
+        <div class="case-body">
+          <div class="tags"><span class="tag">UX Improvement</span><span class="tag">UX Research</span></div>
+          <h3>Cudagra</h3>
+          <p>2,000 people had signed up, but almost nobody was playing. We redesigned the profile and invite flow around trust.</p>
+        </div>
+      </a>
+      <a class="case" href="urcareer.html">
+        <div class="thumb is-contain" style="--thumb-zoom:0.88" aria-hidden="true">
+          <img src="images/urcareer-hero.png" alt="">
+        </div>
+        <div class="case-body">
+          <div class="tags"><span class="tag">0→1</span><span class="tag">SME collaboration</span></div>
+          <h3>ürcareer</h3>
+          <p>Career changers were navigating alone with generic job boards. We built tailored matches, mentors, and community.</p>
+        </div>
+      </a>
+      <a class="case" href="system-mapping.html">
+        <div class="thumb is-contain" aria-hidden="true">
+          <img src="images/system-mapping-hero.jpg" alt="">
+        </div>
+        <div class="case-body">
+          <div class="tags"><span class="tag">Systems Thinking</span><span class="tag">Data Visualization</span></div>
+          <h3>Creating a Path to Well-Being in the Social Media Maze</h3>
+          <p>Social media's effect on well-being is tangled and contradictory. Mapped it to find where the system can be moved.</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <img class="footer-mark" src="images/logo-bk.png" alt="Boram Kim logo">
+  <p class="footer-tagline">Thanks for stopping by. I'd love to connect.</p>
+
+  <div class="footer-links">
+    <a href="mailto:boram.g.kim@gmail.com" aria-label="Email">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+        <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <a href="https://www.linkedin.com/in/boramkim/" aria-label="LinkedIn" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6.5 0h3.8v1.64h.05c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21h-4V9Z"/>
+      </svg>
+    </a>
+  </div>
+
+  <p class="footer-copyright">&copy; Boram Kim <span id="footerYear"></span></p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
