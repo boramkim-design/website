@@ -3000,8 +3000,13 @@ h2.cs-sec + .cs-figure { margin-top: 1.5rem; }
      stays full-width for the text and let the screenshot balloon past the
      other three on narrow viewports). */
   .cs-shiprow-mixed { grid-template-columns: 1fr; }
-  .cs-shiprow-mixed figure { order: 2; }
-  .cs-shiprow-mixed img { width: 16rem; max-width: 100%; margin-inline: auto; }
+  .cs-shiprow-mixed figure { order: 2; text-align: center; }
+  .cs-shiprow-mixed img { width: 16rem; max-width: 100%; }
+  /* The image sits in a .cs-zoomable button — buttons keep shrink-to-fit
+     sizing even under display: block, so margin-inline: auto has no free
+     space to center into. Switching it to inline-block here lets the
+     figure's text-align: center do the centering instead. */
+  .cs-shiprow-mixed .cs-zoomable { display: inline-block; }
   .cs-shipnote { grid-column: span 1; order: 1; }
 }
 
